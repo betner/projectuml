@@ -7,16 +7,6 @@
  * and open the template in the editor.
  */
 
-package projectuml;
-
-/**
- *
- * @author steer237
- */
-public class test {
-    
-    /** Creates a new instance of test */
-    public test() {
-    }
-    
-}
+ha ha jag sabbar projektet!!!
+        
+        /mvh f.d. anställd
