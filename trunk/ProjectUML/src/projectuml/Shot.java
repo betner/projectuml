@@ -2,8 +2,10 @@
 package projectuml;
 import java.awt.Point;
 
+
 /**
- * Generic shot. Created by a weapon.
+ * Generic shot. Created by a weapon when it is fired.
+ * A shot can cause damage to game objects.
  *
  * @author Steve Eriksson
  */
@@ -12,8 +14,10 @@ abstract public class Shot extends Sprite{
     protected double velocity; // Shot's speed
     protected int damage;      // Damage done on impact
     
+        
     /** Creates a new instance of Shot */
-    public Shot() {
+    public Shot(Point position, String imageFile) {
+        super(position, imageFile);
     }
         
     /**
