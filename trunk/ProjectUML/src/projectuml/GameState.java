@@ -10,7 +10,26 @@ import java.awt.event.*;
  */
 public abstract class GameState {
     
-    public abstract void update(Player player, GameStates gamestates);
+    protected GameStates gamestates;
+    protected Boolean removeMe = false;
+    
+    /**
+     * Sets the GameStates-manager
+     *
+     * @param states
+     **/
+    public void setManager(GameStates states) {
+        gamestates = states;
+    }
+    
+    /**
+     * Is it safe to remove this state?
+     **/
+    public Boolean canRemove() {
+        return removeMe;
+    }
+    
+    public abstract void update(Player player);
     public abstract void draw(Graphics2D g);
     public abstract void keyEvent(KeyEvent event);
     public abstract void mouseEvent(MouseEvent event);
