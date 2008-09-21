@@ -14,6 +14,10 @@ public class LaserShot extends Shot{
     public LaserShot() {
         
         image = Toolkit.getDefaultToolkit().getImage("laserShot.png");
+        /* Set objects width and height based on the
+         * image that represents it on screen */
+        width = image.getWidth(null);  
+        height = image.getHeight(null);
         velocity = 100;
         damage = 100;
     }
