@@ -8,14 +8,14 @@ import java.awt.Point;
  * @author Steve Eriksson
  */
 abstract public class Shot extends Sprite{
-    
+  
     protected double velocity; // Shot's speed
     protected int damage;      // Damage done on impact
     
     /** Creates a new instance of Shot */
     public Shot() {
     }
-    
+        
     /**
      * Update shot's position. By default we move it horisontally 
      * depending on it's velocity.
