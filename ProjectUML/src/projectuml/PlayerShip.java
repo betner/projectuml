@@ -16,6 +16,11 @@ public class PlayerShip extends Ship{
     public PlayerShip() {
     }
     
+    /**
+     * Overridden from Ship. 
+     * If ship is destroyed, one life is removed
+     * from the player
+     */
     public void descreaseHealth(int units){
         health -= units;
         /* If health gets below 0 the ship is flagged
