@@ -9,12 +9,13 @@ public class LaserCannon extends Weapon{
     
     /** Creates a new instance of LaserCannon */
     public LaserCannon() {
-        damage = 100;
         coolDown = 1000; // 1 second
     }
     
-    public void fire(){
-        return new LaserShot();
+    public void fire(Level level){
+        // ToDo:
+        // add code for cool down timer
+        return new LaserShot(level);
     }
     
 }

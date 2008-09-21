@@ -15,7 +15,7 @@ public abstract class Sprite {
     protected Boolean visible;     // TRUE = object is visible
     protected int width;
     protected int height;
-    protected BufferedImage image; // Graphic representing this object
+    protected Image image;         // Graphic representing this object
     protected String imageFile;    // Path to sprite's image
     
     /** Creates a new instance of Sprite */
@@ -32,7 +32,7 @@ public abstract class Sprite {
      * Draw the sprite to the screen
      */
     public void draw(Graphics2D g2d){
-        g2d.drawImage(image, null, (int)getPosition().getX(), (int)getPosition().getY());
+        g2d.drawImage(image, (int)position.getX(), (int)position.getY(), null);
     }
     
     /**
@@ -40,7 +40,7 @@ public abstract class Sprite {
      * Touch gets a reference to touching Sprite so
      * that we can alter its state if needed.
      */
-    abstract public void touch(Sprite s);
+    public void touch(Sprite s){}
     
     /**
      * Check if a point is within this objects boundries.
@@ -81,4 +81,7 @@ public abstract class Sprite {
         return position;
     }
     
+    public void setPosition(Point newPosition){
+        position = newPosition;
+    }
 }
