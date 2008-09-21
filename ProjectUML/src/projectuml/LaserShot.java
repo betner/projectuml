@@ -22,5 +22,13 @@ public class LaserShot extends Shot{
         velocity = 100;
         damage = 100;
     }
+
+    public void touch(Sprite s) {
+    }
+
+    public void update() {
+    }
+    
+
     
 }

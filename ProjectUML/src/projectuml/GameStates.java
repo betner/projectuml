@@ -27,6 +27,19 @@ public class GameStates {
      **/
     public void push(GameState state) {
         states.push(state);
+        state.setManager(this);
+    }
+    
+    /**
+     * Goes back to previous game state. Will not
+     * remove the last state leaving the stack empty
+     **/
+    private void pop() {
+        if (states.size() > 1) {
+            states.pop();
+        } else {
+            System.err.println("---  Trying to pop the last state!  ---");
+        }
     }
     
     /**
@@ -37,7 +50,7 @@ public class GameStates {
      **/
     public void change(GameState state) {
         states.clear();
-        states.push(state);
+        push(state);
     }
     
     /**
@@ -46,8 +59,9 @@ public class GameStates {
      * @param player
      **/
     public void update(Player player) {
+        //System.out.println("GameStates.update");
         if (!states.empty()) {
-            states.peek().update(player, this);
+            states.peek().update(player);
         }
     }
     
@@ -57,6 +71,7 @@ public class GameStates {
      * @param g
      **/
     public void draw(Graphics2D g) {
+        //System.out.println("GameStates.draw");
         for (GameState state : states) {
             state.draw(g);
         }
