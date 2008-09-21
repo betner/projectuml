@@ -12,22 +12,13 @@ import java.awt.*;
 public class LaserShot extends Shot{
     
     /** Creates a new instance of LaserShot */
-    public LaserShot(Point position) {
-        image = Toolkit.getDefaultToolkit().getImage("LaserShot.png");
-        /* Set objects width and height based on the
-         * image that represents it on screen */
-        width = image.getWidth(null);  
-        height = image.getHeight(null);
-        this.position = position;
+    public LaserShot(Point position, String imageFile) {
+        super(position, imageFile);
         velocity = 100;
         damage = 100;
     }
 
-    public void touch(Sprite s) {
-    }
-
-    public void update() {
-    }
+   
     
 
     
