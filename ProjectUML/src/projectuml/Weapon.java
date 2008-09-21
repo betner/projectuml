@@ -4,14 +4,15 @@ package projectuml;
 import java.awt.Point;
 /**
  * Generic ordinance.
- * Can implement a coolDown timer that restricts 
- * amount of shots fired in a row.
+ * Can implement a coolDown timer that restricts amount 
+ * of shots fired in a row.
+ * Weapon must get a reference to a Level object so that 
+ * it can add a shot to it.
  *
  * @author Steve Eriksson
  */
 abstract public class Weapon {
     
-    protected int damage;
     protected double coolDown;
     protected Point position;
     
@@ -19,8 +20,11 @@ abstract public class Weapon {
     public Weapon() {
     }
     
-    public void fire(){
-        // Create new shot at weapons position
-    }
+    /**
+     * Fire weapon
+     *
+     *@param game level
+     */
+    abstract public void fire(Level level);
     
 }

@@ -29,9 +29,9 @@ public class Ship extends Sprite{
      * Fire ship's ordinance.
      *
      */
-    public void fire(){ // Maybe the weapon needs to know in which level to create a shot???
+    public void fire(Level l){
         for(Weapon w : weaponList){
-            w.fire();
+            w.fire(l);
         }
     }
     
