@@ -14,13 +14,14 @@ import java.util.*;
  */
 public class Ship extends Sprite{
     
-    int health;                   // Ship's health
-    int speed;                    // Current speed, pixels per cycle
-    ArrayList<Weapon> weaponList; // Ship's arsenal
+    protected int health;                   // Ship's health
+    protected int speed;                    // Current speed, pixels per cycle
+    protected Boolean destroyed;            //
+    protected ArrayList<Weapon> weaponList; // Ship's arsenal
     
     /** Creates a new instance of Ship */
     public Ship() {
-        imageFile = "projectuml/img/GenericShip.png";
+        destroyed = false;
         health = 100;
         speed = 5;
     }
@@ -64,5 +65,17 @@ public class Ship extends Sprite{
      */
     public void decreaseHealth(int units){
         health -= units;
+        /* If health get below 0 the ship is
+         * flagged as being destroyed */
+        if(health <= 0){
+            destroyed = true;
+        }
+    }
+    
+    /**
+     * Check if the ship is destroyed
+     */
+    public Boolean isDestroyed(){
+        return destroyed;
     }
 }
