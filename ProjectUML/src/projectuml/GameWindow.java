@@ -111,6 +111,13 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         GraphicsDevice device = env.getDefaultScreenDevice();
         GraphicsConfiguration config = device.getDefaultConfiguration();
 
+        // Switch to full screen
+//        if (device.isFullScreenSupported()) {
+//            System.out.println("Going for fullscreen...");
+//            device.setFullScreenWindow(this);
+//            device.setDisplayMode(new DisplayMode(640, 480, 32, 60));
+//        }
+        
         // Create a backbuffer that's compatible with our
         // current display
         backbuffer = config.createCompatibleImage(canvas.getWidth(), canvas.getHeight());

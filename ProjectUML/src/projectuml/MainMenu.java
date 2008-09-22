@@ -9,26 +9,39 @@ import java.awt.event.*;
  * @author Jens Thuresson, Steve Eriksson
  */
 public class MainMenu extends GameState {
-    
-    private Font font;
+
     private StarField background;
-    private Point point;
     private SoundPlayer sound;
-    
+    private FadeText logo;
+    private FadeText credits;
+    private Timestamp stamp;
+
     /**
      * Initiates the main menu
      **/
     public MainMenu() {
-        point = new Point(0, 0);
-        font = new Font("Arial", Font.BOLD, 30);
         background = new StarField(500);
-        
+
+        // Main logo
+        logo = new FadeText("PROJECT U.M.L.", Color.white);
+        logo.setPosition(10, 240);
+        logo.setFont(new Font("Arial", Font.BOLD, 20));
+        logo.fadeIn();
+
+        // Credits
+        credits = new FadeText("By Steve Eriksson & Jens Thuresson", Color.gray);
+        credits.setPosition(10, 260);
+        credits.setFont(new Font("Arial", Font.PLAIN, 10));
+        credits.fadeIn(2);
+
         // Load theme sound and play it!
         sound = new SoundPlayer();
-        sound.loadSound("theme.wav");
-        sound.loopPlay("theme");
+        sound.loadSound("mainmenu.wav");
+
+        // Record the current time
+        stamp = new Timestamp();
     }
-    
+
     /**
      * Draws the main menu
      *
@@ -36,40 +49,53 @@ public class MainMenu extends GameState {
      **/
     public void draw(Graphics2D g) {
         background.draw(g);
-        g.setFont(font);
-        g.setColor(Color.red);
-        g.drawString("Project U.M.L.", point.x, point.y);
-        
+        logo.draw(g);
+        credits.draw(g);
     }
 
+    /**
+     * Respond to keyevents
+     * @param event
+     */
     public void keyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.VK_PAUSE) {
-            System.out.println("MainMenu pause");
             gamestates.push(new Pause());
         }
     }
 
+    /** Not used **/
     public void mouseEvent(MouseEvent event) {
-        point.setLocation(event.getPoint());
     }
 
+    /**
+     * Updates the main menu
+     * @param player
+     */
     public void update(Player player) {
         background.update();
+
+        // Delay the nice fading
+        if (stamp.havePassed(2000)) {
+            logo.update();
+
+            if (logo.finished()) {
+                credits.update();
+            }
+        }
     }
 
     /**
      * We've lost focus, pause our music
      */
     public void lostFocus() {
-        // TODO: fix this
-        sound.fadeOutEverything();
+        sound.stop("mainmenu");
     }
-   
+
     /**
      * We've gained focus, resume our music
      */
     public void gainedFocus() {
-        // TODO: fix this
-        sound.loopPlay("theme");
+        // TODO: uncomment the following line
+        //sound.loopPlay("mainmenu");
     }
 }

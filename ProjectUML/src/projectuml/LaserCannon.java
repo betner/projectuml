@@ -15,7 +15,7 @@ public class LaserCannon extends Weapon{
     public void fire(Level level){
         // ToDo:
         // add code for cool down timer
-        level.addShot(new LaserShot(position));
+        //level.addShot(new LaserShot(position));
     }
     
 }
