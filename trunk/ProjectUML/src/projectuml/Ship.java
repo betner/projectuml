@@ -20,7 +20,8 @@ public class Ship extends Sprite {
     protected ArrayList<Weapon> weaponList; // Ship's arsenal
 
     /** Creates a new instance of Ship */
-    public Ship(Point position) {
+    public Ship() {
+        destroyed = false;
     }
 
     /** 
@@ -73,10 +74,12 @@ public class Ship extends Sprite {
     }
 
     protected void destroyShip() {
-        destroyed = true;
+        destroyed = true; 
         // TODO:
         // Add code for destruction animation
-        visible = false;
+        // Possibly using som sort of timer to
+        // ensure that the whole animation gets shown
+        visible = false; // Make sure ship isn't drawn
     }
 
     /**

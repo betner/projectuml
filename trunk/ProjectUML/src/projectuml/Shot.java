@@ -16,8 +16,7 @@ abstract public class Shot extends Sprite{
     
         
     /** Creates a new instance of Shot */
-    public Shot(Point position, String imageFile) {
-        super(position, imageFile);
+    public Shot() {
     }
         
     /**

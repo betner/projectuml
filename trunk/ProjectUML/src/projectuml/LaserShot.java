@@ -12,8 +12,10 @@ import java.awt.*;
 public class LaserShot extends Shot{
     
     /** Creates a new instance of LaserShot */
-    public LaserShot(Point position, String imageFile) {
-        super(position, imageFile);
+    public LaserShot(Point position) {
+        this.position = position;
+        imageFile = "";
+        image = loadImage(imageFile);
         velocity = 100;
         damage = 100;
     }
