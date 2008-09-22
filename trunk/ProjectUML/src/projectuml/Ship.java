@@ -22,6 +22,7 @@ public class Ship extends Sprite {
     /** Creates a new instance of Ship */
     public Ship() {
         destroyed = false;
+        super(position, "");
     }
 
     /** 

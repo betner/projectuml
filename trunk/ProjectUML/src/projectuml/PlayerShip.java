@@ -16,6 +16,7 @@ public class PlayerShip extends Ship {
         this.position = position;
         imageFile = "";
         image = loadImage(imageFile);      
+        super(new Point(0, 0));
     }
 
     /**
