@@ -2,6 +2,9 @@ package projectuml;
 
 import java.awt.event.*;
 import java.awt.Graphics2D;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 /**
@@ -10,7 +13,7 @@ import java.util.*;
  *
  * @author Jens Thuresson, Steve Eriksson
  */
-public class MainGame implements KeyListener, MouseListener, DrawListener {
+public class MainGame implements KeyListener, MouseListener, MouseMotionListener, DrawListener {
     
     private GameWindow gamewindow;
     private GameStates gamestates;
@@ -25,6 +28,7 @@ public class MainGame implements KeyListener, MouseListener, DrawListener {
      **/
     public static void main(String[] args) {
         new MainGame();
+        System.exit(0);
     }
     
     /**
@@ -38,6 +42,7 @@ public class MainGame implements KeyListener, MouseListener, DrawListener {
         // Add receivers
         gamewindow.addKeyListener(this);
         gamewindow.addMouseListener(this);
+        gamewindow.addMouseMotionListener(this);
         gamewindow.addDrawListener(this);
         
         // Push the first game state
@@ -53,6 +58,7 @@ public class MainGame implements KeyListener, MouseListener, DrawListener {
     /**  Various events **/
     
     public void keyPressed(KeyEvent e) {
+        gamestates.keyEvent(e);
     }
     
     public void keyReleased(KeyEvent e) {
@@ -75,10 +81,20 @@ public class MainGame implements KeyListener, MouseListener, DrawListener {
         gamestates.mouseEvent(e);
     }
     
+    /** Not used **/
     public void mouseExited(MouseEvent e) {
     }
     
+    /** Not used **/
     public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        gamestates.mouseEvent(e);
+    }
+
+    /** Not used **/
+    public void mouseDragged(MouseEvent e) {
     }
     
     /**
