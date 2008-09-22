@@ -1,6 +1,6 @@
 package projectuml;
 
-import java.util.*;
+import java.awt.Point;
 
 /**
  * This is the ship that the player uses.
@@ -12,7 +12,10 @@ public class PlayerShip extends Ship {
     private Player player;
 
     /** Creates a new instance of PlayerShip */
-    public PlayerShip() {
+    public PlayerShip(Point position) {
+        this.position = position;
+        imageFile = "";
+        image = loadImage(imageFile);      
     }
 
     /**

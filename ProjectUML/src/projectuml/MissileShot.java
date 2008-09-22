@@ -11,11 +11,12 @@ import java.awt.*;
  */
 public class MissileShot extends Shot{
     
-    private String imageFile;
     
     /** Creates a new instance of MissileShot */
     public MissileShot(Point position) {
-        super(position, imageFile);
+        this.position = position;
+        imageFile = "";
+        image = loadImage(imageFile);
         velocity = 100;
         damage = 1000;
     }

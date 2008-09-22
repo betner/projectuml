@@ -17,6 +17,8 @@ public abstract class Sprite {
     
     protected Point position;      // Objects upper left corner
     protected Boolean visible;     // TRUE = object is visible
+    // Should we use active flag to check
+    // if sprite should update itself?
     protected int width;
     protected int height;
     protected BufferedImage image; // Graphic representing this object
@@ -28,11 +30,8 @@ public abstract class Sprite {
      * The sprites width and height is set to match
      * the loaded image.
      */
-    public Sprite(Point position, String imageFile) {
-        this.position = position;
-        image = loadImage(imageFile);
-        height = image.getHeight();
-        width = image.getWidth();
+    public Sprite() {
+        visible = false;
     }
     
     /**
@@ -85,15 +84,18 @@ public abstract class Sprite {
     
     /**
      * Draw the sprite to the screen
+     * if the visibility flag is set to true.
      */
     public void draw(Graphics2D g2d){
+        if(visible){
         g2d.drawImage(image, (int)position.getX(), (int)position.getY(), null);
+        }
     }
     
     /**
      * Functions to perform when object is touched.
      * Touch gets a reference to touching Sprite so
-     * that we can alter its state if needed.
+     * that we can alter its state if neededx.
      */
     public void touch(Sprite s){}
     
