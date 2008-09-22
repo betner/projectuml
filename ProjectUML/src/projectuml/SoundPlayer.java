@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.sound.sampled.*;
+import javax.sound.*;
 
 /**
  * Implements a basic sound player that can load
@@ -128,7 +129,7 @@ public class SoundPlayer implements LineListener {
         if (!mute) {
             try {
                 Clip clip = clips.get(name);
-                if (clip.isActive()) {
+                if (clip.isRunning() /* clip.isActive() */) {
                     clip.stop();
                 }
                 // Rewind
@@ -139,7 +140,7 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
      * Loop a loaded sound
      * @param name
@@ -160,7 +161,7 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
      * Loop a loaded sound forever
      * @param name
@@ -168,7 +169,7 @@ public class SoundPlayer implements LineListener {
     public void loopPlay(String name) {
         loopPlay(name, Clip.LOOP_CONTINUOUSLY);
     }
-    
+
     /**
      * Stops an active playing sound
      * @param name
@@ -177,6 +178,19 @@ public class SoundPlayer implements LineListener {
         try {
             Clip clip = clips.get(name);
             clip.stop();
+        } catch (Exception ex) {
+            System.out.println("Sound " + name + " not found!");
+        }
+    }
+    
+    /**
+     * Resumes a previously stopped sound clip
+     * @param name
+     */
+    public void resume(String name) {
+        try {
+            Clip clip = clips.get(name);
+            clip.start();
         } catch (Exception ex) {
             System.out.println("Sound " + name + " not found!");
         }
@@ -231,6 +245,15 @@ public class SoundPlayer implements LineListener {
         for (Map.Entry<String, Clip> key : clips.entrySet()) {
             System.out.println(key.getKey() + ": " + key.getValue().toString());
         }
+
+        System.out.println("   --- Mixer ---");
+        try {
+            Mixer mixer = AudioSystem.getMixer(null);
+            System.out.println(mixer);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
         System.out.println("-------------------");
     }
 
@@ -245,6 +268,7 @@ public class SoundPlayer implements LineListener {
         for (Control control : controls) {
             System.out.println(control.getType() + ", " + control.toString());
         }
+        System.out.println(clip.getFormat());
         System.out.println("-------------------");
     }
 
