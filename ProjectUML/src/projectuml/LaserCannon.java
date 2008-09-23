@@ -5,7 +5,7 @@ import java.awt.Point;
 
 /**
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class LaserCannon extends Weapon{
     
