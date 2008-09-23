@@ -1,6 +1,8 @@
 package projectuml;
 
 /**
+ * Player
+ * 
  * Represents the player
  *
  * @author Jens Thuresson, Steve Eriksson

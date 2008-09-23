@@ -1,6 +1,8 @@
 
 package projectuml;
 
+import java.awt.Point;
+
 /**
  *
  * @author Steve Eriksson
@@ -8,8 +10,8 @@ package projectuml;
 public class LaserCannon extends Weapon{
     
     /** Creates a new instance of LaserCannon */
-    public LaserCannon() {
-        coolDown = 500; 
+    public LaserCannon(Point position) {
+        this.position = position;
     }
     
     public void fire(Level level){

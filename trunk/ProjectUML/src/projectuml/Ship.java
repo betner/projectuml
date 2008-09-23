@@ -14,9 +14,11 @@ import java.awt.*;
  */
 public class Ship extends Sprite {
 
-    protected int health;                   // Ship's health
-    protected int speed;                    // Current speed, pixels per cycle
-    protected Boolean destroyed;            //
+    protected int health;            // Ship's health
+    protected int speed;             // Speed relative to gamelevel
+    protected double dx;             // Change in x direction, negative is left
+    protected double dy;             // Change in y direction, negative is down
+    protected Boolean destroyed;     
     protected ArrayList<Weapon> weaponList; // Ship's arsenal
 
     /** Creates a new instance of Ship */
@@ -66,8 +68,6 @@ public class Ship extends Sprite {
      */
     public void decreaseHealth(int units) {
         health -= units;
-        /* If health get below 0 the ship is
-         * flagged as being destroyed */
         if (health <= 0) {
             destroyShip();
         }
@@ -78,7 +78,7 @@ public class Ship extends Sprite {
         visible = false; // Make sure ship isn't drawn
         // TODO:
         // Add code for destruction animation
-        // Possibly using som sort of timer to
+        // Possibly using some sort of timer to
         // ensure that the whole animation gets shown
         destroyed = true;
     }

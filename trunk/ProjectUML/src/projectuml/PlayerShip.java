@@ -26,6 +26,9 @@ public class PlayerShip extends Ship {
         image = loadImage(imageFile);
         height = image.getHeight();
         width = image.getWidth();
+        // Set default weapon, attach it to the
+        // same position as the spaceship
+        weaponList.add(new LaserCannon(position)); 
     }
 
     /**
