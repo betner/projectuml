@@ -4,9 +4,12 @@ import java.awt.Point;
 
 
 /**
+ * Shot
+ * 
  * Generic shot. Created by a weapon when it is fired.
  * A shot can cause damage to game objects.
  *
+ * @see Weapon
  * @author Steve Eriksson, Jens Thuresson
  */
 abstract public class Shot extends Sprite{
