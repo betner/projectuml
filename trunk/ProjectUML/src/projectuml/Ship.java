@@ -10,7 +10,7 @@ import java.awt.*;
  * and sends player grasping for air in the ice cold void 
  * of space. Player loses one life.
  * 
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class Ship extends Sprite {
 
@@ -22,7 +22,6 @@ public class Ship extends Sprite {
     /** Creates a new instance of Ship */
     public Ship() {
         destroyed = false;
-        super(position, "");
     }
 
     /** 
@@ -75,12 +74,13 @@ public class Ship extends Sprite {
     }
 
     protected void destroyShip() {
-        destroyed = true; 
+        
+        visible = false; // Make sure ship isn't drawn
         // TODO:
         // Add code for destruction animation
         // Possibly using som sort of timer to
         // ensure that the whole animation gets shown
-        visible = false; // Make sure ship isn't drawn
+        destroyed = true;
     }
 
     /**

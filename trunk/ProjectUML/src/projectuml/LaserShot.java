@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * LaserShot
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class LaserShot extends Shot{
     

@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * Missile shot
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class MissileShot extends Shot{
     

@@ -9,7 +9,7 @@ import java.awt.Point;
  * Weapon must get a reference to a Level object so that 
  * it can add a shot to it.
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 abstract public class Weapon {
     

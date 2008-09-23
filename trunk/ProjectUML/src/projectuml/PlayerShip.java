@@ -5,18 +5,27 @@ import java.awt.Point;
 /**
  * This is the ship that the player uses.
  * 
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class PlayerShip extends Ship {
 
     private Player player;
 
-    /** Creates a new instance of PlayerShip */
+    /** 
+     * Creates a new instance of PlayerShip 
+     *
+     */
+    
+    public PlayerShip(){
+        this(new Point(0,0)); // Default position is upper left corner
+    }
+    
     public PlayerShip(Point position) {
         this.position = position;
-        imageFile = "";
-        image = loadImage(imageFile);      
-        super(new Point(0, 0));
+        imageFile = "/images/playership.png";
+        image = loadImage(imageFile);
+        height = image.getHeight();
+        width = image.getWidth();
     }
 
     /**
@@ -24,12 +33,10 @@ public class PlayerShip extends Ship {
      * If ship is destroyed, one life is removed
      * from the player
      */
-    public void descreaseHealth(int units) {
-        health -= units;
-        
-        // If health gets below 0 the ship is flagged
-        // as being destroyed and players life is
-        // decreased by 1 
+    @Override
+    public void destroyShip(){
+        super.destroyShip();
         player.removeLife();
     }
+
 }
