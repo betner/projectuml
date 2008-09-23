@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class MissileLauncher extends Weapon{
     

@@ -2,7 +2,7 @@ package projectuml;
 
 import java.awt.*;
 import java.awt.image.*;
-import javax.imageio.ImageIO; // Faster image loading
+import javax.imageio.ImageIO; 
 import java.io.*;
 
 /**
@@ -11,27 +11,27 @@ import java.io.*;
  * The sprite has methods for painting itself onscreen, update its
  * state and position.
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public abstract class Sprite {
     
     protected Point position;      // Objects upper left corner
-    protected Boolean visible;     // TRUE = object is visible
-    // Should we use active flag to check
-    // if sprite should update itself?
+    protected Boolean visible;     // TRUE = object performs draw()
+    protected Boolean active;      // TRUE = object performs update()
     protected int width;
     protected int height;
     protected BufferedImage image; // Graphic representing this object
-    protected String imageFile;    // Path to sprite's image
+    protected String imageFile;    // Complete path to sprite's image
     
     /** 
      * Creates a new instance of Sprite and load
      * the image representing it on screen.
-     * The sprites width and height is set to match
-     * the loaded image.
+     * Subclasses to Sprite should set width and height 
+     * to match the loaded image.
      */
     public Sprite() {
         visible = false;
+        active = false;
     }
     
     /**
@@ -56,6 +56,8 @@ public abstract class Sprite {
         
        try{
            BufferedImage bi, biCopy;
+           // If image is loaded from a jar-archive we need to treat the
+           // file path as a URL
            bi = ImageIO.read(getClass().getResource(imageFile));
            
            // Get the image transparency information
@@ -95,7 +97,7 @@ public abstract class Sprite {
     /**
      * Functions to perform when object is touched.
      * Touch gets a reference to touching Sprite so
-     * that we can alter its state if neededx.
+     * that we can alter its state if needed.
      */
     public void touch(Sprite s){}
     
@@ -130,9 +132,20 @@ public abstract class Sprite {
         visible = false;
     }
     
-/*
- * Getters and setters
- */
+    /**
+     * Make the object listen to update requests
+     */
+    public void activate(){
+        active = true;
+    }
+    
+    /**
+     * Stop object from performing update() method
+     * when it gets a update request
+     */
+    public void deActivate(){
+        active = false;
+    }
     
     public Point getPosition(){
         return position;
