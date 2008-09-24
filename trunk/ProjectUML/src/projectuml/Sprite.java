@@ -6,19 +6,19 @@ import javax.imageio.ImageIO;
 import java.io.*;
 
 /**
- * Sprite is an abstract class that contains methods for creating objects
+ * Sprite is a class that contains methods for creating objects
  * that are shown on game screen.
  * The sprite has methods for painting itself onscreen, update its
  * state and position.
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public abstract class Sprite {
+public class Sprite {
     
     protected Point position;      // Objects upper left corner
     protected Boolean visible;     // TRUE = object performs draw()
     protected Boolean active;      // TRUE = object performs update()
-    protected int width;
+    protected int width;           // Should be set if inShape is used
     protected int height;
     protected BufferedImage image; // Graphic representing this object
     protected String imageFile;    // Complete path to sprite's image
@@ -30,14 +30,16 @@ public abstract class Sprite {
      * to match the loaded image.
      */
     public Sprite() {
-        visible = false;
-        active = false;
+        hide();
+        deactivate();
     }
     
     /**
      * Update sprite. E.g set new position
      */
-    abstract public void update();
+    public void update(){
+        
+    }
     
     /**
      * Load image asset and create a BufferedImage.
@@ -45,7 +47,7 @@ public abstract class Sprite {
      * for hardware acceleration. This requires us to copy
      * the input image.
      * 
-     * @param name of file to load
+     * @param absolute file path -> path/name.xyz
      */
     public BufferedImage loadImage(String imageFile){
         // Get device's graphics configuration
@@ -143,14 +145,20 @@ public abstract class Sprite {
      * Stop object from performing update() method
      * when it gets a update request
      */
-    public void deActivate(){
+    public void deactivate(){
         active = false;
     }
     
+    /**
+     * Get Sprite's position
+     */
     public Point getPosition(){
         return position;
     }
     
+    /**
+     * Set new position for Sprite
+     */
     public void setPosition(Point newPosition){
         position = newPosition;
     }

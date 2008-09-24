@@ -22,6 +22,7 @@ public class AnimatedSprite extends Sprite {
     int runtime;    // Total running time of animation
     int sequence;   // Sequence number of image to draw
     Boolean repeat; // Should animation repeat
+    Boolean done;   // Set to true when we don't repeat and we're done
     ArrayList<BufferedImage> imageList;  // Images to animate
     
     
@@ -30,7 +31,8 @@ public class AnimatedSprite extends Sprite {
      */
     public AnimatedSprite(){
         repeat = false; // Animation will not repeat
-        sequence = 0; // First entry in imageList
+        done = false;   // We haven't even started yet!
+        sequence = 0;   // First entry in imageList
         time = new Timestamp(); 
         imageList = new ArrayList<BufferedImage>(); 
     }
@@ -53,10 +55,14 @@ public class AnimatedSprite extends Sprite {
             if(!repeat && sequence >= imageList.size()){
                 hide();
                 deactivate();
+                done = true; // Animation is done!
             }
         }
     }
    
+    public Boolean isDone(){
+        return done;
+    }
     
     // DEPRECATED
     
