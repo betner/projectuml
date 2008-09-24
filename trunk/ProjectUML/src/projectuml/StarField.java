@@ -102,7 +102,8 @@ public class StarField extends Scenery {
     public void draw(Graphics2D g) {
         for (Star star : stars) {
             g.setColor(star.getColor());
-            g.fillRect(star.x, star.y, 1, 1);
+            //g.fillRect(star.x, star.y, 1, 1);
+            g.drawLine(star.x, star.y, star.x, star.y);
         }
     }
     
