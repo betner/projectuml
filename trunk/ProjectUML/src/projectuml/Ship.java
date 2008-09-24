@@ -92,6 +92,7 @@ public class Ship extends Sprite {
     }
 
     protected void destroyShip() {  
+        System.out.println("Ship: destroyShip()");
         hide();           // Make sure ship isn't drawn
         //deactivate();     // Don't do update()
         destructionAnimation.setPosition(position);
