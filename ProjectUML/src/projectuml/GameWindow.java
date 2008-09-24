@@ -8,6 +8,7 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.util.*;
 
 /**
  * The main rendering window
@@ -15,40 +16,93 @@ import javax.swing.*;
  * @author Jens Thuresson, Steve Eriksson
  **/
 public class GameWindow extends JFrame implements WindowFocusListener {
-
+    
     private Boolean active = true;
     private Canvas canvas;
-    private BufferedImage backbuffer;
+    //private BufferedImage backbuffer;
+    private VolatileImage backbuffer;
+    private GraphicsConfiguration config;
     private BufferStrategy strategy;
     private ArrayList<DrawListener> drawlisteners;
-
+    private java.util.Timer timer;
+    private final long RENDER_INTERVAL = 16;
+    
+    /**
+     * Timer task that renders the scene
+     **/
+    private class RenderTask extends TimerTask {
+        public void run() {
+            if (active) {
+                long frametime = System.currentTimeMillis();
+                Graphics graphics = null;
+                Graphics2D graph2d = null;
+                try {
+                    if (backbuffer.validate(config) == backbuffer.IMAGE_INCOMPATIBLE) {
+                        // Backbuffer lost, recreate
+                        System.out.println("Backbuffer lost");
+                        backbuffer = config.createCompatibleVolatileImage(canvas.getWidth(), canvas.getHeight());
+                    }
+                    graph2d = backbuffer.createGraphics();
+                    graph2d.setColor(Color.black);
+                    graph2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                    
+                    // Notify all registered draw listeners
+                    for (DrawListener listener : drawlisteners) {
+                        listener.draw(graph2d);
+                    }
+                    
+                    // Display new contents
+                    graphics = strategy.getDrawGraphics();
+                    graphics.drawImage(backbuffer, 0, 0, null);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (graphics != null) {
+                        graphics.dispose();
+                    }
+                    if (graph2d != null) {
+                        graph2d.dispose();
+                    }
+                }
+                
+                if (!strategy.contentsLost()) {
+                    strategy.show();
+                }
+                
+                frametime = System.currentTimeMillis() - frametime;
+                //System.out.println("Frametime: " + frametime);
+            }
+        }
+    }
+    
     /**
      * Creates main window
      *
      * @param title Window caption
      **/
     public GameWindow(String title) {
+        super(title);
         setUndecorated(false);
         setIgnoreRepaint(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addWindowFocusListener(this);
-
+        
+        // Create space for our draw listeners
         drawlisteners = new ArrayList<DrawListener>();
-
+        
         canvas = new Canvas();
         canvas.setIgnoreRepaint(true);
         canvas.setSize(640, 480);
         add(canvas);
         pack();
-
+        
         initGraphics(canvas);
-
-        setTitle(title);
+        
         setResizable(false);
         center();
         setVisible(true);
     }
-
+    
     /**
      * Centers the window on the screen
      */
@@ -58,29 +112,27 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         int y = (int) (screen.getHeight() / 2) - (this.getHeight() / 2);
         this.setLocation(x, y);
     }
-
+    
     /**
      * Override this to ensure that both our window and
      * the canvas kept within registers the listener
      * @param l
      */
-    @Override
     public synchronized void addMouseMotionListener(MouseMotionListener l) {
         super.addMouseMotionListener(l);
         canvas.addMouseMotionListener(l);
     }
-
+    
     /**
      * Override this to ensure that both our window and
      * the canvas kept within registers the listener
      * @param l
      */
-    @Override
     public synchronized void addKeyListener(KeyListener l) {
         super.addKeyListener(l);
         canvas.addKeyListener(l);
     }
-
+    
     /**
      * The window gained focus, activate rendering loop
      * @param e
@@ -88,7 +140,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     public void windowGainedFocus(WindowEvent e) {
         active = true;
     }
-
+    
     /**
      * The window lost its focus, deactive rendering loop
      * (as in don't waste any cycles)
@@ -97,20 +149,20 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     public void windowLostFocus(WindowEvent e) {
         active = false;
     }
-
+    
     /**
      * Initiates graphics configurations
      *
-     * @param 
+     * @param
      **/
     private void initGraphics(Canvas canvas) {
         canvas.createBufferStrategy(1);
         strategy = canvas.getBufferStrategy();
-
+        
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
-        GraphicsConfiguration config = device.getDefaultConfiguration();
-
+        config = device.getDefaultConfiguration();
+        
         // Switch to full screen
 //        if (device.isFullScreenSupported()) {
 //            System.out.println("Going for fullscreen...");
@@ -120,9 +172,28 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         
         // Create a backbuffer that's compatible with our
         // current display
-        backbuffer = config.createCompatibleImage(canvas.getWidth(), canvas.getHeight());
+        //backbuffer = config.createCompatibleImage(canvas.getWidth(), canvas.getHeight());
+        ImageCapabilities desired = new ImageCapabilities(true);
+        try {
+            backbuffer = config.createCompatibleVolatileImage(canvas.getWidth(), canvas.getHeight(), desired);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // Works...?
+        backbuffer.setAccelerationPriority(1.0f);
+        
+        // Print info about our backbuffer
+        ImageCapabilities caps = backbuffer.getCapabilities();
+        if (caps.isAccelerated()) {
+            System.out.println("Backbuffer is accelerated.");
+        }
+        if (caps.isTrueVolatile()) {
+            System.out.println("Backbuffer is a true volatile.");
+        }
+        
+        
     }
-
+    
     /**
      * Adds a draw listener to receive a call from the
      * rendering loop
@@ -132,7 +203,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     public void addDrawListener(DrawListener listener) {
         drawlisteners.add(listener);
     }
-
+    
     /**
      * Removes a draw listener from receiving renderings calls
      *
@@ -141,54 +212,17 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     public void removeDrawListener(DrawListener listener) {
         drawlisteners.remove(listener);
     }
-
+    
     /**
      * Starts the main rendering loop
      **/
     public void run() {
-        int width = backbuffer.getWidth();
-        int height = backbuffer.getHeight();
-
         if (drawlisteners.isEmpty()) {
             System.err.println("---  Warning: no drawlistener registered!  ---");
         }
-
-        // Main loop
-        Graphics2D graph2d = backbuffer.createGraphics();
-        boolean run = true;
-        while (run) {
-            // Only render if the window is active
-            if (active) {
-                Graphics graphics = null;
-                try {
-                    graph2d.setColor(Color.black);
-                    graph2d.fillRect(0, 0, width, height);
-
-                    // Notify all registered draw listeners
-                    for (DrawListener listener : drawlisteners) {
-                        listener.draw(graph2d);
-                    }
-
-                    // Flip buffers
-                    graphics = strategy.getDrawGraphics();
-                    graphics.drawImage(backbuffer, 0, 0, null);
-
-                    Thread.sleep(10);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                } finally {
-                    if (graphics != null) {
-                        graphics.dispose();
-                    }
-                }
-                strategy.show();
-            } else {
-                // Not active, let the OS work some! Hurrah!
-                try {
-                    Thread.sleep(500);
-                } catch (Exception ex) {
-                }
-            }
-        }
+        
+        // Start main loop
+        timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new RenderTask(), RENDER_INTERVAL, RENDER_INTERVAL);
     }
 }

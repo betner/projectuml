@@ -19,7 +19,7 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
     private GameStates gamestates;
     private Timer timer;
     private Player player;
-    private final long LOGIC_INTERVAL = 33;
+    private final long LOGIC_INTERVAL = 34;
     
     /**
      * Startup method
@@ -28,7 +28,6 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
      **/
     public static void main(String[] args) {
         new MainGame();
-        System.exit(0);
     }
     
     /**
@@ -42,7 +41,7 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
         // Add receivers
         gamewindow.addKeyListener(this);
         gamewindow.addMouseListener(this);
-        gamewindow.addMouseMotionListener(this);
+        //gamewindow.addMouseMotionListener(this);
         gamewindow.addDrawListener(this);
         
         // Push the first game state
