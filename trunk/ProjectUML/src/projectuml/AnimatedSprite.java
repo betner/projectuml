@@ -55,6 +55,10 @@ public class AnimatedSprite extends Sprite {
         time = new Timestamp();
         speed = 0;
         imageList = new ArrayList<BufferedImage>();
+        
+        System.out.println("AnimatedSprite created:");
+        System.out.println("=> Speed: " + speed);
+        System.out.println("=> Done flag:" + done.toString());
     }
     /**
      * Add image to the list of images to be animated
@@ -63,6 +67,9 @@ public class AnimatedSprite extends Sprite {
     public void addImage(BufferedImage image){
         imageList.add(image);
         speed = runtime / imageList.size();   
+        
+        System.out.println("AnimatedSprite: addImage()");
+        System.out.println("=> New speed set to: " + speed);
     }
 
     /**
@@ -80,6 +87,9 @@ public class AnimatedSprite extends Sprite {
                 image = imageList.get(sequence % imageList.size());
                 sequence++;   // Point to next image
                 time.reset(); // Reset timestamp
+                
+                System.out.println("AnimatedSprite: update()");
+                System.out.println("=> time passed");
             }
             // We've gone through the image sequence and should
             // not loop so make sure no image is displayed
@@ -87,6 +97,8 @@ public class AnimatedSprite extends Sprite {
                 hide();
                 deactivate();
                 done = true; // Animation is done!
+                
+                System.out.println("AnimatedSprite: done = true");
             }
         }
     }

@@ -3,7 +3,7 @@ package projectuml;
 
 /**
  *
- * @author Steve Eriksson
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class Level {
     
