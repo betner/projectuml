@@ -27,7 +27,7 @@ public class Ship extends Sprite {
     public Ship() {
         destroyed = false;
         // Create destructionAnimation animation
-        destructionAnimation = new AnimatedSprite();
+        destructionAnimation = new AnimatedSprite(1000, true);
         // Should be solved more dynamically
         destructionAnimation.addImage(loadImage(imagePath + "explosion1.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion2.png"));
@@ -94,11 +94,12 @@ public class Ship extends Sprite {
     protected void destroyShip() {  
         System.out.println("Ship: destroyShip()");
         hide();           // Make sure ship isn't drawn
+        destroyed = true; // Mark as destroyed
         //deactivate();     // Don't do update()
         destructionAnimation.setPosition(position);
         destructionAnimation.show();
         destructionAnimation.activate();
-        destroyed = true; // Mark as destroyed
+       
         System.out.println("Ship: destructionAnimation()");
         System.out.println("Ship: done = true");
     }

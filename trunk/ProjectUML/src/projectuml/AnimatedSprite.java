@@ -47,7 +47,7 @@ public class AnimatedSprite extends Sprite {
     /**
      * Create animated sprite
      * 
-     * @param runtime repeat
+     * @param runtime in milliseconds, repeat
      */
     public AnimatedSprite(int runtime, Boolean repeat){
         done = false;   // We haven't even started yet!
@@ -69,6 +69,8 @@ public class AnimatedSprite extends Sprite {
         speed = runtime / imageList.size();   
         
         System.out.println("AnimatedSprite: addImage()");
+        System.out.println("=> imageList.size(): " + imageList.size());
+        System.out.println("=> runtime: " + runtime);
         System.out.println("=> New speed set to: " + speed);
     }
 
@@ -80,6 +82,7 @@ public class AnimatedSprite extends Sprite {
      * when we reach the end of the sequence.
      */
     public void update(){
+        System.out.println("AnimatedSprite: update()");
         if(active){
             // Current picture should be changed if the time
             // set in speed has passed since last update
