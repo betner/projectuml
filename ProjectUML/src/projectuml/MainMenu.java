@@ -16,7 +16,7 @@ public class MainMenu extends GameState {
     private FadeText logo;
     private FadeText credits;
     private Timestamp stamp;
-    
+      
     /**
      * Initiates the main menu
      **/
@@ -102,7 +102,7 @@ public class MainMenu extends GameState {
      */
     public void gainedFocus() {
         // TODO: uncomment the following line
-        //sound.loopPlay("mainmenu");
+        sound.loopPlay("theme");
         //sound.play("theme");
     }
 }

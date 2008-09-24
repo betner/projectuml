@@ -21,7 +21,7 @@ public class Ship extends Sprite {
     protected Boolean destroyed;     
     protected ArrayList<Weapon> weaponList; // Ship's arsenal
     protected AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
-    protected String imagePath = "/resources/images/";
+    protected String imagePath = "resources/images/";
 
     /** Creates a new instance of Ship */
     public Ship() {
@@ -34,6 +34,7 @@ public class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion3.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion4.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
+        destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
     }
 
     /** 
@@ -92,11 +93,13 @@ public class Ship extends Sprite {
 
     protected void destroyShip() {  
         hide();           // Make sure ship isn't drawn
-        deactivate();     // Don't do update()
+        //deactivate();     // Don't do update()
         destructionAnimation.setPosition(position);
         destructionAnimation.show();
         destructionAnimation.activate();
         destroyed = true; // Mark as destroyed
+        System.out.println("Ship: destructionAnimation()");
+        System.out.println("Ship: done = true");
     }
 
     /**
@@ -106,10 +109,20 @@ public class Ship extends Sprite {
         return destroyed;
     }
     
+    /**
+     * Get the animation used for destruction sequence
+     * 
+     * @return animated sprite
+     */
     public AnimatedSprite getDestructAnimation(){
         return destructionAnimation;
     }
     
+    /**
+     * Set animation used for destruction sequence
+     * 
+     * @param animated sprite
+     */
     public void setDestructionAnimation(AnimatedSprite animation){
         destructionAnimation = animation;
     }

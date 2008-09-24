@@ -23,13 +23,20 @@ public class PlayerShip extends Ship {
     public PlayerShip(Point position) {
         this.position = position;
         startingPosition = new Point(20, 200);
-        imageFile = "/images/playership.png";
+        imageFile = "resources/images/playership.png";
         image = loadImage(imageFile);
         height = image.getHeight();
         width = image.getWidth();
         // Set default weapon, attach it to the
         // same position as the spaceship
-        weaponList.add(new LaserCannon(position)); 
+//        weaponList.add(new LaserCannon(position)); 
+        show();
+        activate();
+        System.out.println("PlayerShip created:");
+        System.out.println("=> Width: " + getWidth());
+        System.out.println("=> Height: " + getHeight());
+        System.out.println("=> Health: " + health);
+        
     }
 
     public void update(){
@@ -40,8 +47,10 @@ public class PlayerShip extends Ship {
             setPosition(startingPosition);
             show();    
             activate();
+            System.out.println("PlayerShip is destroyed");
         }else{
             super.update(); // Handle movement
+            System.out.println("PlayerShips calls: super.update()");
         }
         
     }
@@ -54,7 +63,8 @@ public class PlayerShip extends Ship {
      */
     public void destroyShip(){
         super.destroyShip();
-        player.removeLife();
+        System.out.println("PlayerShip calls: destroyShip()");
+//        player.removeLife();
         
     }
 

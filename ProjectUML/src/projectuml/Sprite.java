@@ -162,4 +162,12 @@ public class Sprite {
     public void setPosition(Point newPosition){
         position = newPosition;
     }
+    
+    public int getWidth(){
+        return width;
+    }
+    
+    public int getHeight(){
+        return height;
+    }
 }
