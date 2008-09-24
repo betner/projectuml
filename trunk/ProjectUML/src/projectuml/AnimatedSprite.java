@@ -18,13 +18,13 @@ import java.util.ArrayList;
  */
 public class AnimatedSprite extends Sprite {
     
-    Timestamp time; // Timer
-    long speed;     // Amount of time one image should be shown
-    int runtime;    // Total running time of animation
-    int sequence;   // Sequence number of image to draw
-    Boolean repeat; // Should animation repeat
-    Boolean done;   // Set to true when we don't repeat and we're done
-    ArrayList<BufferedImage> imageList;  // Images to animate
+   private Timestamp time; // Timer
+   private long speed;     // Amount of time one image should be shown
+   private int runtime;    // Total running time of animation
+   private int sequence;   // Sequence number of image to draw
+   private  Boolean repeat; // Should animation repeat
+   private  Boolean done;   // Set to true when we don't repeat and we're done
+   private  ArrayList<BufferedImage> imageList;  // Images to animate
     
     
     /**
@@ -51,6 +51,8 @@ public class AnimatedSprite extends Sprite {
      */
     public AnimatedSprite(int runtime, Boolean repeat){
         done = false;   // We haven't even started yet!
+        this.runtime = runtime;
+        this.repeat = repeat;
         sequence = 0;   // Init to first entry in imageList
         time = new Timestamp();
         speed = 0;
@@ -59,6 +61,7 @@ public class AnimatedSprite extends Sprite {
         System.out.println("AnimatedSprite created:");
         System.out.println("=> Speed: " + speed);
         System.out.println("=> Done flag:" + done.toString());
+        System.out.println("=> Runtime: " + runtime);
     }
     /**
      * Add image to the list of images to be animated
