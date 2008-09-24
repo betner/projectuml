@@ -20,10 +20,20 @@ public class Ship extends Sprite {
     protected double dy;             // Change in y direction, negative is down
     protected Boolean destroyed;     
     protected ArrayList<Weapon> weaponList; // Ship's arsenal
+    protected AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
+    protected String imagePath = "/resources/images/";
 
     /** Creates a new instance of Ship */
     public Ship() {
         destroyed = false;
+        // Create destructionAnimation animation
+        destructionAnimation = new AnimatedSprite();
+        // Should be solved more dynamically
+        destructionAnimation.addImage(loadImage(imagePath + "explosion1.png"));
+        destructionAnimation.addImage(loadImage(imagePath + "explosion2.png"));
+        destructionAnimation.addImage(loadImage(imagePath + "explosion3.png"));
+        destructionAnimation.addImage(loadImage(imagePath + "explosion4.png"));
+        destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
     }
 
     /** 
@@ -47,11 +57,18 @@ public class Ship extends Sprite {
      * A ship is always moving in space.
      */
     public void update() {
-        Point newPosition = new Point();
-        double x = position.getX() + speed;
-        double y = position.getY();
-        newPosition.setLocation(x, y);
-        position = newPosition;
+        if(active){
+            Point newPosition = new Point();
+            double x = position.getX() + speed;
+            double y = position.getY();
+            newPosition.setLocation(x, y);
+            position = newPosition;
+        }
+        // If we are destroyed we should make sure that
+        // the animation is updated.
+        if(destroyed){
+            destructionAnimation.update();
+        }
     }
 
     /**
@@ -73,14 +90,13 @@ public class Ship extends Sprite {
         }
     }
 
-    protected void destroyShip() {
-        
-        visible = false; // Make sure ship isn't drawn
-        // TODO:
-        // Add code for destruction animation
-        // Possibly using some sort of timer to
-        // ensure that the whole animation gets shown
-        destroyed = true;
+    protected void destroyShip() {  
+        hide();           // Make sure ship isn't drawn
+        deactivate();     // Don't do update()
+        destructionAnimation.setPosition(position);
+        destructionAnimation.show();
+        destructionAnimation.activate();
+        destroyed = true; // Mark as destroyed
     }
 
     /**
@@ -88,5 +104,13 @@ public class Ship extends Sprite {
      */
     public Boolean isDestroyed() {
         return destroyed;
+    }
+    
+    public AnimatedSprite getDestructAnimation(){
+        return destructionAnimation;
+    }
+    
+    public void setDestructionAnimation(AnimatedSprite animation){
+        destructionAnimation = animation;
     }
 }
