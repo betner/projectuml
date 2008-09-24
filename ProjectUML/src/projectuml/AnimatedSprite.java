@@ -13,12 +13,13 @@ import java.util.ArrayList;
  * in a set time interval.
  * All images should be added to imageList before it is activated.
  * By default Sprites are deactivated.
+ *
  * @author Steve Eriksson, Jens Thuresson
  */
 public class AnimatedSprite extends Sprite {
     
     Timestamp time; // Timer
-    long speed;     // Animation speed
+    long speed;     // Amount of time one image should be shown
     int runtime;    // Total running time of animation
     int sequence;   // Sequence number of image to draw
     Boolean repeat; // Should animation repeat
@@ -27,16 +28,34 @@ public class AnimatedSprite extends Sprite {
     
     
     /**
-     * Create animated sprite with default values:
+     * Create animated sprite and set default runtime
      */
     public AnimatedSprite(){
-        repeat = false; // Animation will not repeat
-        done = false;   // We haven't even started yet!
-        sequence = 0;   // First entry in imageList
-        time = new Timestamp(); 
-        imageList = new ArrayList<BufferedImage>(); 
+        this(1000); // Run time set to one second
     }
     
+    /**
+     * Create animated sprite and set default runtime and
+     * make it not repeating
+     *
+     * @param runtime
+     */
+    public AnimatedSprite(int runtime){
+        this(runtime, false); // Animation will not repeat
+    }
+    
+    /**
+     * Create animated sprite
+     * 
+     * @param runtime repeat
+     */
+    public AnimatedSprite(int runtime, Boolean repeat){
+        done = false;   // We haven't even started yet!
+        sequence = 0;   // Init to first entry in imageList
+        time = new Timestamp();
+        speed = 0;
+        imageList = new ArrayList<BufferedImage>();
+    }
     /**
      * Add image to the list of images to be animated
      * and update animation speed.
@@ -46,12 +65,24 @@ public class AnimatedSprite extends Sprite {
         speed = runtime / imageList.size();   
     }
 
+    /**
+     * Update state of animation.
+     * Set current image, Sprite's image, to the next
+     * image in the sequence. 
+     * If animation isn't looped future updates will be ignored
+     * when we reach the end of the sequence.
+     */
     public void update(){
         if(active){
-            if(time.havePassed(speed)){
+            // Current picture should be changed if the time
+            // set in speed has passed since last update
+            if(time.havePassed(speed)){ 
                 image = imageList.get(sequence % imageList.size());
-                sequence++;
+                sequence++;   // Point to next image
+                time.reset(); // Reset timestamp
             }
+            // We've gone through the image sequence and should
+            // not loop so make sure no image is displayed
             if(!repeat && sequence >= imageList.size()){
                 hide();
                 deactivate();
@@ -60,6 +91,11 @@ public class AnimatedSprite extends Sprite {
         }
     }
    
+    /**
+     * Is animation done?
+     *
+     * @return true or false
+     */
     public Boolean isDone(){
         return done;
     }
