@@ -62,8 +62,9 @@ public class PlayerShip extends Ship {
      * set ship visible and active at start position.
      */
     public void destroyShip(){
+        System.out.println("PlayerShip: super.destroyShip()");
         super.destroyShip();
-        System.out.println("PlayerShip calls: destroyShip()");
+        
 //        player.removeLife();
         
     }
