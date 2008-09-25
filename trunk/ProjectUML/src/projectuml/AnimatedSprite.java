@@ -85,11 +85,11 @@ public class AnimatedSprite extends Sprite {
      * when we reach the end of the sequence.
      */
     public void update(){
-        if(active){
+        if(isActive()){
             // Current picture should be changed if the time
             // set in speed has passed since last update
             if(time.havePassed(speed)){ 
-                image = imageList.get(sequence % imageList.size());
+                setImage(imageList.get(sequence % imageList.size()));
                 sequence++;   // Point to next image
                 time.reset(); // Reset timestamp
                 

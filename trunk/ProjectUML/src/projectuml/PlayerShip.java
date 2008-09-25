@@ -21,12 +21,12 @@ public class PlayerShip extends Ship {
     }
     
     public PlayerShip(Point position) {
-        this.position = position;
+        setPosition(position);
         startingPosition = new Point(20, 200);
-        imageFile = "playership.png"; //resources/images/playership.png";
-        image = loadImage(imageFile);
-        height = image.getHeight();
-        width = image.getWidth();
+        setImageFile("playership.png"); //resources/images/playership.png";
+        setImage(loadImage(getImageFile()));
+        setHeight(getImage().getHeight());
+        setWidth(getImage().getWidth());
         // Set default weapon, attach it to the
         // same position as the spaceship
 //        weaponList.add(new LaserCannon(position)); 
@@ -35,22 +35,27 @@ public class PlayerShip extends Ship {
         System.out.println("PlayerShip created:");
         System.out.println("=> Width: " + getWidth());
         System.out.println("=> Height: " + getHeight());
-        System.out.println("=> Health: " + health);
+        System.out.println("=> Health: " + getHealth());
         
     }
 
+    /**
+     * Overridden update().
+     * Calls on super.update() and adds the functionality
+     * that if the ship is destroyed and the animation
+     * is done the ship should be reset to it's starting position.
+     * 
+     */
     public void update(){
         // Ship is destroyed and its destruction animation is
         // done so we should "restart" by showing the ship again
         // and placing it iin it's starting position.
-        if(destroyed && getDestructAnimation().isDone()){
+        if(isDestroyed() && getDestructAnimation().isDone()){
             super.update();
             // Ship is destroyed and the animation is finished
             // so we should reset the ship
-            setPosition(startingPosition);
-            show();    
-            activate();
-            destroyed = false; 
+            setPosition(startingPosition); 
+            resetShip();
         }else{
             super.update(); // Handle movement
             System.out.println("PlayerShips: super.update()");
@@ -63,8 +68,6 @@ public class PlayerShip extends Ship {
     /**
      * Overridden from Ship. 
      * If ship is destroyed, one life is removed from the player. 
-     * Play animation sequence and after that reset health and 
-     * set ship visible and active at start position.
      */
     public void destroyShip(){
         System.out.println("PlayerShip: super.destroyShip()");
@@ -80,19 +83,19 @@ public class PlayerShip extends Ship {
      */
    
      public void goLeft(){
-        dx = -3;
+        setDx(-3);
     }
     
     public void goRight(){
-        dx = 3;
+        setDx(3);
     }
     
     public void goUp(){
-        dy = -3;
+        setDy(-3);
     }
     
     public void goDown(){
-        dy = 3;
+        setDy(3);
     }
 
 }

@@ -14,14 +14,14 @@ import java.awt.*;
  */
 public class Ship extends Sprite {
 
-    protected int health;            // Ship's health
-    protected int speed;             // Speed relative to gamelevel
-    protected double dx;             // Change in x direction, negative is left
-    protected double dy;             // Change in y direction, negative is down
-    protected Boolean destroyed;     
-    protected ArrayList<Weapon> weaponList; // Ship's arsenal
-    protected AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
-    protected String imagePath = "";//"resources/images/";
+    private int health;            // Ship's health
+    private int speed;             // Speed relative to gamelevel
+    private double dx;             // Change in x direction, negative is left
+    private double dy;             // Change in y direction, negative is down
+    private Boolean destroyed;     
+    private ArrayList<Weapon> weaponList; // Ship's arsenal
+    private AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
+    private final String imagePath = "";//"resources/images/";
 
     /**
      * Creates a new instance of Ship 
@@ -64,12 +64,10 @@ public class Ship extends Sprite {
      */
     public void update() {
         System.out.println("Ship: update()");
-        if(active){
-            Point newPosition = new Point();
-            double x = position.getX() + dx;
-            double y = position.getY() + dy;
-            newPosition.setLocation(x, y);
-            position = newPosition;
+        if(isActive()){
+            double x = getPosition().getX() + dx;
+            double y = getPosition().getY() + dy;
+            getPosition().setLocation(x, y);
         }
         // If we are destroyed we should make sure that
         // the animation is updated.
@@ -120,7 +118,7 @@ public class Ship extends Sprite {
         hide();           // Make sure ship isn't drawn
         destroyed = true; // Mark as destroyed
         destructionAnimation.reset(); // Make sure the animation is restarted
-        destructionAnimation.setPosition(position);
+        destructionAnimation.setPosition(getPosition());
         destructionAnimation.show();
         destructionAnimation.activate();
        
@@ -133,6 +131,20 @@ public class Ship extends Sprite {
      */
     public Boolean isDestroyed() {
         return destroyed;
+    }
+    
+    public void setDestroyed(){
+        destroyed = true;
+    }
+    
+    /**
+     * Resets the ship's status.
+     * Not destroyed, visible and active.
+     */
+    public void resetShip(){
+        destroyed = false;
+        show();
+        activate();
     }
     
     /**
@@ -153,5 +165,18 @@ public class Ship extends Sprite {
         destructionAnimation = animation;
     }
     
-   
+    public int getHealth(){
+        return health;
+    }
+    
+    public void setHealth(int newHealth){
+        health = newHealth;
+    }
+    
+    public void setDx(int newDx){
+        dx = newDx;
+    }
+        public void setDy(int newDy){
+        dx = newDy;
+    }
 }
