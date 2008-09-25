@@ -16,7 +16,7 @@ public class MainMenu extends GameState {
     private FadeText logo;
     private FadeText credits;
     private Timestamp stamp;
-      
+
     /**
      * Initiates the main menu
      **/
@@ -37,7 +37,7 @@ public class MainMenu extends GameState {
 
         // Load theme sound and play it!
         sound = new SoundPlayer();
-        //sound.loadSound("theme.wav");
+        sound.loadSound("theme.wav");
 
         // Record the current time
         stamp = new Timestamp();
@@ -62,6 +62,10 @@ public class MainMenu extends GameState {
         switch (event.getKeyCode()) {
             case KeyEvent.VK_PAUSE:
                 gamestates.push(new Pause());
+                break;
+
+            case KeyEvent.VK_F12:
+                gamestates.push(new LevelEditor());
                 break;
                 
             default:
@@ -102,7 +106,7 @@ public class MainMenu extends GameState {
      */
     public void gainedFocus() {
         // TODO: uncomment the following line
-        sound.loopPlay("theme");
+        //sound.loopPlay("theme");
         //sound.play("theme");
     }
 }
