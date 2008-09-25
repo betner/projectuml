@@ -15,13 +15,13 @@ import java.io.*;
  */
 public class Sprite {
     
-    protected Point position;      // Objects upper left corner
-    protected Boolean visible;     // TRUE = object performs draw()
-    protected Boolean active;      // TRUE = object performs update()
-    protected int width;           // Should be set if inShape is used
-    protected int height;
-    protected BufferedImage image; // Graphic representing this object
-    protected String imageFile;         // Filename to load
+    private Point position;      // Objects upper left corner
+    private Boolean visible;     // TRUE = object performs draw()
+    private Boolean active;      // TRUE = object performs update()
+    private int width;           // Should be set if inShape is used
+    private int height;
+    private BufferedImage image; // Graphic representing this object
+    private String imageFile;    // Filename to load
     
     /** 
      * Creates a new instance of Sprite and load
@@ -142,6 +142,10 @@ public class Sprite {
         active = true;
     }
     
+    public Boolean isActive(){
+        return active;
+    }
+    
     /**
      * Stop object from performing update() method
      * when it gets a update request
@@ -168,7 +172,31 @@ public class Sprite {
         return width;
     }
     
+    public void setWidth(int newWidth){
+        width = newWidth;
+    }
     public int getHeight(){
         return height;
     }
+    
+    public void setHeight(int newHeight){
+        height = newHeight;
+    }
+    
+    public BufferedImage getImage(){
+        return image;
+    }
+    
+    public void setImage(BufferedImage bufferedImage){
+        image = bufferedImage;
+    }
+    
+    public String getImageFile(){
+        return imageFile;
+    }
+    
+    public void setImageFile(String newImageFile){
+        imageFile = newImageFile;
+    }
+    
 }
