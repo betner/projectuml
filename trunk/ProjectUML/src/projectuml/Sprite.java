@@ -142,6 +142,11 @@ public class Sprite {
         active = true;
     }
     
+    /**
+     * Check if sprite is active
+     * 
+     * @return Boolean
+     */
     public Boolean isActive(){
         return active;
     }
@@ -168,6 +173,14 @@ public class Sprite {
         position = newPosition;
     }
     
+    public void setPosition(double x, double y){
+        position.setLocation(x, y);
+    }
+    
+    public void setPosition(int x, int y) {
+        position.setLocation(x, y);
+    }
+    
     public int getWidth(){
         return width;
     }
@@ -175,6 +188,7 @@ public class Sprite {
     public void setWidth(int newWidth){
         width = newWidth;
     }
+    
     public int getHeight(){
         return height;
     }
@@ -191,10 +205,20 @@ public class Sprite {
         image = bufferedImage;
     }
     
+    /**
+     * Get the path to the image
+     * 
+     * @return String 
+     */
     public String getImageFile(){
         return imageFile;
     }
     
+    /**
+     * Set path to the image
+     * 
+     * @param newImageFile
+     */
     public void setImageFile(String newImageFile){
         imageFile = newImageFile;
     }

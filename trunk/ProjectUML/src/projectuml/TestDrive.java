@@ -39,7 +39,6 @@ public class TestDrive extends JFrame implements KeyListener{
         while(true){
             try{
             ship.update();
-            System.out.println("TestDrive: ship.update()");
             repaint();
             
             Thread.sleep(30);
@@ -77,6 +76,9 @@ public class TestDrive extends JFrame implements KeyListener{
                 ship.goDown();
                 System.out.println("VK_DOWN");
                 break;
+            case KeyEvent.VK_F:
+                ship.fire();
+                System.out.println("VK_F");
             default:
                 break;
         }
@@ -84,6 +86,30 @@ public class TestDrive extends JFrame implements KeyListener{
     
     public void keyReleased(KeyEvent e) {
         //gamestates.keyEvent(e);
+         switch(e.getKeyCode()){
+            case KeyEvent.VK_SPACE:
+                ship.destroyShip();
+                System.out.println("Space");
+                break;
+            case KeyEvent.VK_LEFT:
+                ship.resetDx();
+                System.out.println("VK_LEFT");
+                break;
+            case KeyEvent.VK_RIGHT:
+                ship.resetDx();
+                System.out.println("VK_RIGHT");
+                break;
+            case KeyEvent.VK_UP:
+                ship.resetDy();
+                System.out.println("VK_UP");
+                break;
+            case KeyEvent.VK_DOWN:
+                ship.resetDy();
+                System.out.println("VK_DOWN");
+                break;
+             default:
+                break;
+        }
     }
     
     public void keyTyped(KeyEvent e) {

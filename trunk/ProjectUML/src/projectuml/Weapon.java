@@ -16,7 +16,7 @@ import java.awt.Point;
  */
 abstract public class Weapon {
     
-    protected Point position;
+    private Point position;
        
     /** Creates a new instance of Weapon */
     public Weapon() {
@@ -28,5 +28,18 @@ abstract public class Weapon {
      *@param game level
      */
     abstract public void fire(Level level);
+   
+
+    public void setPosition(Point newPosition){
+        position = newPosition;
+    }
+    
+    public void setPosition(double x, double y){
+        position.setLocation(x, y);
+    }
+    
+    public void setPosition(int x, int y) {
+        position.setLocation(x, y);
+    }
     
 }
