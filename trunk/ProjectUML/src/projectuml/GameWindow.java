@@ -6,7 +6,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.*;
-import java.util.ArrayList;
 import javax.swing.*;
 import java.util.*;
 
@@ -37,14 +36,14 @@ public class GameWindow extends JFrame implements WindowFocusListener {
                 Graphics graphics = null;
                 Graphics2D graph2d = null;
                 try {
-                    if (backbuffer.validate(config) == backbuffer.IMAGE_INCOMPATIBLE) {
+                    if (backbuffer.validate(config) == VolatileImage.IMAGE_INCOMPATIBLE) {
                         // Backbuffer lost, recreate
                         System.out.println("Backbuffer lost");
-                        backbuffer = config.createCompatibleVolatileImage(canvas.getWidth(), canvas.getHeight());
+                        backbuffer = config.createCompatibleVolatileImage(backbuffer.getWidth(), backbuffer.getHeight());
                     }
                     graph2d = backbuffer.createGraphics();
                     graph2d.setColor(Color.black);
-                    graph2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                    graph2d.fillRect(0, 0, backbuffer.getWidth(), backbuffer.getHeight());
                     
                     // Notify all registered draw listeners
                     for (DrawListener listener : drawlisteners) {
@@ -69,7 +68,9 @@ public class GameWindow extends JFrame implements WindowFocusListener {
                     strategy.show();
                 }
                 
-                frametime = System.currentTimeMillis() - frametime;
+                Toolkit.getDefaultToolkit().sync();
+                
+                //frametime = System.currentTimeMillis() - frametime;
                 //System.out.println("Frametime: " + frametime);
             }
         }
@@ -147,7 +148,29 @@ public class GameWindow extends JFrame implements WindowFocusListener {
      * @param e
      */
     public void windowLostFocus(WindowEvent e) {
-        active = false;
+        //active = false;
+    }
+
+    /**
+     * Ensure the best graphics configuration
+     */
+    private class BestConfig extends GraphicsConfigTemplate {
+
+        public boolean isGraphicsConfigSupported(GraphicsConfiguration gc) {
+            return gc.getImageCapabilities().isAccelerated() &&
+                    gc.getImageCapabilities().isTrueVolatile();
+        }
+
+        @Override
+        public GraphicsConfiguration getBestConfiguration(GraphicsConfiguration[] gc) {
+            for (GraphicsConfiguration g : gc) {
+                if (isGraphicsConfigSupported(g)) {
+                    return g;
+                }
+            }
+            return null;
+        }
+        
     }
     
     /**
@@ -161,8 +184,11 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
-        config = device.getDefaultConfiguration();
+        //config = device.getDefaultConfiguration();
+        config = device.getBestConfiguration(new BestConfig());
         
+        dumpVideoInfo(config.getDevice().getDisplayMode());
+                
         // Switch to full screen
 //        if (device.isFullScreenSupported()) {
 //            System.out.println("Going for fullscreen...");
@@ -180,7 +206,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
             ex.printStackTrace();
         }
         // Works...?
-        backbuffer.setAccelerationPriority(1.0f);
+        //backbuffer.setAccelerationPriority(1.0f);
         
         // Print info about our backbuffer
         ImageCapabilities caps = backbuffer.getCapabilities();
@@ -190,8 +216,15 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         if (caps.isTrueVolatile()) {
             System.out.println("Backbuffer is a true volatile.");
         }
-        
-        
+    }
+    
+    private void dumpVideoInfo(DisplayMode mode) {
+        System.out.println("---  Video info  ---");
+        System.out.print("Mode: ");
+        System.out.print(mode.getWidth() + "x" + mode.getHeight() + " ");
+        System.out.print(mode.getBitDepth() + " bpp @ ");
+        System.out.println(mode.getRefreshRate() + " Hz");
+        System.out.println("--------------------");
     }
     
     /**

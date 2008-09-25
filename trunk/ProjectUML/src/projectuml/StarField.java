@@ -2,7 +2,6 @@ package projectuml;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,12 +15,12 @@ public class StarField extends Scenery {
     /**
      * A single star in space
      **/
-    private class Star extends Point {
+    private class Star {
         
+        private int x;
+        private int y;
         private int deltax;
         private int deltay;
-        private int startx;
-        private int starty;
         private Color color;
         
         /**
@@ -34,11 +33,10 @@ public class StarField extends Scenery {
          * @param brightness Brightness percentage (0.0 = black, 1.0 = bright white)
          **/
         public Star(int x, int y, int deltax, int deltay, float brightness) {
-            super(x, y);
+            this.x = x;
+            this.y = y;
             this.deltax = deltax;
             this.deltay = deltay;
-            startx = x;
-            starty = y;
             color = new Color((int)(255*brightness), (int)(255*brightness), (int)(255*brightness));
         }
         
@@ -50,10 +48,29 @@ public class StarField extends Scenery {
         }
         
         /**
+         * X-position
+         * @return
+         */
+        public int getX() {
+            return x;
+        }
+        
+        /**
+         * Y-position
+         * @return
+         */
+        public int getY() {
+            return y;
+        }
+        
+        /**
          * Makes the star travel
          **/
         public void move() {
-            this.setLocation(this.x - deltax, this.y - deltay);
+            //this.setLocation(this.x - deltax, this.y - deltay);
+            //this.translate(-deltax, deltay);
+            x += deltax;
+            y += deltay;
             if (x < 0)
                 x = 640;
             if (x > 640)
@@ -81,7 +98,7 @@ public class StarField extends Scenery {
             int y = random.nextInt(480);
             int dx = random.nextInt(3) + 1;
             float brightness = random.nextFloat();
-            stars.add(new Star(x, y, dx, 0, brightness));
+            stars.add(new Star(x, y, -dx, 0, brightness));
         }
     }
 
@@ -102,8 +119,7 @@ public class StarField extends Scenery {
     public void draw(Graphics2D g) {
         for (Star star : stars) {
             g.setColor(star.getColor());
-            //g.fillRect(star.x, star.y, 1, 1);
-            g.drawLine(star.x, star.y, star.x, star.y);
+            g.drawLine(star.getX(), star.getY(), star.getX(), star.getY());
         }
     }
     
