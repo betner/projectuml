@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * Shot
  * 
- * Generic shot. Created by a weapon when it is fired.
+ * Created by a weapon when it is fired.
  * A shot can cause damage to game objects.
  *
  * @see Weapon
@@ -14,8 +14,10 @@ import java.awt.Point;
  */
 abstract public class Shot extends Sprite{
   
-    protected double velocity; // Shot's speed
-    protected int damage;      // Damage done on impact
+    //private double velocity; // Shot's speed
+    private double dx;
+    private double dy;
+    private int damage;      // Damage done on impact
     
         
     /** Creates a new instance of Shot */
@@ -27,11 +29,9 @@ abstract public class Shot extends Sprite{
      * depending on it's velocity.
      */
     public void update(){
-       Point newPosition = new Point();
-       double x = position.getX() + velocity;
-       double y = position.getY();
-       newPosition.setLocation(x,y);
-       position = newPosition;
+        double x = getPosition().getX() + dx;
+        double y = getPosition().getY() + dy;
+        setPosition(x, y);
     }
     
     /**
@@ -40,5 +40,27 @@ abstract public class Shot extends Sprite{
      */
     public void touch(Ship ship){
        ship.decreaseHealth(damage);
+    }
+    
+    public int getDamage(){
+        return damage;
+    }
+    
+    public void setDamage(int newDamage){
+        damage = newDamage;
+    }
+                    
+    public void setDx(int newDx){
+        dx = newDx;
+    }
+    public void setDy(int newDy) {
+        dx = newDy;
+    }
+        
+    public void setDx(double newDx) {
+        dx = newDx;
+    }
+    public void setDy(double newDy) {
+        dx = newDy;
     }
 }

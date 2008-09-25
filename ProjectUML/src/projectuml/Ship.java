@@ -20,7 +20,7 @@ public class Ship extends Sprite {
     private double dy;             // Change in y direction, negative is down
     private Boolean destroyed;     
     private ArrayList<Weapon> weaponList; // Ship's arsenal
-    private AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
+    private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
     private final String imagePath = "";//"resources/images/";
 
     /**
@@ -39,6 +39,7 @@ public class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion4.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
+        weaponList = new ArrayList<Weapon>();
     }
 
     /** 
@@ -49,6 +50,10 @@ public class Ship extends Sprite {
         for (Weapon w : weaponList) {
             w.fire(l);
         }
+    }
+    
+    public void fire(){
+        System.out.println("Ship: fire()");
     }
 
     /**
@@ -63,11 +68,11 @@ public class Ship extends Sprite {
      * get update() calls.
      */
     public void update() {
-        System.out.println("Ship: update()");
-        if(isActive()){
+       // System.out.println("Ship: update()");
+        if(isActive() && !destroyed){
             double x = getPosition().getX() + dx;
             double y = getPosition().getY() + dy;
-            getPosition().setLocation(x, y);
+            setPosition(x, y);
         }
         // If we are destroyed we should make sure that
         // the animation is updated.
@@ -81,6 +86,9 @@ public class Ship extends Sprite {
      * Overridden draw method that calls update() on the
      * destruction animation if the ship is flagged as being
      * destroyd.
+     * If ship is inactive the super.draw() makes sure
+     * it doesn't get drawn.
+     * 
      * @param g2d
      */
     public void draw(Graphics2D g2d){
@@ -165,6 +173,13 @@ public class Ship extends Sprite {
         destructionAnimation = animation;
     }
     
+    public void addWeapon(Weapon weapon){
+        //System.out.println("Ship: addWeapon()");
+        //System.out.println(weapon);
+        weaponList.add(weapon);
+        
+    }
+    
     public int getHealth(){
         return health;
     }
@@ -176,7 +191,15 @@ public class Ship extends Sprite {
     public void setDx(int newDx){
         dx = newDx;
     }
-        public void setDy(int newDy){
+    public void setDy(int newDy) {
         dx = newDy;
     }
+        
+    public void setDx(double newDx) {
+        dx = newDx;
+    }
+    public void setDy(double newDy) {
+        dy = newDy;
+    }
+        
 }

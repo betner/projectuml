@@ -9,7 +9,7 @@ import java.awt.Point;
  */
 public class PlayerShip extends Ship {
     
-    private Point startingPosition;
+    static final Point startingPosition = new Point(20, 200);
     private Player player;
 
     /** 
@@ -22,14 +22,14 @@ public class PlayerShip extends Ship {
     
     public PlayerShip(Point position) {
         setPosition(position);
-        startingPosition = new Point(20, 200);
+       // startingPosition = new Point(20, 200);
         setImageFile("playership.png"); //resources/images/playership.png";
         setImage(loadImage(getImageFile()));
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
         // Set default weapon, attach it to the
         // same position as the spaceship
-//        weaponList.add(new LaserCannon(position)); 
+        addWeapon(new LaserCannon(position));
         show();
         activate();
         System.out.println("PlayerShip created:");
@@ -55,10 +55,11 @@ public class PlayerShip extends Ship {
             // Ship is destroyed and the animation is finished
             // so we should reset the ship
             setPosition(startingPosition); 
+            System.out.println("Starting position: " + startingPosition);
             resetShip();
         }else{
             super.update(); // Handle movement
-            System.out.println("PlayerShips: super.update()");
+            //System.out.println("PlayerShips: super.update()");
         }
         
         // Ship should only move when user press direction key
@@ -70,7 +71,7 @@ public class PlayerShip extends Ship {
      * If ship is destroyed, one life is removed from the player. 
      */
     public void destroyShip(){
-        System.out.println("PlayerShip: super.destroyShip()");
+        //System.out.println("PlayerShip: super.destroyShip()");
         super.destroyShip();
         
 //        player.removeLife();
@@ -98,4 +99,12 @@ public class PlayerShip extends Ship {
         setDy(3);
     }
 
+    public void resetDx(){
+        setDx(0);
+    }
+    
+    public void resetDy(){
+        setDy(0);
+    }
+            
 }
