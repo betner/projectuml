@@ -23,11 +23,15 @@ public class Ship extends Sprite {
     protected AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
     protected String imagePath = "";//"resources/images/";
 
-    /** Creates a new instance of Ship */
+    /**
+     * Creates a new instance of Ship 
+     * Create animation sprite for the destruction animation and
+     * initialize it.
+     */
     public Ship() {
         destroyed = false;
         // Create destructionAnimation animation
-        destructionAnimation = new AnimatedSprite(1000, false);
+        destructionAnimation = new AnimatedSprite(500, false);
         // Should be solved more dynamically
         destructionAnimation.addImage(loadImage(imagePath + "explosion1.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion2.png"));
@@ -54,8 +58,9 @@ public class Ship extends Sprite {
     }
 
     /**
-     * Update position of the ship onscreen.
-     * A ship is always moving in space.
+     * Update position of the ship onscreen if it is active.
+     * If the ship is destroyed we must let the animation
+     * get update() calls.
      */
     public void update() {
         System.out.println("Ship: update()");
@@ -74,6 +79,12 @@ public class Ship extends Sprite {
         }
     }
     
+    /**
+     * Overridden draw method that calls update() on the
+     * destruction animation if the ship is flagged as being
+     * destroyd.
+     * @param g2d
+     */
     public void draw(Graphics2D g2d){
        super.draw(g2d);
        if(destroyed){
@@ -100,11 +111,14 @@ public class Ship extends Sprite {
         }
     }
 
+    /**
+     * Destroy the ship and start it's destruction animation.
+     * The ship is hidden and flagged as destroyed.
+     */
     protected void destroyShip() {  
         System.out.println("Ship: destroyShip()");
         hide();           // Make sure ship isn't drawn
         destroyed = true; // Mark as destroyed
-        //deactivate();     // Don't do update()
         destructionAnimation.reset(); // Make sure the animation is restarted
         destructionAnimation.setPosition(position);
         destructionAnimation.show();
