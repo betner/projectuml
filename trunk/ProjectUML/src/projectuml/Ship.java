@@ -192,7 +192,7 @@ public class Ship extends Sprite {
         dx = newDx;
     }
     public void setDy(int newDy) {
-        dx = newDy;
+        dy = newDy;
     }
         
     public void setDx(double newDx) {
