@@ -85,7 +85,6 @@ public class AnimatedSprite extends Sprite {
      * when we reach the end of the sequence.
      */
     public void update(){
-        System.out.println("AnimatedSprite: update()");
         if(active){
             // Current picture should be changed if the time
             // set in speed has passed since last update
@@ -118,6 +117,15 @@ public class AnimatedSprite extends Sprite {
         return done;
     }
     
+    /**
+     * Reset animation
+     */
+    public void reset(){
+        sequence = 0; // First image in sequence
+        done = false; // 
+        activate();   //
+        show();
+    }
     // DEPRECATED
     
     /**

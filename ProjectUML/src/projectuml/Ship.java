@@ -21,13 +21,13 @@ public class Ship extends Sprite {
     protected Boolean destroyed;     
     protected ArrayList<Weapon> weaponList; // Ship's arsenal
     protected AnimatedSprite destructionAnimation;     // Animation of ships destructionAnimation
-    protected String imagePath = "resources/images/";
+    protected String imagePath = "";//"resources/images/";
 
     /** Creates a new instance of Ship */
     public Ship() {
         destroyed = false;
         // Create destructionAnimation animation
-        destructionAnimation = new AnimatedSprite(1000, true);
+        destructionAnimation = new AnimatedSprite(1000, false);
         // Should be solved more dynamically
         destructionAnimation.addImage(loadImage(imagePath + "explosion1.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion2.png"));
@@ -58,10 +58,11 @@ public class Ship extends Sprite {
      * A ship is always moving in space.
      */
     public void update() {
+        System.out.println("Ship: update()");
         if(active){
             Point newPosition = new Point();
-            double x = position.getX() + speed;
-            double y = position.getY();
+            double x = position.getX() + dx;
+            double y = position.getY() + dy;
             newPosition.setLocation(x, y);
             position = newPosition;
         }
@@ -69,7 +70,15 @@ public class Ship extends Sprite {
         // the animation is updated.
         if(destroyed){
             destructionAnimation.update();
+            System.out.println("Ship: destructionAnimation.update()");
         }
+    }
+    
+    public void draw(Graphics2D g2d){
+       super.draw(g2d);
+       if(destroyed){
+        destructionAnimation.draw(g2d);
+       }
     }
 
     /**
@@ -96,6 +105,7 @@ public class Ship extends Sprite {
         hide();           // Make sure ship isn't drawn
         destroyed = true; // Mark as destroyed
         //deactivate();     // Don't do update()
+        destructionAnimation.reset(); // Make sure the animation is restarted
         destructionAnimation.setPosition(position);
         destructionAnimation.show();
         destructionAnimation.activate();
@@ -128,4 +138,6 @@ public class Ship extends Sprite {
     public void setDestructionAnimation(AnimatedSprite animation){
         destructionAnimation = animation;
     }
+    
+   
 }
