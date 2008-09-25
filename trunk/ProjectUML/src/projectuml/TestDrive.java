@@ -36,16 +36,23 @@ public class TestDrive extends JFrame implements KeyListener{
     }
     
     public void run(){
-        repaint();
+        while(true){
+            try{
+            ship.update();
+            System.out.println("TestDrive: ship.update()");
+            repaint();
+            
+            Thread.sleep(30);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }
     }
     
     public void paint(Graphics g) {
-       
-        ship.update();
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, this.getWidth(), this.getWidth());
         ship.draw((Graphics2D)g);
-        g.setColor(Color.GREEN);
-        g.drawRect(1, 1, 20, 20);
-        System.out.println("Paint Component");
     }
 
     public void keyPressed(KeyEvent e) {
@@ -55,7 +62,20 @@ public class TestDrive extends JFrame implements KeyListener{
                 System.out.println("Space");
                 break;
             case KeyEvent.VK_LEFT:
-                ship.setPosition(new Point(10,100));
+                ship.goLeft();
+                System.out.println("VK_LEFT");
+                break;
+            case KeyEvent.VK_RIGHT:
+                ship.goRight();
+                System.out.println("VK_RIGHT");
+                break;
+            case KeyEvent.VK_UP:
+                ship.goUp();
+                System.out.println("VK_UP");
+                break;
+            case KeyEvent.VK_DOWN:
+                ship.goDown();
+                System.out.println("VK_DOWN");
                 break;
             default:
                 break;

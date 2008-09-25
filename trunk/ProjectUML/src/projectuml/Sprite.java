@@ -21,7 +21,7 @@ public class Sprite {
     protected int width;           // Should be set if inShape is used
     protected int height;
     protected BufferedImage image; // Graphic representing this object
-    protected String imageFile;    // Complete path to sprite's image
+    protected String imageFile;         // Filename to load
     
     /** 
      * Creates a new instance of Sprite and load
@@ -49,7 +49,7 @@ public class Sprite {
      * 
      * @param absolute file path -> path/name.xyz
      */
-    public BufferedImage loadImage(String imageFile){
+    public BufferedImage loadImage(String file){
         // Get device's graphics configuration
         GraphicsEnvironment ge;
         ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -60,7 +60,8 @@ public class Sprite {
            BufferedImage bi, biCopy;
            // If image is loaded from a jar-archive we need to treat the
            // file path as a URL
-           bi = ImageIO.read(getClass().getResource(imageFile));
+//           bi = ImageIO.read(getClass().getResource(imageFile));
+           bi = ImageIO.read(new File(file));
            
            // Get the image transparency information
            int transparency = bi.getColorModel().getTransparency();
@@ -80,7 +81,7 @@ public class Sprite {
            return biCopy;
            
        }catch(IOException e){
-           System.out.println("Image: " + imageFile +" not found!\n" + e);
+           System.out.println("Image: " + file +" not found!\n" + e);
            return null;
        }
              

@@ -23,7 +23,7 @@ public class PlayerShip extends Ship {
     public PlayerShip(Point position) {
         this.position = position;
         startingPosition = new Point(20, 200);
-        imageFile = "resources/images/playership.png";
+        imageFile = "playership.png"; //resources/images/playership.png";
         image = loadImage(imageFile);
         height = image.getHeight();
         width = image.getWidth();
@@ -44,15 +44,20 @@ public class PlayerShip extends Ship {
         // done so we should "restart" by showing the ship again
         // and placing it iin it's starting position.
         if(destroyed && getDestructAnimation().isDone()){
+            super.update();
+            // Ship is destroyed and the animation is finished
+            // so we should reset the ship
             setPosition(startingPosition);
             show();    
             activate();
-            System.out.println("PlayerShip is destroyed");
+            destroyed = false; 
         }else{
             super.update(); // Handle movement
-            System.out.println("PlayerShips calls: super.update()");
+            System.out.println("PlayerShips: super.update()");
         }
         
+        // Ship should only move when user press direction key
+        //dy = dx = 0;
     }
     
     /**
@@ -67,6 +72,27 @@ public class PlayerShip extends Ship {
         
 //        player.removeLife();
         
+    }
+    
+     /**
+     * Methods for steering the ship in eight directions.
+     * 
+     */
+   
+     public void goLeft(){
+        dx = -3;
+    }
+    
+    public void goRight(){
+        dx = 3;
+    }
+    
+    public void goUp(){
+        dy = -3;
+    }
+    
+    public void goDown(){
+        dy = 3;
     }
 
 }
