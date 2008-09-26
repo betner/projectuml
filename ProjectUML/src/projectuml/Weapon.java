@@ -2,6 +2,7 @@
 package projectuml;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 /**
  * Weapon
  * 
@@ -10,13 +11,19 @@ import java.awt.Point;
  * when fired. That means it has to have a reference to the
  * current Level object. 
  * Shots originate from weapon's position.
+ * Depending on if the weapon is mounted on a player or enemy ship
+ * the shots gets created differently.
+ * It is the weapon that sets the Shot's parameters such as
+ * direction and image.
  *
  * @see Shot
  * @author Steve Eriksson, Jens Thuresson
  */
 abstract public class Weapon {
     
+    private String shotImageFile; // Path to the image representing a shot
     private Point position;
+    private boolean player; // True if weapon is on player ship
        
     /** Creates a new instance of Weapon */
     public Weapon() {
@@ -28,8 +35,21 @@ abstract public class Weapon {
      *@param game level
      */
     abstract public void fire(Level level);
+    
+    //DEBUG Method
+    abstract public void fire(TestDrive td);
    
 
+    /**
+     * Sets the player flag to true
+     */
+    public void setPlayer(Boolean isPlayer){
+        player = isPlayer;
+    }
+    public Boolean isPlayer(){
+        return player;
+    }
+    
     public void setPosition(Point newPosition){
         position = newPosition;
     }
@@ -47,4 +67,17 @@ abstract public class Weapon {
         return position;
     }
     
+    public Point clone(Point position){
+        Point clone = new Point();
+        clone.setLocation(position);
+        return clone;
+    }
+    
+    public void setShotImageFile(String path){
+        shotImageFile = path;
+    }
+    
+    public String getShotImageFile(){
+        return shotImageFile;
+    }
 }

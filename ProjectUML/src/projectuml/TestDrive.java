@@ -3,11 +3,10 @@ package projectuml;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.*;
-import javax.swing.*;
+import java.util.ArrayList;
 
 /*
  * To change this template, choose Tools | Templates
@@ -23,8 +22,10 @@ public class TestDrive extends JFrame implements KeyListener{
     
     Player player;
     PlayerShip ship;
+    ArrayList<Shot> shots;
     
     public TestDrive(){
+        shots = new ArrayList<Shot>();
         player = new Player();
         ship = new PlayerShip(player);
         addKeyListener(this);
@@ -40,6 +41,9 @@ public class TestDrive extends JFrame implements KeyListener{
         while(true){
             try{
                ship.update();
+               for(Shot shot : shots){
+                   shot.update();
+               }
                repaint();
             
             Thread.sleep(30);
@@ -49,10 +53,18 @@ public class TestDrive extends JFrame implements KeyListener{
         }
     }
     
+    public void addShot(Shot shot){
+        shots.add(shot);
+    }
+    
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, this.getWidth(), this.getWidth());
         ship.draw((Graphics2D)g);
+        for(Shot shot : shots){
+            shot.draw((Graphics2D)g);
+           // System.out.println("shot.draw()");
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -79,7 +91,7 @@ public class TestDrive extends JFrame implements KeyListener{
                 System.out.println("VK_DOWN");
                 break;
             case KeyEvent.VK_F:
-                ship.fire();
+                ship.fire(this);
                 System.out.println("VK_F");
             default:
                 break;
