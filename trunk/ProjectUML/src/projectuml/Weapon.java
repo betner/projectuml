@@ -42,4 +42,9 @@ abstract public class Weapon {
         position.setLocation(x, y);
     }
     
+    // Jens: added
+    public Point getPosition() {
+        return position;
+    }
+    
 }

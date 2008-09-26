@@ -2,6 +2,7 @@ package projectuml;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
@@ -112,6 +113,16 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         int x = (int) (screen.getWidth() / 2) - (this.getWidth() / 2);
         int y = (int) (screen.getHeight() / 2) - (this.getHeight() / 2);
         this.setLocation(x, y);
+    }
+
+    /**
+     * Override this to ensure that both our window and
+     * the canvas kept within registers the listener
+     * @param l
+     */
+    public synchronized void addMouseListener(MouseListener l) {
+        super.addMouseListener(l);
+        canvas.addMouseListener(l);
     }
     
     /**

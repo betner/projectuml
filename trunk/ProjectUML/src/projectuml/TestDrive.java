@@ -22,7 +22,9 @@ import javax.swing.JFrame;
 public class TestDrive extends JFrame implements KeyListener{
     
     Player player = new Player();
-    PlayerShip ship = new PlayerShip(player);
+    // Jens: added to be able to compile
+    //PlayerShip ship = new PlayerShip(player);
+    PlayerShip ship = new PlayerShip(null);
     
     public TestDrive(){
         addKeyListener(this);

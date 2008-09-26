@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
 /**
  * The game's level editor
@@ -12,16 +13,25 @@ import java.util.*;
  */
 public class LevelEditor extends GameState {
 
+    private GeneralSerializer<Level> levelloader;
     private Level level;
     private Font smallfont;
-    private enum EditorCommandID
-    {
-        NEW, LOAD, SAVE, DELETE, CLEAR_ALL,
-        TOGGLE_HELP, EXIT, SET_PLAYER_POSITION,
-        PLACE_ENEMY, INCREASE_OFFSET, DECREASE_OFFSET
+
+    // Different commands the editor recognizes
+    private enum EditorCommandID {
+        DO_NOTHING,
+        NEW, LOAD, SAVE,
+        DELETE, CLEAR_ALL,
+        TOGGLE_HELP, TOGGLE_UPDATE,
+        EXIT,
+        PLACE_ENEMY, INCREASE_OFFSET, DECREASE_OFFSET,
+        CHOOSE_SCENERY
     };
+    
     private boolean showhelp;
+    private boolean update;
     private Hashtable<Integer, EditorCommandID> keys;
+    private EditorCommandID activecommand;
 
     /**
      * Starts the level editor
@@ -29,25 +39,31 @@ public class LevelEditor extends GameState {
     public LevelEditor() {
         this(null);
     }
-    
+
     /**
      * Starts editing a certain level
      * @param level Level to edit
      */
     public LevelEditor(Level level) {
         this.level = level;
+        levelloader = new GeneralSerializer<Level>();
         smallfont = new Font("Courier New", Font.PLAIN, 12);
         showhelp = true;
-        
+        update = false;
+
         // Associate keybindings to specific
         // editor commands, of at least the size
         // of the enum structure
         keys = new Hashtable<Integer, EditorCommandID>(EditorCommandID.values().length);
         bindEditorKeys();
+
+        // The active command to execute when we click
+        // the mouse button. By default, do nothing
+        activecommand = EditorCommandID.DO_NOTHING;
     }
-    
+
     /**
-     * Binds editor keys to specific keys
+     * Binds editor commands to specific keys
      */
     private void bindEditorKeys() {
         keys.put(KeyEvent.VK_N, EditorCommandID.NEW);
@@ -59,6 +75,21 @@ public class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_H, EditorCommandID.TOGGLE_HELP);
         keys.put(KeyEvent.VK_ADD, EditorCommandID.INCREASE_OFFSET);
         keys.put(KeyEvent.VK_SUBTRACT, EditorCommandID.DECREASE_OFFSET);
+        keys.put(KeyEvent.VK_SPACE, EditorCommandID.PLACE_ENEMY);
+        keys.put(KeyEvent.VK_F1, EditorCommandID.CHOOSE_SCENERY);
+        keys.put(KeyEvent.VK_U, EditorCommandID.TOGGLE_UPDATE);
+    }
+    
+    /**
+     * Helper function to print text. Will return the next line
+     * to start printing on (the y-value)
+     * @param text
+     * @param x
+     * @return Y-value of next line to start on
+     */
+    private int println(Graphics2D g, String text, int x, int y) {
+        g.drawString(text, x, y);
+        return y + g.getFont().getSize();
     }
 
     /**
@@ -70,21 +101,64 @@ public class LevelEditor extends GameState {
         g.setFont(smallfont);
         for (Integer i : keys.keySet()) {
             String keyname = KeyEvent.getKeyText(i.intValue());
-            g.setColor(Color.red);
-            g.drawString(keyname, 0, y);
+            g.setColor(Color.green);
+            println(g, keyname, 0, y);
             g.setColor(Color.white);
-            g.drawString(keys.get(i).toString(), 80, y);
-            
-            // Advance to next line
-            y += smallfont.getSize();
+            y = println(g, keys.get(i).toString(), 80, y);
+        }
+        
+        // Display other information two rows below
+        y += smallfont.getSize();
+        if (update) {
+            y = println(g, "Updating is ON", 0, y);
+        }
+
+        // Display offset at bottom
+        if (level != null) {
+            g.setColor(Color.white);
+            g.drawString("Level offset:   " + level.getOffset(), 0, 480 - smallfont.getSize());
+            g.drawString("Active command: " + activecommand.toString(), 0, 480);
         }
     }
-    
+
     /**
-     * TODO: do we need to update?
+     * Browse for a filename
+     * @param title Title of the dialog
+     * @return The file object, or null
+     */
+    private File browse(String title) {
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setDialogTitle(title);
+        if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            return filechooser.getSelectedFile();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Browse for a file to save information to
+     * @param title Title of the dialog
+     * @return The file object, or null
+     */
+    private File browseForSave(String title) {
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setDialogTitle(title);
+        if (filechooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            return filechooser.getSelectedFile();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Only updates if the user has turned it on
      * @param player
      */
     public void update(Player player) {
+        if (update) {
+            level.update(player);
+        }
     }
 
     /**
@@ -95,7 +169,7 @@ public class LevelEditor extends GameState {
         // Always draw a black background
         g.setColor(Color.black);
         g.fillRect(0, 0, 640, 480);
-        
+
         // Draw the level
         if (level != null) {
             level.draw(g);
@@ -104,7 +178,7 @@ public class LevelEditor extends GameState {
             g.setFont(smallfont);
             g.drawString("***  No active level, please create a new  ***", 170, 220);
         }
-        
+
         // Display help (if active)
         if (showhelp) {
             showHelp(g);
@@ -117,19 +191,22 @@ public class LevelEditor extends GameState {
      */
     public void keyEvent(KeyEvent event) {
         if (keys.containsKey(event.getKeyCode())) {
-            // It's a valid key binding
+            // It's a valid key binding, check what
+            // editor command it represents
             EditorCommandID cmd = keys.get(event.getKeyCode());
             switch (cmd) {
                 case EXIT:
                     // TODO: check for "Do you want to save changes?"
                     removeMe = true;
                     break;
-                    
+
                 case CLEAR_ALL:
                     // TODO: ask "Really clear everything?"
-                    level.removeAll();
+                    if (level != null) {
+                        level.removeAll();
+                    }
                     break;
-                    
+
                 case NEW:
                     // TODO: see EXIT
                     if (level != null) {
@@ -143,6 +220,65 @@ public class LevelEditor extends GameState {
                     showhelp = !showhelp;
                     break;
                     
+                case TOGGLE_UPDATE:
+                    update = !update;
+                    break;
+
+                case INCREASE_OFFSET:
+                    if (level != null) {
+                        level.increaseOffset(1);
+                    }
+                    break;
+
+                case DECREASE_OFFSET:
+                    if (level != null) {
+                        level.decreaseOffset(1);
+                    }
+                    break;
+
+                case DO_NOTHING:
+                    break;
+
+                case DELETE:
+                case PLACE_ENEMY:
+                    // Just change the active mouse command
+                    activecommand = cmd;
+                    break;
+
+                case SAVE: {
+                    File path = browseForSave("Save level");
+                    if (path != null) {
+                        //save(path.getAbsolutePath());
+                        levelloader.save(level, path.getAbsolutePath());
+                    }
+                    break;
+                }
+
+                case LOAD: {
+                    File path = browse("Load level");
+                    if (path != null) {
+                        //load(path.getAbsolutePath());
+                        level = levelloader.load(path.getAbsolutePath());
+                    }
+                    break;
+                }
+
+                case CHOOSE_SCENERY: {
+                    // Browse for a already saved scenery
+                    if (level != null) {
+                        File path = browse("Load scenery");
+                        if (path != null) {
+                            GeneralSerializer<Scenery> loader = new GeneralSerializer<Scenery>();
+                            Scenery scenery = loader.load(path.getAbsolutePath());
+                            // Did it get loaded?
+                            if (scenery != null) {
+                                level.setScenery(scenery);
+                            }
+                        }
+                    }
+                    break;
+                }
+
                 default:
                     System.err.println("***  Unknown EditorCommandID: " + cmd + "  ***");
                     break;
@@ -150,51 +286,34 @@ public class LevelEditor extends GameState {
         }
     }
 
+    /**
+     * Respond to the active command
+     * @param event
+     */
     public void mouseEvent(MouseEvent event) {
+        switch (activecommand) {
+            case PLACE_ENEMY:
+                EnemyShip ship = new EnemyShip();
+                ship.setPosition(event.getPoint());
+                ship.loadImage("playership.png");
+                ship.show();
+                level.addShip(ship);
+                break;
+
+            default:
+                System.out.println(event);
+                break;
+        }
     }
 
     /** Not used **/
     public void gainedFocus() {
-        
     }
 
     /** Not used **/
     public void lostFocus() {
-        
-    }
-    
-    /**
-     * Saves the level (serialize it)
-     * @param filename Where to store the level
-     */
-    public void save(String filename) {
-        System.out.println("Trying to save level at " + filename);
-        try {
-            FileOutputStream file = new FileOutputStream(filename);
-            ObjectOutputStream outstream = new ObjectOutputStream(file);
-            outstream.writeObject(level);
-            outstream.close();
-            file.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
-    /**
-     * Loads a level (deserialize it)
-     * @param filename Where to load the level from
-     */
-    public void load(String filename) {
-        System.out.println("Trying to load level from " + filename);
-        try {
-            FileInputStream file = new FileInputStream(filename);
-            ObjectInputStream instream = new ObjectInputStream(file);
-            level = (Level)instream.readObject();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    
     /**
      * Gets the level object we've been working
      * on
