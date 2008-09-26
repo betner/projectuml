@@ -21,8 +21,8 @@ import javax.swing.JFrame;
  */
 public class TestDrive extends JFrame implements KeyListener{
     
-  
-    PlayerShip ship = new PlayerShip();
+    Player player = new Player();
+    PlayerShip ship = new PlayerShip(player);
     
     public TestDrive(){
         addKeyListener(this);
@@ -59,6 +59,7 @@ public class TestDrive extends JFrame implements KeyListener{
             case KeyEvent.VK_SPACE:
                 ship.destroyShip();
                 System.out.println("Space");
+                System.out.println(player.getLives());
                 break;
             case KeyEvent.VK_LEFT:
                 ship.goLeft();

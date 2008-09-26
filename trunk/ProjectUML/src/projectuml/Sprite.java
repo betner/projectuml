@@ -21,7 +21,7 @@ public class Sprite {
     private int width;           // Should be set if inShape is used
     private int height;
     private BufferedImage image; // Graphic representing this object
-    private String imageFile;    // Filename to load
+    private String imageFile;    // Path to image
     
     /** 
      * Creates a new instance of Sprite and load
@@ -70,10 +70,10 @@ public class Sprite {
            // image compatible with the device's graphics 
            biCopy = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(), transparency);
                     
-           // create a graphics context to draw on
+           // Create a graphics context to draw on
            Graphics2D g2d = biCopy.createGraphics();
            
-           // copy image 
+           // Copy image 
            g2d.drawImage(bi, 0, 0, null);
            g2d.dispose();
            
@@ -160,14 +160,15 @@ public class Sprite {
     }
     
     /**
-     * Get Sprite's position
+     * Get sprite's position
      */
     public Point getPosition(){
         return position;
     }
     
     /**
-     * Set new position for Sprite
+     * Set new position for sprite
+     * Three versions are provided with different argument types
      */
     public void setPosition(Point newPosition){
         position = newPosition;
@@ -181,26 +182,56 @@ public class Sprite {
         position.setLocation(x, y);
     }
     
+    /**
+     * Get sprite's width
+     * 
+     * @return width
+     */
     public int getWidth(){
         return width;
     }
     
+    /**
+     * Set sprite's width
+     * 
+     * @param newWidth
+     */
     public void setWidth(int newWidth){
         width = newWidth;
     }
     
+    /**
+     * Get sprite's width
+     * 
+     * @return width
+     */
     public int getHeight(){
         return height;
     }
     
+    /**
+     * Set sprite's height
+     * 
+     * @param newHeight
+     */
     public void setHeight(int newHeight){
         height = newHeight;
     }
     
+    /**
+     * Get sprite's image
+     * 
+     * @return BufferedImage
+     */
     public BufferedImage getImage(){
         return image;
     }
     
+    /**
+     * Set sprite's image
+     * 
+     * @param bufferedImage
+     */
     public void setImage(BufferedImage bufferedImage){
         image = bufferedImage;
     }

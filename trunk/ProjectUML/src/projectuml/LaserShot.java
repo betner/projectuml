@@ -17,6 +17,7 @@ public class LaserShot extends Shot{
         //setImageFile("lasershot.png");
         setImage(loadImage("lasershot.png"));
         setDamage(100);
+        setDx(10);
     }
 
    
