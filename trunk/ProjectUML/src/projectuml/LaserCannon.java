@@ -13,6 +13,7 @@ public class LaserCannon extends Weapon{
     public LaserCannon(Point position) {
         System.out.println("LaserCannon created");
         setPosition(position);
+        System.out.println("After setPosition in LaserCannon, pos: " + position);
     }
     
     public void fire(Level level){

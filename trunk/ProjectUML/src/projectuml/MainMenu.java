@@ -46,7 +46,7 @@ public class MainMenu extends GameState {
     /**
      * Draws the main menu
      *
-     * @param g
+     * @param g 
      **/
     public void draw(Graphics2D g) {
         background.draw(g);
@@ -60,6 +60,7 @@ public class MainMenu extends GameState {
      */
     public void keyEvent(KeyEvent event) {
         switch (event.getKeyCode()) {
+            case KeyEvent.VK_P:
             case KeyEvent.VK_PAUSE:
                 gamestates.push(new Pause());
                 break;

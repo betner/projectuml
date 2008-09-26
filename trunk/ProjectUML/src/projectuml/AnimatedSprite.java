@@ -58,10 +58,10 @@ public class AnimatedSprite extends Sprite {
         speed = 0;
         imageList = new ArrayList<BufferedImage>();
         
-        System.out.println("AnimatedSprite created:");
+        /*System.out.println("AnimatedSprite created:");
         System.out.println("=> Speed: " + speed);
         System.out.println("=> Done flag:" + done.toString());
-        System.out.println("=> Runtime: " + runtime);
+        System.out.println("=> Runtime: " + runtime);*/
     }
     /**
      * Add image to the list of images to be animated
@@ -71,10 +71,10 @@ public class AnimatedSprite extends Sprite {
         imageList.add(image);
         speed = runtime / imageList.size();   
         
-        System.out.println("AnimatedSprite: addImage()");
+        /*System.out.println("AnimatedSprite: addImage()");
         System.out.println("=> imageList.size(): " + imageList.size());
         System.out.println("=> runtime: " + runtime);
-        System.out.println("=> New speed set to: " + speed);
+        System.out.println("=> New speed set to: " + speed);*/
     }
 
     /**

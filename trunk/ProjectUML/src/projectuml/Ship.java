@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Steve Eriksson, Jens Thuresson
  */
 public class Ship extends Sprite {
-
+   
     private int health;            // Ship's health
     private int speed;             // Speed relative to gamelevel
     private double dx;             // Change in x direction, negative is left
@@ -40,6 +40,9 @@ public class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
         weaponList = new ArrayList<Weapon>();
+        
+        System.out.println("Ship constructor");
+        System.out.println(getPosition());
     }
 
     /** 
@@ -68,10 +71,10 @@ public class Ship extends Sprite {
      * get update() calls.
      */
     public void update() {
-       // System.out.println("Ship: update()");
+       System.out.println("Ship: update()");
         if(isActive() && !destroyed){
-            double x = getPosition().getX() + dx;
-            double y = getPosition().getY() + dy;
+            double x = getPositionX() + dx;
+            double y = getPositionY() + dy;
             setPosition(x, y);
         }
         // If we are destroyed we should make sure that
@@ -94,7 +97,7 @@ public class Ship extends Sprite {
     public void draw(Graphics2D g2d){
        super.draw(g2d);
        if(destroyed){
-        destructionAnimation.draw(g2d);
+        destructionAnimation.draw(g2d); // Animation get drawn at ships position, why???
        }
     }
 
@@ -120,13 +123,15 @@ public class Ship extends Sprite {
     /**
      * Destroy the ship and start it's destruction animation.
      * The ship is hidden and flagged as destroyed.
+     * Here we set the animations position to be the same as 
+     * the ships.
      */
     protected void destroyShip() {  
         System.out.println("Ship: destroyShip()");
         hide();           // Make sure ship isn't drawn
         destroyed = true; // Mark as destroyed
         destructionAnimation.reset(); // Make sure the animation is restarted
-        destructionAnimation.setPosition(getPosition());
+        destructionAnimation.setPosition(getPosition()); // Set animation position
         destructionAnimation.show();
         destructionAnimation.activate();
        
