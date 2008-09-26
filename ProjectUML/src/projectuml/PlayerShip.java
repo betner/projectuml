@@ -4,6 +4,10 @@ import java.awt.Point;
 
 /**
  * This is the ship that the player uses.
+ * If it loses all it's health it gets destroyed and a destruction
+ * animation starts. When a set time has passed since the
+ * call to the destroy method, the ship respawns at the start position. 
+ * When players life reach zero the ship won't respawn anymore.
  * 
  * @author Steve Eriksson, Jens Thuresson
  */
@@ -11,8 +15,8 @@ public class PlayerShip extends Ship {
     
     private final double START_X = 20;
     private final double START_Y = 200;
-    private final int SPAWN_TIME = 2000; // Time before ship gets reset after destruction 
-    private Player player;
+    private final int SPAWN_TIME = 2000; // Time before ship respawns after destruction 
+    private Player player;  // Object representing the player
     private Timestamp time; // Used to check if given time period has passed
 
     /** 
@@ -30,8 +34,9 @@ public class PlayerShip extends Ship {
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
         
-        // Set default weapon, attach it to the
-        // same position as the spaceship
+        // Set default weapon
+        // Give it the reference to ship's position object
+        // so that it get moved when the ship is
         addWeapon(new LaserCannon(getPosition(), true));
         
         // Make the ship listen to draw() and update() requests
@@ -41,19 +46,14 @@ public class PlayerShip extends Ship {
         System.out.println("=> Width: " + getWidth());
         System.out.println("=> Height: " + getHeight());
         System.out.println("=> Health: " + getHealth());*/
-        
-        //DEBUG
-        System.out.println("PlayerShip constructor");
-        System.out.println("Position: " + getPosition());
-        System.out.println("Point:" + getPosition().getClass().hashCode());
-        
     }
 
     /**
      * Overridden update().
      * Calls on super.update() and adds the functionality
      * that if the ship is destroyed and the animation
-     * is done the ship should be reset to it's starting position.
+     * is done the ship should be reset to it's starting position
+     * unless players life has reached zero.
      * 
      */
     public void update(){
@@ -63,7 +63,7 @@ public class PlayerShip extends Ship {
         if(isDestroyed() && getDestructAnimation().isDone()){
             // Ship is destroyed and the animation is finished
             // so we should reset the ship
-            if(time.havePassed(SPAWN_TIME)){
+            if(time.havePassed(SPAWN_TIME) && player.getLives() > 0){
                 setPosition(START_X, START_Y);
                 if(player.getLives() > 0){ // Only reset if player has lifes left
                     resetShip();
@@ -84,9 +84,11 @@ public class PlayerShip extends Ship {
      * 
      */
     public void destroyShip(){
-        //System.out.println("PlayerShip: super.destroyShip()");
-        time.reset();
-        super.destroyShip();
+        if(!isDestroyed()){
+            time.reset();
+            super.destroyShip();
+            player.removeLife();
+        }
         player.removeLife();
         
     }
@@ -119,5 +121,7 @@ public class PlayerShip extends Ship {
     public void resetDy(){
         setDy(0);
     }
+    
+  
             
 }
