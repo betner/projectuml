@@ -24,24 +24,28 @@ public class PlayerShip extends Ship {
     public PlayerShip(Player player) {
         this.player = player;
         time = new Timestamp();
-        System.out.println(START_X);
-        System.out.println(START_Y);
         setPosition(START_X, START_Y); // Set initial position
-        System.out.println("PlayerShip constructor");
-        System.out.println("Position: " + getPosition());
-        setImageFile("playership.png"); //resources/images/playership.png";
+        setImageFile("playership.png");
         setImage(loadImage(getImageFile()));
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
+        
         // Set default weapon, attach it to the
         // same position as the spaceship
-        addWeapon(new LaserCannon(getPosition()));
+        addWeapon(new LaserCannon(getPosition(), true));
+        
+        // Make the ship listen to draw() and update() requests
         show();
         activate();
        /* System.out.println("PlayerShip created:");
         System.out.println("=> Width: " + getWidth());
         System.out.println("=> Height: " + getHeight());
         System.out.println("=> Health: " + getHealth());*/
+        
+        //DEBUG
+        System.out.println("PlayerShip constructor");
+        System.out.println("Position: " + getPosition());
+        System.out.println("Point:" + getPosition().getClass().hashCode());
         
     }
 
@@ -61,10 +65,11 @@ public class PlayerShip extends Ship {
             // so we should reset the ship
             if(time.havePassed(SPAWN_TIME)){
                 setPosition(START_X, START_Y);
-                resetShip();
+                if(player.getLives() > 0){ // Only reset if player has lifes left
+                    resetShip();
+                }
             }
         }else{
-            System.out.println("PlayerShip calls super.update()");
             super.update(); // Handle movement
         }
     }

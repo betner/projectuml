@@ -32,4 +32,9 @@ public class MissileLauncher extends Weapon{
         // Add timer code
       //  level.addShot(new MissileShot(position));
     }
+    
+    //DEBUG Method
+    public void fire(TestDrive td){
+        System.out.println("hej");
+    }
 }

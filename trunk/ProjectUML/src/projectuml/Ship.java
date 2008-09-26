@@ -40,9 +40,6 @@ public class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
         weaponList = new ArrayList<Weapon>();
-        
-        System.out.println("Ship constructor");
-        System.out.println(getPosition());
     }
 
     /** 
@@ -55,8 +52,11 @@ public class Ship extends Sprite {
         }
     }
     
-    public void fire(){
-        System.out.println("Ship: fire()");
+    public void fire(TestDrive td){
+        for (Weapon w : weaponList) {
+            w.fire(td);
+        }
+        
     }
 
     /**
@@ -71,7 +71,6 @@ public class Ship extends Sprite {
      * get update() calls.
      */
     public void update() {
-       System.out.println("Ship: update()");
         if(isActive() && !destroyed){
             double x = getPositionX() + dx;
             double y = getPositionY() + dy;

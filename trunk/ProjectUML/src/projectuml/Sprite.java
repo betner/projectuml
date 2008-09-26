@@ -10,6 +10,7 @@ import java.io.*;
  * that are shown on game screen.
  * The sprite has methods for painting itself onscreen, update its
  * state and position.
+ * Both the path imageFile and the image should be set by subclass.
  *
  * @author Steve Eriksson, Jens Thuresson
  */
@@ -30,11 +31,9 @@ public class Sprite implements Serializable {
      * to match the loaded image.
      */
     public Sprite() {
-        position = new Point(0,0); // If set here getPosition returns null!
+        position = new Point(0,0); // Default placement for sprites
         hide();
         deactivate();
-        System.out.println("Sprite constructor");
-        System.out.println(getPosition());
     }
     
     /**
@@ -187,6 +186,16 @@ public class Sprite implements Serializable {
         return position.getY();
     }
     
+    /**
+     * Clone the point object representing
+     * sprite's position
+     */
+    public Point clonePosition(Point position){
+        Point clone = new Point();
+        clone.setLocation(position);
+        return clone;
+    }
+        
     /**
      * Set new position for sprite
      * Three versions are provided with different argument types
