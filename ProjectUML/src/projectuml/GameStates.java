@@ -32,7 +32,7 @@ public class GameStates {
             states.peek().lostFocus();
         }
         states.push(state);
-        state.setManager(this);
+        state.setGameStateManager(this);
         state.gainedFocus();
     }
 

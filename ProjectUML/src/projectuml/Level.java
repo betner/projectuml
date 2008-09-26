@@ -75,29 +75,38 @@ public class Level implements Serializable {
      * Updates the level, handle collision detection and so on
      * @param player
      */
-    public void update(Player player) {
-        // TODO: update shot positions first, then handle collision?
-        // Or both at the same time?
-        
-        // Regular updates
+    public void update(PlayerShip player) {
+        // Background
         if (background != null) {
             background.update();
         }
-        
+
+        // All the shots the player fires
         for (Shot shot : playershots) {
             shot.update();
+            
+            // Does it hit an enemy?
+            for (Ship enemy : enemies) {
+                if (shot.inShape(enemy.getPosition())) {
+                    shot.touch(enemy);
+                }
+            }
         }
         
+        // All the shots the enemies fires
         for (Shot shot : enemyshots) {
             shot.update();
+            
+            // Does it hit the player?
+            if (shot.inShape(player.getPosition())) {
+                shot.touch(player);
+            }
         }
         
+        // All the enemies
         for (Ship ship : enemies) {
             ship.update();
         }
-        
-        // Handle collision
-        
     }
     
     /**
@@ -127,18 +136,32 @@ public class Level implements Serializable {
     }
     
     /**
-     * Adds a shot to the level world
+     * Adds a shot from the player to the level world
      * @param shot
      */
-    public void addShot(Shot shot) {
+    public void addPlayerShot(Shot shot) {
         if (shot != null) {
-            // TODO: shot comes from enemy or player?
+            playershots.add(shot);
         }
     }
     
+    /**
+     * Adds a shot from the enemy to the level world
+     * @param shot
+     **/
+    public void addEnemyShot(Shot shot) {
+        if (shot != null) {
+            enemyshots.add(shot);
+        }
+    }
+    
+    /**
+     * Adds an enemy ship to the level
+     * @param ship
+     **/
     public void addShip(Ship ship) {
         if (ship != null) {
-            
+            enemies.add(ship);
         }
     }
     
@@ -147,7 +170,6 @@ public class Level implements Serializable {
      */
     public void removeAll() {
         enemies.clear();
-        enemieswaiting.clear();
         enemyshots.clear();
         playershots.clear();
         offset = 0;

@@ -62,11 +62,11 @@ public class MainMenu extends GameState {
         switch (event.getKeyCode()) {
             case KeyEvent.VK_P:
             case KeyEvent.VK_PAUSE:
-                gamestates.push(new Pause());
+                getGameStateManager().push(new Pause());
                 break;
 
             case KeyEvent.VK_F12:
-                gamestates.push(new LevelEditor());
+                getGameStateManager().push(new LevelEditor());
                 break;
                 
             default:
