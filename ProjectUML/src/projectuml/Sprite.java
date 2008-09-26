@@ -93,7 +93,7 @@ public class Sprite {
      */
     public void draw(Graphics2D g2d){
         if(visible){
-        g2d.drawImage(image, (int)position.getX(), (int)position.getY(), null);
+            g2d.drawImage(image, (int)position.getX(), (int)position.getY(), null);
         }
     }
     

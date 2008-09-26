@@ -23,13 +23,19 @@ public class MissileLauncher extends Weapon{
      * @param position
      */
     public MissileLauncher(Point position){
-        this.position = position;
+        // Jens: added 
+        //this.position = position;
+        this.setPosition(position);
+        
         coolDown = 1000;
     }
     
     public void fire(Level level){
         // TODO
         // Add timer code
-        level.addShot(new MissileShot(position));
+        
+        // Jens: added
+        //level.addShot(new MissileShot(position));
+        level.addShot(new MissileShot(this.getPosition()));
     }
 }

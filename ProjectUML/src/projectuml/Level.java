@@ -33,7 +33,7 @@ public class Level implements Serializable {
      * Gets the scenery background
      * @return
      */
-    public Scenery getBackground() {
+    public Scenery getScenery() {
         return background;
     }
 
@@ -41,7 +41,7 @@ public class Level implements Serializable {
      * Changes the scenery background
      * @param background
      */
-    public void setBackground(Scenery background) {
+    public void setScenery(Scenery background) {
         this.background = background;
     }
     
@@ -80,6 +80,10 @@ public class Level implements Serializable {
         // Or both at the same time?
         
         // Regular updates
+        if (background != null) {
+            background.update();
+        }
+        
         for (Shot shot : playershots) {
             shot.update();
         }
@@ -126,9 +130,15 @@ public class Level implements Serializable {
      * Adds a shot to the level world
      * @param shot
      */
-    public void addShot(Shot shot){
+    public void addShot(Shot shot) {
         if (shot != null) {
             // TODO: shot comes from enemy or player?
+        }
+    }
+    
+    public void addShip(Ship ship) {
+        if (ship != null) {
+            
         }
     }
     
@@ -140,6 +150,7 @@ public class Level implements Serializable {
         enemieswaiting.clear();
         enemyshots.clear();
         playershots.clear();
+        offset = 0;
         
         // Erase background scenery too?
     }

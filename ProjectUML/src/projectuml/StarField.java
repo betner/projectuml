@@ -1,9 +1,8 @@
 package projectuml;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Random;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * A floating star field
@@ -15,7 +14,7 @@ public class StarField extends Scenery {
     /**
      * A single star in space
      **/
-    private class Star {
+    private class Star implements Serializable {
         
         private int x;
         private int y;
