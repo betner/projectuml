@@ -13,7 +13,7 @@ import java.io.*;
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public class Sprite {
+public class Sprite implements Serializable {
     
     private Point position;      // Objects upper left corner
     private Boolean visible;     // TRUE = object performs draw()

@@ -16,6 +16,7 @@ public class LevelEditor extends GameState {
     private GeneralSerializer<Level> levelloader;
     private Level level;
     private Font smallfont;
+    private PlayerShip playership;
 
     // Different commands the editor recognizes
     private enum EditorCommandID {
@@ -25,7 +26,8 @@ public class LevelEditor extends GameState {
         TOGGLE_HELP, TOGGLE_UPDATE,
         EXIT,
         PLACE_ENEMY, INCREASE_OFFSET, DECREASE_OFFSET,
-        CHOOSE_SCENERY
+        CHOOSE_SCENERY,
+        START_PATH_EDITOR,
     };
     
     private boolean showhelp;
@@ -50,11 +52,14 @@ public class LevelEditor extends GameState {
         smallfont = new Font("Courier New", Font.PLAIN, 12);
         showhelp = true;
         update = false;
+        
+        // FIX: how do we get the playership
+        playership = new PlayerShip(new Player());
 
         // Associate keybindings to specific
         // editor commands, of at least the size
         // of the enum structure
-        keys = new Hashtable<Integer, EditorCommandID>(EditorCommandID.values().length);
+        keys = new Hashtable<Integer, EditorCommandID>();
         bindEditorKeys();
 
         // The active command to execute when we click
@@ -78,6 +83,7 @@ public class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_SPACE, EditorCommandID.PLACE_ENEMY);
         keys.put(KeyEvent.VK_F1, EditorCommandID.CHOOSE_SCENERY);
         keys.put(KeyEvent.VK_U, EditorCommandID.TOGGLE_UPDATE);
+        keys.put(KeyEvent.VK_F2, EditorCommandID.START_PATH_EDITOR);
     }
     
     /**
@@ -157,7 +163,8 @@ public class LevelEditor extends GameState {
      */
     public void update(Player player) {
         if (update) {
-            level.update(player);
+            // FIX: row below
+            level.update(playership);
         }
     }
 
@@ -197,7 +204,7 @@ public class LevelEditor extends GameState {
             switch (cmd) {
                 case EXIT:
                     // TODO: check for "Do you want to save changes?"
-                    removeMe = true;
+                    removeMe();
                     break;
 
                 case CLEAR_ALL:
@@ -276,6 +283,12 @@ public class LevelEditor extends GameState {
                             }
                         }
                     }
+                    break;
+                }
+                
+                case START_PATH_EDITOR:
+                {
+                    getGameStateManager().push(new PathEditor());
                     break;
                 }
 

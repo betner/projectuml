@@ -10,16 +10,31 @@ import java.awt.event.*;
  */
 public abstract class GameState {
     
-    protected GameStates gamestates;
-    protected Boolean removeMe = false;
+    private GameStates gamestates;
+    private Boolean removeMe = false;
     
     /**
      * Sets the GameStates-manager
      *
      * @param states
      **/
-    public void setManager(GameStates states) {
+    public void setGameStateManager(GameStates states) {
         gamestates = states;
+    }
+    
+    /**
+     * Retrieves the gamestates-manager
+     * @return GameStates
+     **/
+    public GameStates getGameStateManager() {
+        return gamestates;
+    }
+
+    /**
+     * Mark OK for removal
+     **/
+    public void removeMe() {
+        removeMe = true;
     }
     
     /**

@@ -69,7 +69,7 @@ public class Pause extends GameState {
             if (alpha > 0) {
                 alpha -= 40;
             } else {
-                removeMe = true;
+                removeMe();
             }
             // Clamp values
             if (alpha < 0) {

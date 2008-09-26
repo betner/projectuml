@@ -163,28 +163,6 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     }
 
     /**
-     * Ensure the best graphics configuration
-     */
-    private class BestConfig extends GraphicsConfigTemplate {
-
-        public boolean isGraphicsConfigSupported(GraphicsConfiguration gc) {
-            return gc.getImageCapabilities().isAccelerated() &&
-                    gc.getImageCapabilities().isTrueVolatile();
-        }
-
-        @Override
-        public GraphicsConfiguration getBestConfiguration(GraphicsConfiguration[] gc) {
-            for (GraphicsConfiguration g : gc) {
-                if (isGraphicsConfigSupported(g)) {
-                    return g;
-                }
-            }
-            return null;
-        }
-        
-    }
-    
-    /**
      * Initiates graphics configurations
      *
      * @param
@@ -196,7 +174,6 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
         config = device.getDefaultConfiguration();
-        //config = device.getBestConfiguration(new BestConfig());
         
         dumpVideoInfo(config.getDevice().getDisplayMode());
                 
@@ -229,6 +206,10 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         }
     }
     
+    /**
+     * Prints out information about a certain display mode
+     * @param mode Mode of interest
+     **/
     private void dumpVideoInfo(DisplayMode mode) {
         System.out.println("---  Video info  ---");
         System.out.print("Mode: ");
