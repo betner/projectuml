@@ -15,13 +15,7 @@ public class LaserCannon extends Weapon{
     public LaserCannon(Point position, Boolean isPlayer) {
         setPosition(position);
         setPlayer(isPlayer);
-        setShotImageFile("lasershot.png");
-        
-        //DEBUG
-        System.out.println("LaserCannon created");
-        System.out.println("At position: " + getPosition());
-        System.out.println("Point:" + getPosition().getClass().hashCode());
-        
+        setShotImageFile("lasershot.png");        
     }
     
     public void fire(Level level){
