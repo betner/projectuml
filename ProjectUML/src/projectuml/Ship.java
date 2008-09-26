@@ -10,6 +10,9 @@ import java.awt.*;
  * and sends player grasping for air in the ice cold void 
  * of space. Player loses one life.
  * 
+ * Ships have weapons stored in a list. 
+ * These are mounted to one of the ships three mounts.
+ * 
  * @author Steve Eriksson, Jens Thuresson
  */
 public class Ship extends Sprite {
@@ -20,6 +23,9 @@ public class Ship extends Sprite {
     private double dy;             // Change in y direction, negative is down
     private Boolean destroyed;     
     private ArrayList<Weapon> weaponList; // Ship's arsenal
+    private Point weaponMountMid;   // Weapon placement front center
+    private Point weaponMountLeft;  // Weapon placement left side
+    private Point weaponMountRight; // Weapon placement right side
     private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
     private final String imagePath = "";//"resources/images/";
 
@@ -182,6 +188,40 @@ public class Ship extends Sprite {
         //System.out.println(weapon);
         weaponList.add(weapon);
         
+    }
+    
+    /**
+     * Set position for weapons
+     * 
+     * @param position
+     */
+    public void setWeaponMountMid(Point position){
+        weaponMountMid = position;
+    }
+    
+    public void setWeaponMountLeft(Point position) {
+        weaponMountLeft = position;
+    }
+        
+    public void setWeaponMountRight(Point position) {
+        weaponMountRight = position;
+    }
+    
+    /**
+     * Get weapon mount positions
+     * 
+     * @return Point position
+     */
+    public Point getWeaponMountMid(){
+        return weaponMountMid;
+    }
+    
+    public Point getWeaponMountLeft(){
+        return weaponMountLeft;
+    }
+    
+    public Point getWeaponMountRight(){
+        return weaponMountRight;
     }
     
     public int getHealth(){
