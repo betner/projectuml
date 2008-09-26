@@ -11,4 +11,5 @@ package projectuml;
  */
 public class EnemyShip extends Ship{
 
+    private int offset; // Where enemy should appear in relation to level
 }

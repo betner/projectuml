@@ -195,8 +195,8 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
-        //config = device.getDefaultConfiguration();
-        config = device.getBestConfiguration(new BestConfig());
+        config = device.getDefaultConfiguration();
+        //config = device.getBestConfiguration(new BestConfig());
         
         dumpVideoInfo(config.getDevice().getDisplayMode());
                 

@@ -30,8 +30,11 @@ public class Sprite {
      * to match the loaded image.
      */
     public Sprite() {
+        position = new Point(0,0); // If set here getPosition returns null!
         hide();
         deactivate();
+        System.out.println("Sprite constructor");
+        System.out.println(getPosition());
     }
     
     /**
@@ -88,12 +91,14 @@ public class Sprite {
     }
     
     /**
-     * Draw the sprite to the screen
+     * Draw the sprite to the screen.
      * if the visibility flag is set to true.
+     * Position variable belongs to the objects that
+     * calls draw().
      */
     public void draw(Graphics2D g2d){
         if(visible){
-            g2d.drawImage(image, (int)position.getX(), (int)position.getY(), null);
+        g2d.drawImage(image, getIntPositionX(), getIntPositionY(), null);
         }
     }
     
@@ -163,7 +168,23 @@ public class Sprite {
      * Get sprite's position
      */
     public Point getPosition(){
-        return position;
+        return this.position;
+    }
+    
+    public int getIntPositionX(){
+        return (int)position.getX();
+    }
+    
+    public int getIntPositionY(){
+        return (int)position.getY();
+    }
+    
+    public double getPositionX(){
+        return position.getX();
+    }
+    
+    public double getPositionY(){
+        return position.getY();
     }
     
     /**

@@ -9,7 +9,8 @@ import java.awt.Point;
  */
 public class PlayerShip extends Ship {
     
-    private final Point START_POSITION = new Point(20, 200);
+    private final double START_X = 20;
+    private final double START_Y = 200;
     private final int SPAWN_TIME = 2000; // Time before ship gets reset after destruction 
     private Player player;
     private Timestamp time; // Used to check if given time period has passed
@@ -18,27 +19,29 @@ public class PlayerShip extends Ship {
      * Creates a new instance of PlayerShip 
      *
      */
-    public PlayerShip(){
-        this(new Point(0,0)); // Default is upper left corner
-    }
+
     
-    public PlayerShip(Point position) {
+    public PlayerShip(Player player) {
+        this.player = player;
         time = new Timestamp();
-        setPosition(START_POSITION); // Set initial position
-       // startingPosition = new Point(20, 200);
+        System.out.println(START_X);
+        System.out.println(START_Y);
+        setPosition(START_X, START_Y); // Set initial position
+        System.out.println("PlayerShip constructor");
+        System.out.println("Position: " + getPosition());
         setImageFile("playership.png"); //resources/images/playership.png";
         setImage(loadImage(getImageFile()));
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
         // Set default weapon, attach it to the
         // same position as the spaceship
-        addWeapon(new LaserCannon(position));
+        addWeapon(new LaserCannon(getPosition()));
         show();
         activate();
-        System.out.println("PlayerShip created:");
+       /* System.out.println("PlayerShip created:");
         System.out.println("=> Width: " + getWidth());
         System.out.println("=> Height: " + getHeight());
-        System.out.println("=> Health: " + getHealth());
+        System.out.println("=> Health: " + getHealth());*/
         
     }
 
@@ -57,15 +60,11 @@ public class PlayerShip extends Ship {
             // Ship is destroyed and the animation is finished
             // so we should reset the ship
             if(time.havePassed(SPAWN_TIME)){
-                setPosition(START_POSITION);
-                
-                /*
-                 * FOR SOME REASON THE CONSTANT GETS UPDATED!
-                 */
-                System.out.println("Starting position: " + START_POSITION);
+                setPosition(START_X, START_Y);
                 resetShip();
             }
         }else{
+            System.out.println("PlayerShip calls super.update()");
             super.update(); // Handle movement
         }
     }
@@ -83,8 +82,7 @@ public class PlayerShip extends Ship {
         //System.out.println("PlayerShip: super.destroyShip()");
         time.reset();
         super.destroyShip();
-        
-//        player.removeLife();
+        player.removeLife();
         
     }
     
@@ -93,7 +91,7 @@ public class PlayerShip extends Ship {
      * 
      */
    
-     public void goLeft(){
+    public void goLeft(){
         setDx(-3);
     }
     

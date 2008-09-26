@@ -16,7 +16,7 @@ public class Level implements Serializable {
     private ArrayList<Shot> playershots;
     private ArrayList<Shot> enemyshots;
     private ArrayList<Ship> enemies;
-    private ArrayList<Ship> enemieswaiting;
+//    private ArrayList<Ship> enemieswaiting;
     private int offset;
     
     /** Creates a new instance of Level */
@@ -24,7 +24,7 @@ public class Level implements Serializable {
         playershots = new ArrayList<Shot>();
         enemyshots = new ArrayList<Shot>();
         enemies = new ArrayList<Ship>();
-        enemieswaiting = new ArrayList<Ship>();
+        //enemieswaiting = new ArrayList<Ship>();
         background = null;
         offset = 0;
     }

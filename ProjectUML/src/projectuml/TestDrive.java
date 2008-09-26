@@ -21,12 +21,12 @@ import javax.swing.JFrame;
  */
 public class TestDrive extends JFrame implements KeyListener{
     
-    Player player = new Player();
-    // Jens: added to be able to compile
-    //PlayerShip ship = new PlayerShip(player);
-    PlayerShip ship = new PlayerShip(null);
+    Player player;
+    PlayerShip ship;
     
     public TestDrive(){
+        player = new Player();
+        ship = new PlayerShip(player);
         addKeyListener(this);
         setSize(400, 400);
         setBackground(Color.BLACK);
@@ -34,18 +34,17 @@ public class TestDrive extends JFrame implements KeyListener{
         setVisible(true);
         ship.show();
         ship.activate();
-        ship.setPosition(new Point(100,100));
     }
     
     public void run(){
         while(true){
             try{
-            ship.update();
-            repaint();
+               ship.update();
+               repaint();
             
             Thread.sleep(30);
             }catch(Exception e){
-                System.out.println(e);
+                System.out.println("Exception in run(): " + e);
             }
         }
     }
