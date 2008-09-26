@@ -34,10 +34,13 @@ public class PlayerShip extends Ship {
         setHeight(getImage().getHeight());
         setWidth(getImage().getWidth());
         
+        // Set weapon mount positions
+        setWeaponMounts();
+        
         // Set default weapon
         // Give it the reference to ship's position object
         // so that it get moved when the ship is
-        addWeapon(new LaserCannon(getPosition(), true));
+        addWeapon(new LaserCannon(getWeaponMountMid(), true));
         
         // Make the ship listen to draw() and update() requests
         show();
@@ -91,6 +94,29 @@ public class PlayerShip extends Ship {
         }
         player.removeLife();
         
+    }
+    
+    /*
+     * Create Point's for all the weapon mounts
+     */ 
+    private void setWeaponMounts(){
+        double x = getPositionX();
+        double y = getPositionY();
+        
+        // Create point objects
+        Point mid = clonePosition(getPosition());
+        Point right = clonePosition(getPosition());
+        Point left = clonePosition(getPosition());
+        
+        // Set correct position for the mounts
+        mid.setLocation(x + getWidth(), y + (getHeight() / 2));
+        left.setLocation(x + getWidth(), y);
+        right.setLocation(x + getWidth(), y + getHeight());
+        
+        // Set mount variables
+        setWeaponMountMid(mid);
+        setWeaponMountLeft(left);
+        setWeaponMountRight(right);     
     }
     
      /**
