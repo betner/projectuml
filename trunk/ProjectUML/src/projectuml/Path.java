@@ -60,10 +60,44 @@ public class Path implements Serializable {
     }
     
     /**
+     * Resets counter and restarts at the beginning
+     * again
+     */
+    public void reset() {
+        current = -1;
+    }
+    
+    /**
+     * @return True if it's cyclic
+     */
+    public boolean isCyclic() {
+        return cyclic;
+    }
+    
+    /**
+     * Turns cyclic property on or off
+     * @param cyclic
+     */
+    public void setCyclic(boolean cyclic) {
+        this.cyclic = cyclic;
+    }
+    
+    /**
      * Removes all points from the path
      **/
     public void removeAll() {
         pathlist.clear();
+    }
+    
+    /**
+     * Moves the path as a whole a certain amount
+     * @param deltax How many points to move on the x-axis
+     * @param deltay How many points to move on the y-axis
+     */
+    public synchronized void translate(int deltax, int deltay) {
+        for (Point point : pathlist) {
+            point.translate(deltax, deltay);
+        }
     }
     
     public static void main(String[] args) {
