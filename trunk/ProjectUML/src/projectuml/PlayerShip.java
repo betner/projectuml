@@ -11,13 +11,17 @@ import java.awt.Point;
  * 
  * Weapons are mounted on on of the three weaponmounts.
  * 
+ * @see Ship.java
+ * @see Weapon.java
  * @author Steve Eriksson, Jens Thuresson
  */
 public class PlayerShip extends Ship {
     
-    private final int START_X = 20;
+    private final int START_X = 20; // Starting position
     private final int START_Y = 200;
     private final int SPAWN_TIME = 2000; // Time before ship respawns after destruction 
+    private final int DX = 3; // Movement speed x-axis. Positive is right
+    private final int DY = 3; // Movement speed y-axis. Positive is down
     private Player player;  // Object representing the player
     private Timestamp time; // Used to check if given time period has passed
     private Point weaponMountMid;   // Weapon placement front center
@@ -181,23 +185,24 @@ public class PlayerShip extends Ship {
    
      /**
      * Methods for steering the ship in eight directions.
-     * 
+     * Default values for dx, dy are positive, which means
+     * dx = right and dy = down
      */
    
     public void goLeft(){
-        setDx(-3);
+        setDx(DX * -1); // Invert movement
     }
     
     public void goRight(){
-        setDx(3);
+        setDx(DX);
     }
     
     public void goUp(){
-        setDy(-3);
+        setDy(DY * -1); // Invert movement
     }
     
     public void goDown(){
-        setDy(3);
+        setDy(DY);
     }
 
     public void resetDx(){

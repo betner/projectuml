@@ -44,19 +44,24 @@ public abstract class Ship extends Sprite {
 
     /** 
      * Fire ship's ordinance.
-     *
+     * If ship is destroyed the ship won't fire.
+     * Obviously.
      */
     public void fire(Level l) {
-        for (Weapon w : weaponList) {
-            w.fire(l);
+        if(!isDestroyed()){
+            for (Weapon w : weaponList) {
+                w.fire(l);
+            }
         }
     }
     
+    //DEBUG method
     public void fire(TestDrive td){
-        for (Weapon w : weaponList) {
-            w.fire(td);
+        if(!isDestroyed()){
+            for (Weapon w : weaponList) {
+                w.fire(td);
+            }
         }
-        
     }
 
     /**
@@ -72,17 +77,13 @@ public abstract class Ship extends Sprite {
      */
     public void update() {
         if(isActive() && !destroyed){
-          //  double x = getPositionX() + dx;
-           // double y = getPositionY() + dy;
-           // setPosition(x, y);
-           // setPosition(getPosition().translate(dx, dy));
             updatePosition(dx, dy);
         }
-        // If we are destroyed we should make sure that
+        // If ship is destroyed we should make sure that
         // the animation is updated.
         if(destroyed){
             destructionAnimation.update();
-            System.out.println("Ship: destructionAnimation.update()");
+           // System.out.println("Ship: destructionAnimation.update()");
         }
     }
     
@@ -98,7 +99,7 @@ public abstract class Ship extends Sprite {
     public void draw(Graphics2D g2d){
        super.draw(g2d);
        if(destroyed){
-        destructionAnimation.draw(g2d); // Animation get drawn at ships position, why???
+           destructionAnimation.draw(g2d);
        }
     }
 
