@@ -213,6 +213,17 @@ public class Sprite implements Serializable {
     }
     
     /**
+     * Update current position with  delta values
+     * 
+     * @param dx
+     * @param dy
+     */
+    public void updatePosition(int dx, int dy){
+        position.translate(dx, dy);
+    }
+    
+    
+    /**
      * Get sprite's width
      * 
      * @return width

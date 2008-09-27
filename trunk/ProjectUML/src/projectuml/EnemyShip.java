@@ -5,6 +5,8 @@
 
 package projectuml;
 
+import java.awt.Point;
+
 /**
  *
  * @author Steve Eriksson, Jens Thuresson
@@ -12,4 +14,14 @@ package projectuml;
 public class EnemyShip extends Ship{
 
     private int offset; // Where enemy should appear in relation to level
+    private Point netxtPosition;
+    Path path;
+    
+    public EnemyShip(){
+        
+    }
+    
+    public void update(){
+        //path.next().
+    }
 }

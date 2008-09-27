@@ -33,6 +33,10 @@ public class MissileLauncher extends Weapon{
       //  level.addShot(new MissileShot(position));
     }
     
+    public void playSound(){
+        
+    }
+    
     //DEBUG Method
     public void fire(TestDrive td){
         System.out.println("hej");

@@ -17,8 +17,8 @@ import java.awt.image.BufferedImage;
 public class Shot extends Sprite{
   
     //private double velocity; // Shot's speed
-    private double dx;  // Movement in x-direction, 0 by default
-    private double dy;  // Movement in y-direction, 0 by default
+    private int dx;  // Movement in x-direction
+    private int dy;  // Movement in y-direction
     private int damage; // Damage done on impact
     
         
@@ -26,27 +26,25 @@ public class Shot extends Sprite{
     public Shot() {
     }
         
-    public Shot(int dx, int dy, Point position, String imageFile){
-        this(position, imageFile);
-        setDx(dx);
-        setDy(dy);
+    public Shot(int damage,Point position, String imageFile){
+        this(damage, 0, 0, position, imageFile);
     }
     
-    public Shot(Point position, String imageFile){
-        setDx(0);
-        setDy(0);
+    public Shot(int damage, int dx, int dy, Point position, String imageFile) {
+        this.damage = damage;
+        setDx(dx); 
+        setDy(dx); 
         setImageFile(imageFile); // Set image path
         setImage(loadImage(getImageFile())); // set the loaded image
         setPosition(position);
     }
+        
     /**
      * Update shot's position. By default we move it horisontally 
      * depending on it's velocity.
      */
     public void update(){
-        double x = getPositionX() + dx;
-        double y = getPositionY() + dy;
-        setPosition(x, y);
+        updatePosition(dx, dy);
     }
     
     /**
@@ -58,14 +56,6 @@ public class Shot extends Sprite{
        hide();
        deactivate();
     }
-    
-    public int getDamage(){
-        return damage;
-    }
-    
-    public void setDamage(int newDamage){
-        damage = newDamage;
-    }
                     
     public void setDx(int newDx){
         dx = newDx;
@@ -74,10 +64,17 @@ public class Shot extends Sprite{
         dx = newDy;
     }
         
+     /**
+     * DX and DY can be set with double values
+     * but they will be downcast and can loose
+     * some precision.
+     * 
+     * @param newDx
+     */
     public void setDx(double newDx) {
-        dx = newDx;
+        dx = (int)newDx;
     }
     public void setDy(double newDy) {
-        dx = newDy;
+        dy = (int)newDy;
     }
 }

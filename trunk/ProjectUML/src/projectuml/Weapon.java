@@ -2,14 +2,13 @@
 package projectuml;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
+
 /**
  * Weapon
  * 
- * Weapons aren't currently represented as graphic objects
- * onscreen like a Sprite. Weapons create shots in the level
- * when fired. That means it has to have a reference to the
- * current Level object. 
+ * Weapons aren't represented as graphic objects onscreen like a Sprite. 
+ * Weapons create shots in the level when fired. That means it has to 
+ * have a reference to the current Level object. 
  * Shots originate from weapon's position.
  * Depending on if the weapon is mounted on a player or enemy ship
  * the shots gets created differently.
@@ -22,9 +21,12 @@ import java.awt.image.BufferedImage;
 abstract public class Weapon {
     
     private String shotImageFile; // Path to the image representing a shot
-    private Point position;
+    private Point position; // Weapon position
     private boolean player; // True if weapon is on player ship
-       
+    private SoundPlayer sound; 
+    private String soundFile; // Path to the sound file
+    //private String soundName;     // Name of the sound to play
+           
     /** Creates a new instance of Weapon */
     public Weapon() {
     }
@@ -39,6 +41,14 @@ abstract public class Weapon {
     //DEBUG Method
     abstract public void fire(TestDrive td);
    
+    abstract public void playSound();
+    
+    /**
+     *  Initialize the soundplayer
+     */
+    public void initSound(){
+       // sound = new SoundPlayer();
+    }
 
     /**
      * Sets the player flag to true
@@ -79,5 +89,13 @@ abstract public class Weapon {
     
     public String getShotImageFile(){
         return shotImageFile;
+    }
+
+    public void setSoundFile(String path){
+        soundFile = path;
+    }
+    
+    public String getSoundFile(){
+        return soundFile;
     }
 }
