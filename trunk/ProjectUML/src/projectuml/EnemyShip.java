@@ -19,13 +19,13 @@ import java.awt.Point;
  */
 public class EnemyShip extends Ship{
 
-    private final int SPEED = 5;
-    private Timestamp time;         // Used to check if given time period has passed
-    private Point weaponMountMid;   // Weapon placement front center
-    private int offset;             // Where enemy should appear in relation to level
-    private Point nextPosition;     // Next point to get to
-    private Path path;              // Path to follow
-    private double angleSin;
+    private final int SPEED = 5;  // Maximum speed
+    private Timestamp time;       // Used to check if given time period has passed
+    private Point weaponMountMid; // Weapon placement front center
+    private int offset;           // Where enemy should appear in relation to level
+    private Point nextPosition;   // Next point to get to
+    private Path path;            // Path to follow
+    private double angleSin;     
     private double angleCos;
     private double hypotenuse;
     private double diffX;
@@ -42,9 +42,10 @@ public class EnemyShip extends Ship{
     
     /**
      * Update ships position. 
-     * Ship follows the points provided by path  object.
+     * Ship follows the points provided by path object.
      * First position in path list must be the position in which
      * the ship is created on the screen.
+     * Ship's takes the shortest path between to points.
      */
     public void update(){
         // Due to avrundningar the ship could have traveled 1 unit
@@ -68,8 +69,8 @@ public class EnemyShip extends Ship{
             hypotenuse = getPosition().distance(nextPosition);
             
             // Calculate angle between ship's position and next point
-            angleSin = Math.abs(diffX) / hypotenuse;
-            angleCos = Math.abs(diffY) / hypotenuse;
+            angleCos = Math.acos(Math.abs(diffX) / hypotenuse);
+            angleSin = Math.asin(Math.abs(diffY) / hypotenuse);
 
             // If the previous position was the last to visit
             // we are finished and should cease to exist.
@@ -85,8 +86,8 @@ public class EnemyShip extends Ship{
         double tempDx = 0;
         double tempDy = 0;
         
-        // b * cos alfa
-        // a * sin alfa
+        // b = c * cos alfa
+        // a = c * sin alfa
         tempDx = SPEED * angleCos;
         tempDy = SPEED * angleSin;
 
