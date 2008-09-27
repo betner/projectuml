@@ -5,27 +5,21 @@ import java.awt.*;
 
 /**
  * This is a generic ship.
- * It should be subclassed if used in the game.
- * Ship has health and when it gets below zero it breaks
- * and sends player grasping for air in the ice cold void 
- * of space. Player loses one life.
- * 
+ * It must be subclassed if used in the game.
+ * Ship has health and when it gets below zero it is destroyed.
  * Ships have weapons stored in a list. 
- * These are mounted to one of the ships three mounts.
  * 
  * @author Steve Eriksson, Jens Thuresson
  */
-public class Ship extends Sprite {
+public abstract class Ship extends Sprite {
    
     private int health;            // Ship's health
     private int speed;             // Speed relative to gamelevel
-    private double dx;             // Change in x direction, negative is left
-    private double dy;             // Change in y direction, negative is down
+    private int dx;             // Change in x direction, negative is left
+    private int dy;             // Change in y direction, negative is down
     private Boolean destroyed;     
     private ArrayList<Weapon> weaponList; // Ship's arsenal
-    private Point weaponMountMid;   // Weapon placement front center
-    private Point weaponMountLeft;  // Weapon placement left side
-    private Point weaponMountRight; // Weapon placement right side
+   
     private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
     private final String imagePath = "";//"resources/images/";
 
@@ -78,9 +72,11 @@ public class Ship extends Sprite {
      */
     public void update() {
         if(isActive() && !destroyed){
-            double x = getPositionX() + dx;
-            double y = getPositionY() + dy;
-            setPosition(x, y);
+          //  double x = getPositionX() + dx;
+           // double y = getPositionY() + dy;
+           // setPosition(x, y);
+           // setPosition(getPosition().translate(dx, dy));
+            updatePosition(dx, dy);
         }
         // If we are destroyed we should make sure that
         // the animation is updated.
@@ -189,41 +185,7 @@ public class Ship extends Sprite {
         weaponList.add(weapon);
         
     }
-    
-    /**
-     * Set position for weapons
-     * 
-     * @param position
-     */
-    public void setWeaponMountMid(Point position){
-        weaponMountMid = position;
-    }
-    
-    public void setWeaponMountLeft(Point position) {
-        weaponMountLeft = position;
-    }
-        
-    public void setWeaponMountRight(Point position) {
-        weaponMountRight = position;
-    }
-    
-    /**
-     * Get weapon mount positions
-     * 
-     * @return Point position
-     */
-    public Point getWeaponMountMid(){
-        return weaponMountMid;
-    }
-    
-    public Point getWeaponMountLeft(){
-        return weaponMountLeft;
-    }
-    
-    public Point getWeaponMountRight(){
-        return weaponMountRight;
-    }
-    
+  
     public int getHealth(){
         return health;
     }
@@ -239,11 +201,26 @@ public class Ship extends Sprite {
         dy = newDy;
     }
         
+    /**
+     * DX and DY can be set with double values
+     * but they will be downcast and can loose
+     * some precision.
+     * 
+     * @param newDx
+     */
     public void setDx(double newDx) {
-        dx = newDx;
+        dx = (int)newDx;
     }
     public void setDy(double newDy) {
-        dy = newDy;
+        dy = (int)newDy;
+    }
+    
+    public int getDx(){
+        return dx;
+    }
+    
+    public int getDy(){
+        return dy;
     }
         
 }

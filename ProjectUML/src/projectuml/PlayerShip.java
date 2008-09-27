@@ -9,15 +9,20 @@ import java.awt.Point;
  * call to the destroy method, the ship respawns at the start position. 
  * When players life reach zero the ship won't respawn anymore.
  * 
+ * Weapons are mounted on on of the three weaponmounts.
+ * 
  * @author Steve Eriksson, Jens Thuresson
  */
 public class PlayerShip extends Ship {
     
-    private final double START_X = 20;
-    private final double START_Y = 200;
+    private final int START_X = 20;
+    private final int START_Y = 200;
     private final int SPAWN_TIME = 2000; // Time before ship respawns after destruction 
     private Player player;  // Object representing the player
     private Timestamp time; // Used to check if given time period has passed
+    private Point weaponMountMid;   // Weapon placement front center
+    private Point weaponMountLeft;  // Weapon placement left side
+    private Point weaponMountRight; // Weapon placement right side
 
     /** 
      * Creates a new instance of PlayerShip 
@@ -40,7 +45,7 @@ public class PlayerShip extends Ship {
         // Set default weapon
         // Give it the reference to ship's position object
         // so that it get moved when the ship is
-        addWeapon(new LaserCannon(getWeaponMountMid(), true));
+        addWeapon(new LaserCannon(weaponMountMid, true));
         
         // Make the ship listen to draw() and update() requests
         show();
@@ -62,19 +67,25 @@ public class PlayerShip extends Ship {
     public void update(){
         // Ship is destroyed and its destruction animation is
         // done so we should "restart" by showing the ship again
-        // and placing it iin it's starting position.
+        // and placing it in it's starting position providing that
+        // player has lives left.
         if(isDestroyed() && getDestructAnimation().isDone()){
-            // Ship is destroyed and the animation is finished
-            // so we should reset the ship
+            
             if(time.havePassed(SPAWN_TIME) && player.getLives() > 0){
+                // Move weapons from current position back to ship's 
+                // starting location.
+                updateWeaponPositions(START_X - getIntPositionX(), START_Y - getIntPositionY());
+                // Move ship to starting location
                 setPosition(START_X, START_Y);
-                if(player.getLives() > 0){ // Only reset if player has lifes left
-                    resetShip();
-                }
+                resetShip();
             }
         }else{
-            super.update(); // Handle movement
+            // Handle ship movement
+            super.update(); 
+            // Make sure weapons are relocated at ships new location
+            updateWeaponPositions(getDx(), getDy());
         }
+       
     }
     
     /**
@@ -92,14 +103,13 @@ public class PlayerShip extends Ship {
             super.destroyShip();
             player.removeLife();
         }
-        player.removeLife();
-        
     }
     
     /*
      * Create Point's for all the weapon mounts
      */ 
     private void setWeaponMounts(){
+        // Get x and y values from ship's current position
         double x = getPositionX();
         double y = getPositionY();
         
@@ -114,11 +124,57 @@ public class PlayerShip extends Ship {
         right.setLocation(x + getWidth(), y + getHeight());
         
         // Set mount variables
-        setWeaponMountMid(mid);
-        setWeaponMountLeft(left);
-        setWeaponMountRight(right);     
+        weaponMountMid = mid;
+        weaponMountLeft = left;
+        weaponMountRight = right;
+       // setWeaponMountMid(mid);
+       // setWeaponMountLeft(left);
+       // setWeaponMountRight(right);   
+         
     }
     
+    /*
+     * Update weapon positions
+     * */
+    private void updateWeaponPositions(int dx, int dy){
+        weaponMountMid.translate(dx, dy);
+        weaponMountLeft.translate(dx, dy);
+        weaponMountRight.translate(dx, dy);
+    }
+    
+    /*
+    private void setWeaponMountMid(Point position) {
+        weaponMountMid = position;
+    }
+    
+    private void setWeaponMountLeft(Point position) {
+        weaponMountLeft = position;
+    }
+        
+    private void setWeaponMountRight(Point position) {
+        weaponMountRight = position;
+    }
+    */
+    
+    /**
+     * Get weapon mount positions
+     * 
+     * @return Point position
+     */
+    /*
+    private Point getWeaponMountMid(){
+        return weaponMountMid;
+    }
+    
+    private Point getWeaponMountLeft(){
+        return weaponMountLeft;
+    }
+    
+    private Point getWeaponMountRight(){
+        return weaponMountRight;
+    }
+    */
+   
      /**
      * Methods for steering the ship in eight directions.
      * 
