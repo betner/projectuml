@@ -19,7 +19,7 @@ public class Timestamp {
     }
     
     /**
-     * (Re)sets a marker in time here, to 
+     * (Re)sets a marker in time here
      */
     public void reset() {
         stamp = System.currentTimeMillis();
@@ -34,6 +34,13 @@ public class Timestamp {
     public Boolean havePassed(long milliseconds) {
         long diff = System.currentTimeMillis() - stamp;
         return diff >= milliseconds;
+    }
+    
+    /**
+     * @return Time passed in milliseconds
+     **/
+    public long getTimePassed() {
+        return System.currentTimeMillis() - stamp;
     }
     
 }

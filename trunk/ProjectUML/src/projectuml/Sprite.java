@@ -14,7 +14,7 @@ import java.io.*;
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public class Sprite implements Serializable {
+public class Sprite implements Externalizable {
     
     private Point position;      // Objects upper left corner
     private Boolean visible;     // TRUE = object performs draw()
@@ -79,6 +79,9 @@ public class Sprite implements Serializable {
            g2d.drawImage(bi, 0, 0, null);
            g2d.dispose();
            
+           // Remember filename
+           imageFile = file;
+           
            // Return the copied and optimized image
            return biCopy;
            
@@ -96,8 +99,8 @@ public class Sprite implements Serializable {
      * calls draw().
      */
     public void draw(Graphics2D g2d){
-        if(visible){
-        g2d.drawImage(image, getIntPositionX(), getIntPositionY(), null);
+        if(visible) {
+            g2d.drawImage(image, getIntPositionX(), getIntPositionY(), null);
         }
     }
     
@@ -269,12 +272,24 @@ public class Sprite implements Serializable {
     }
     
     /**
-     * Set sprite's image
+     * Loads an image from file
      * 
-     * @param bufferedImage
+     * @param filename
      */
-    public void setImage(BufferedImage bufferedImage){
-        image = bufferedImage;
+    public void loadImageFrom(String filename){
+        setImage(loadImage(filename));
+    }
+    
+    /**
+     * Alters the image directly
+     * @param image
+     **/
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        if (image != null) {
+            width = image.getWidth();
+            height = image.getHeight();
+        }
     }
     
     /**
@@ -287,12 +302,33 @@ public class Sprite implements Serializable {
     }
     
     /**
-     * Set path to the image
-     * 
-     * @param newImageFile
-     */
-    public void setImageFile(String newImageFile){
-        imageFile = newImageFile;
+     * Custom serializing because of BuffferedImage not being
+     * Serializable
+     * @param out
+     **/
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(position);
+        out.writeBoolean(visible);
+        out.writeBoolean(active);
+        out.writeInt(imageFile.length());
+        out.writeBytes(imageFile);
+    }
+
+    /**
+     * Custom serializing because of BuffferedImage not being
+     * Serializable
+     * @param out
+     **/
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        position.setLocation((Point)in.readObject());
+        visible = in.readBoolean();
+        active = in.readBoolean();
+
+        // Reload the image
+        int size = in.readInt();
+        byte[] buffer = new byte[size];
+        in.readFully(buffer);
+        loadImageFrom(new String(buffer));
     }
     
 }

@@ -34,10 +34,14 @@ public class PlayerShip extends Ship {
         this.player = player;
         time = new Timestamp();
         setPosition(START_X, START_Y); // Set initial position
-        setImageFile("playership.png");
-        setImage(loadImage(getImageFile()));
-        setHeight(getImage().getHeight());
-        setWidth(getImage().getWidth());
+        //setImageFile("playership.png");
+        //setImage(loadImage(getImageFile()));
+        loadImageFrom("playership.png");
+
+        // FIXED: not need, width&height is set in
+        //        loadImageFrom
+        //setHeight(getImage().getHeight());
+        //setWidth(getImage().getWidth());
         
         // Set weapon mount positions
         setWeaponMounts();

@@ -1,11 +1,7 @@
 package projectuml;
 
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.util.*;
@@ -70,7 +66,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
                 }
                 
                 // Used on Linux-systems to get better
-                // performance, appearently
+                // performance, appearently?
                 Toolkit.getDefaultToolkit().sync();
                 
                 //frametime = System.currentTimeMillis() - frametime;
@@ -90,6 +86,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         setIgnoreRepaint(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addWindowFocusListener(this);
+        getContentPane().setIgnoreRepaint(true);
         
         // Create space for our draw listeners
         drawlisteners = new ArrayList<DrawListener>();
@@ -97,7 +94,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         canvas = new Canvas();
         canvas.setIgnoreRepaint(true);
         canvas.setSize(640, 480);
-        add(canvas);
+        getContentPane().add(canvas);
         pack();
         
         initGraphics(canvas);
@@ -161,7 +158,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
      * @param e
      */
     public void windowLostFocus(WindowEvent e) {
-        //active = false;
+        active = false;
     }
 
     /**
@@ -196,7 +193,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
             ex.printStackTrace();
         }
         // Works...?
-        //backbuffer.setAccelerationPriority(1.0f);
+        backbuffer.setAccelerationPriority(1.0f);
         
         // Print info about our backbuffer
         ImageCapabilities caps = backbuffer.getCapabilities();
