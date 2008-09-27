@@ -19,12 +19,7 @@ import java.awt.Point;
  */
 public class EnemyShip extends Ship{
 
-    private final int START_X = 20; // Starting positions
-    private final int START_Y = 200;
-    private final int BASE_DX = 3;  // Movement speed x-axis. Positive is right
-    private final int BASE_DY = 3;  // Movement speed y-axis. Positive is down
-    private final int MAX_DX = 5;   // Maximum speed x-axis
-    private final int MAX_DY = 5;   // Maximum speed y-axis
+    private final int SPEED = 5;
     private Timestamp time;         // Used to check if given time period has passed
     private Point weaponMountMid;   // Weapon placement front center
     private int offset;             // Where enemy should appear in relation to level
@@ -33,18 +28,23 @@ public class EnemyShip extends Ship{
     private double angleSin;
     private double angleCos;
     private double hypotenuse;
+    private double diffX;
+    private double diffY;
    /* private double currentX;
     private double currentY;
     private double nextX;
     private double nextY;*/
     
     public EnemyShip(){
+        setPosition(path.next());
         //this.path = path;
     }
     
     /**
      * Update ships position. 
      * Ship follows the points provided by path  object.
+     * First position in path list must be the position in which
+     * the ship is created on the screen.
      */
     public void update(){
         // If ship is at the checkpoint, get next point to move to
@@ -54,8 +54,8 @@ public class EnemyShip extends Ship{
             // Diff between current and next coordinates
             // diffX -> negative = ship is to the right
             // diffY -> negative = ship is is below
-            double diffX = nextPosition.getX() - getPositionX();
-            double diffY = nextPosition.getY() - getPositionY();
+            diffX = nextPosition.getX() - getPositionX();
+            diffY = nextPosition.getY() - getPositionY();
             
             hypotenuse = getPosition().distance(nextPosition);
             
@@ -74,20 +74,27 @@ public class EnemyShip extends Ship{
         
         // Continue to move to next point and check ship's position
         // relative to the desired position
+        double tempDx = 0;
+        double tempDy = 0;
         
+        // b * cos alfa
+        // a * sin alfa
+        tempDx = SPEED * angleCos;
+        tempDy = SPEED * angleSin;
 
+// Conversion from double to int, add 0.5!
                
         
         // Normalize speed, dx and dy
-        if(Math.abs(tempDx) > MAX_DX){
-            setDx(MAX_DX * Math.signum(tempDx));
+        if(tempDx > SPEED){
+            setDx(SPEED * Math.signum(diffX));
         }else{
-            setDx((int)tempDx);
+            setDx(tempDx); // Fix 0.5!!!
         }
-        if(Math.abs(tempDy) > MAX_DY){
-            setDy(MAX_DY * Math.signum(tempDy));
+        if(Math.abs(diffY) > SPEED){
+            setDy(SPEED * Math.signum(diffY));
         }else{
-            setDy((int)tempDy);
+            setDy(tempDy);
         }
            
 
