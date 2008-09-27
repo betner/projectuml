@@ -69,6 +69,8 @@ public class GameWindow extends JFrame implements WindowFocusListener {
                     strategy.show();
                 }
                 
+                // Used on Linux-systems to get better
+                // performance, appearently
                 Toolkit.getDefaultToolkit().sync();
                 
                 //frametime = System.currentTimeMillis() - frametime;
