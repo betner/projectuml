@@ -8,16 +8,16 @@ import javax.swing.*;
 
 /**
  * The game's level editor
- * 
+ *
  * @author Jens Thuresson, Steve Eriksson
  */
 public class LevelEditor extends GameState {
-
+    
     private GeneralSerializer<Level> levelloader;
     private Level level;
     private Font smallfont;
     private PlayerShip playership;
-
+    
     // Different commands the editor recognizes
     private enum EditorCommandID {
         DO_NOTHING,
@@ -25,7 +25,8 @@ public class LevelEditor extends GameState {
         DELETE, CLEAR_ALL,
         TOGGLE_HELP, TOGGLE_UPDATE,
         EXIT,
-        PLACE_ENEMY, INCREASE_OFFSET, DECREASE_OFFSET,
+        PLACE_ENEMY, SET_PATH_ON_ENEMY,
+        INCREASE_OFFSET, DECREASE_OFFSET,
         CHOOSE_SCENERY,
         START_PATH_EDITOR,
     };
@@ -34,14 +35,14 @@ public class LevelEditor extends GameState {
     private boolean update;
     private Hashtable<Integer, EditorCommandID> keys;
     private EditorCommandID activecommand;
-
+    
     /**
      * Starts the level editor
      */
     public LevelEditor() {
         this(null);
     }
-
+    
     /**
      * Starts editing a certain level
      * @param level Level to edit
@@ -55,18 +56,18 @@ public class LevelEditor extends GameState {
         
         // FIX: how do we get the playership
         playership = new PlayerShip(new Player());
-
+        
         // Associate keybindings to specific
         // editor commands, of at least the size
         // of the enum structure
         keys = new Hashtable<Integer, EditorCommandID>();
         bindEditorKeys();
-
+        
         // The active command to execute when we click
         // the mouse button. By default, do nothing
         activecommand = EditorCommandID.DO_NOTHING;
     }
-
+    
     /**
      * Binds editor commands to specific keys
      */
@@ -84,6 +85,7 @@ public class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_F1, EditorCommandID.CHOOSE_SCENERY);
         keys.put(KeyEvent.VK_U, EditorCommandID.TOGGLE_UPDATE);
         keys.put(KeyEvent.VK_F2, EditorCommandID.START_PATH_EDITOR);
+        keys.put(KeyEvent.VK_P, EditorCommandID.SET_PATH_ON_ENEMY);
     }
     
     /**
@@ -97,7 +99,7 @@ public class LevelEditor extends GameState {
         g.drawString(text, x, y);
         return y + g.getFont().getSize();
     }
-
+    
     /**
      * Display help text (key bindings)
      */
@@ -118,7 +120,7 @@ public class LevelEditor extends GameState {
         if (update) {
             y = println(g, "Updating is ON", 0, y);
         }
-
+        
         // Display offset at bottom
         if (level != null) {
             g.setColor(Color.white);
@@ -126,7 +128,7 @@ public class LevelEditor extends GameState {
             g.drawString("Active command: " + activecommand.toString(), 0, 480);
         }
     }
-
+    
     /**
      * Browse for a filename
      * @param title Title of the dialog
@@ -141,7 +143,7 @@ public class LevelEditor extends GameState {
             return null;
         }
     }
-
+    
     /**
      * Browse for a file to save information to
      * @param title Title of the dialog
@@ -156,7 +158,7 @@ public class LevelEditor extends GameState {
             return null;
         }
     }
-
+    
     /**
      * Only updates if the user has turned it on
      * @param player
@@ -167,7 +169,7 @@ public class LevelEditor extends GameState {
             level.update(playership);
         }
     }
-
+    
     /**
      * Paint the level
      * @param g
@@ -176,7 +178,7 @@ public class LevelEditor extends GameState {
         // Always draw a black background
         g.setColor(Color.black);
         g.fillRect(0, 0, 640, 480);
-
+        
         // Draw the level
         if (level != null) {
             level.draw(g);
@@ -185,13 +187,13 @@ public class LevelEditor extends GameState {
             g.setFont(smallfont);
             g.drawString("***  No active level, please create a new  ***", 170, 220);
         }
-
+        
         // Display help (if active)
         if (showhelp) {
             showHelp(g);
         }
     }
-
+    
     /**
      * Respons to key press
      * @param event
@@ -206,14 +208,14 @@ public class LevelEditor extends GameState {
                     // TODO: check for "Do you want to save changes?"
                     removeMe();
                     break;
-
+                    
                 case CLEAR_ALL:
                     // TODO: ask "Really clear everything?"
                     if (level != null) {
                         level.removeAll();
                     }
                     break;
-
+                    
                 case NEW:
                     // TODO: see EXIT
                     if (level != null) {
@@ -230,28 +232,27 @@ public class LevelEditor extends GameState {
                 case TOGGLE_UPDATE:
                     update = !update;
                     break;
-
+                    
                 case INCREASE_OFFSET:
                     if (level != null) {
                         level.increaseOffset(1);
                     }
                     break;
-
+                    
                 case DECREASE_OFFSET:
                     if (level != null) {
                         level.decreaseOffset(1);
                     }
                     break;
-
+                    
                 case DO_NOTHING:
-                    break;
-
                 case DELETE:
                 case PLACE_ENEMY:
+                case SET_PATH_ON_ENEMY:
                     // Just change the active mouse command
                     activecommand = cmd;
                     break;
-
+                    
                 case SAVE: {
                     File path = browseForSave("Save level");
                     if (path != null) {
@@ -260,7 +261,7 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
-
+                
                 case LOAD: {
                     File path = browse("Load level");
                     if (path != null) {
@@ -269,7 +270,7 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
-
+                
                 case CHOOSE_SCENERY: {
                     // Browse for a already saved scenery
                     if (level != null) {
@@ -288,45 +289,71 @@ public class LevelEditor extends GameState {
                 
                 case START_PATH_EDITOR:
                 {
+                    // Switch to the path editor
                     getGameStateManager().push(new PathEditor());
                     break;
                 }
-
+                
                 default:
+                    // The current editor command id isn't implemented
                     System.err.println("***  Unknown EditorCommandID: " + cmd + "  ***");
                     break;
             }
         }
     }
-
+    
     /**
      * Respond to the active command
      * @param event
      */
     public void mouseEvent(MouseEvent event) {
-        switch (activecommand) {
-            case PLACE_ENEMY:
-                EnemyShip ship = new EnemyShip();
-                ship.setPosition(event.getPoint());
-                ship.loadImage("playership.png");
-                ship.show();
-                level.addShip(ship);
-                break;
-
-            default:
-                System.out.println(event);
-                break;
+        if (level != null) {
+            switch (activecommand) {
+                case PLACE_ENEMY:
+                {
+                    EnemyShip ship = new EnemyShip();
+                    ship.setPosition(event.getPoint());
+                    ship.loadImageFrom("playership.png");
+                    ship.show();
+                    ship.activate();
+                    level.addShip(ship);
+                    break;
+                }
+                    
+                case DELETE:
+                    // Delete enemy at the position
+                    level.removeShipAt(event.getPoint());
+                    break;
+                    
+                case SET_PATH_ON_ENEMY:
+                {
+                    // Gives an enemy a pre-created path
+                    EnemyShip ship = level.getShipAt(event.getPoint());
+                    if (ship != null) {
+                        File file = browse("Load path");
+                        if (file != null) {
+                            GeneralSerializer<Path> pathloader = new GeneralSerializer<Path>();
+                            // TODO: see below, method isn't implemented
+                            //ship.setPath(pathloader.load(file.getAbsoluteFile()));
+                        }
+                    }
+                    break;
+                }
+                
+                default:
+                    break;
+            }
         }
     }
-
+    
     /** Not used **/
     public void gainedFocus() {
     }
-
+    
     /** Not used **/
     public void lostFocus() {
     }
-
+    
     /**
      * Gets the level object we've been working
      * on

@@ -34,8 +34,9 @@ public class Shot extends Sprite{
         this.damage = damage;
         setDx(dx); 
         setDy(dx); 
-        setImageFile(imageFile); // Set image path
-        setImage(loadImage(getImageFile())); // set the loaded image
+        //setImageFile(imageFile); // Set image path
+        //setImage(loadImage(getImageFile())); // set the loaded image
+        loadImageFrom(imageFile);
         setPosition(position);
     }
         

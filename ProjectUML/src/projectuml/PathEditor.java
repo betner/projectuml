@@ -29,6 +29,9 @@ public class PathEditor extends GameState {
     };
     private Hashtable<Integer, EditorCommandID> keys;
 
+    /**
+     * Initiates the path editor
+     **/
     public PathEditor() {
         this(null);
     }
@@ -95,16 +98,23 @@ public class PathEditor extends GameState {
         y += smallfont.getSize();
 
         if (path != null && path.isCyclic()) {
+            g.setColor(Color.magenta);
             y = println(g, "Path is cyclic", 0, y);
+            y += smallfont.getSize();
         }
 
         // General help commands
+        g.setColor(Color.white);
         y = println(g, "Left mouse button adds point", 0, y);
         y = println(g, "Right mouse button removes latest point added", 0, y);
         y += smallfont.getSize();
         y = println(g, "Use arrow keys to move path as a whole", 0, y);
     }
 
+    /**
+     * Repaints the path editor
+     * @param g
+     **/
     public void draw(Graphics2D g) {
         // Always draw a black background
         g.setColor(Color.black);
