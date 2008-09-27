@@ -47,6 +47,14 @@ public class EnemyShip extends Ship{
      * the ship is created on the screen.
      */
     public void update(){
+        // Due to avrundningar the ship could have traveled 1 unit
+        // wrong in either x or y direction. So if we are one unit 
+        // off in either axis we set ship's position to be the
+        // desired position.
+       if(getPosition().distance(nextPosition) < 2){
+           setPosition(nextPosition);
+       }
+        
         // If ship is at the checkpoint, get next point to move to
         if(getPosition().equals(nextPosition)){
             nextPosition = path.next();
@@ -82,23 +90,24 @@ public class EnemyShip extends Ship{
         tempDx = SPEED * angleCos;
         tempDy = SPEED * angleSin;
 
-// Conversion from double to int, add 0.5!
-               
+        // Conversion from double to int later can give avrundningsfel.
+        // add 0.5 to the result.
+        tempDx += (tempDx < 0 ? -0.5 : 0.5);
+        tempDy += (tempDy < 0 ? -0.5 : 0.5);
         
-        // Normalize speed, dx and dy
+        // Normalize speed, dx and dy. This is where we could get
+        // loss off precision due to cast from double to int.
         if(tempDx > SPEED){
             setDx(SPEED * Math.signum(diffX));
         }else{
-            setDx(tempDx); // Fix 0.5!!!
+            setDx((int)tempDx); // Fix 0.5!!!
         }
         if(Math.abs(diffY) > SPEED){
             setDy(SPEED * Math.signum(diffY));
         }else{
-            setDy(tempDy);
+            setDy((int)tempDy);
         }
-           
-
-        
+          
         super.update(); // Move the ship
     }
        
