@@ -14,7 +14,7 @@ import java.awt.Point;
 public class EnemyShip extends Ship{
 
     private int offset; // Where enemy should appear in relation to level
-    private Point netxtPosition;
+    private Point nextPosition;
     Path path;
     
     public EnemyShip(){
@@ -22,6 +22,9 @@ public class EnemyShip extends Ship{
     }
     
     public void update(){
+        if(getPosition().equals(nextPosition)){
+            
+        }
         //path.next().
     }
 }
