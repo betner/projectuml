@@ -14,6 +14,8 @@ import java.awt.Point;
  * the shots gets created differently.
  * It is the weapon that sets the Shot's parameters such as
  * direction and image.
+ * When weapon is fired it calls the level and asks it to play
+ * the file set in soundName variable.
  *
  * @see Shot
  * @author Steve Eriksson, Jens Thuresson
@@ -24,8 +26,7 @@ abstract public class Weapon {
     private Point position; // Weapon position
     private boolean player; // True if weapon is on player ship
     private SoundPlayer sound; 
-    private String soundFile; // Path to the sound file
-    //private String soundName;     // Name of the sound to play
+    private String soundName; // Name of the sound to play
            
     /** Creates a new instance of Weapon */
     public Weapon() {
