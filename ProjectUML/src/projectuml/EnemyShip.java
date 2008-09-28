@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package projectuml;
 
@@ -12,7 +8,7 @@ import java.awt.Point;
  * 
  * This is a ship that moves by itself. The movement is controlled by
  * a path object.
- *
+ * 
  * @see Path.java
  *
  * @author Steve Eriksson, Jens Thuresson
@@ -25,19 +21,16 @@ public class EnemyShip extends Ship{
     private int offset;           // Where enemy should appear in relation to level
     private Point nextPosition;   // Next point to get to
     private Path path;            // Path to follow
-    private double angleSin;     
+    private double angleSin;      
     private double angleCos;
     private double hypotenuse;
     private double diffX;
     private double diffY;
-   /* private double currentX;
-    private double currentY;
-    private double nextX;
-    private double nextY;*/
     
-    public EnemyShip(){
-        setPosition(path.next());
-        //this.path = path;
+    public EnemyShip(Path path, String imageFile){
+        this.path = path;
+        setPosition(path.next()); // Load the first position
+        setImage(loadImage(imageFile));
     }
     
     /**
@@ -54,8 +47,9 @@ public class EnemyShip extends Ship{
         // If the distance between current position and the next is less than 
         // ship's speed, move to next point and continue to the next saving 
         // number of steps ship has left. This way the ship moves with a more
-        // even speed.
-       if(distance < 3){
+        // even speed and it nullifies any rounding errors which may cause
+        // the ship to never reach next point exactly on the pixel.
+       if(distance < SPEED){
            setPosition(nextPosition);
            
            // Fix loss of precision by adding 0.5 to the difference
@@ -85,8 +79,6 @@ public class EnemyShip extends Ship{
             // Calculate angle between ship's position and next point
             angleCos = Math.acos(Math.abs(diffX) / hypotenuse);
             angleSin = Math.asin(Math.abs(diffY) / hypotenuse);
-
-           
         }
         
         // Continue to move to next point and check ship's position
@@ -117,7 +109,7 @@ public class EnemyShip extends Ship{
         if(tempDx > SPEED){
             setDx(SPEED * Math.signum(diffX));
         }else{
-            setDx((int)tempDx); // Fix 0.5!!!
+            setDx((int)tempDx); 
         }
         if(Math.abs(diffY) > SPEED){
             setDy(SPEED * Math.signum(diffY));
@@ -126,6 +118,11 @@ public class EnemyShip extends Ship{
         }
           
         super.update(); // Move the ship
+        
+        /*
+         * We could add a timer here and make the ship fire it's weapon
+         * at a given time interval
+         * /
     }
        
         
