@@ -18,7 +18,6 @@ public class LaserCannon extends Weapon{
         setPosition(position);
         setPlayer(isPlayer);
         setShotImageFile("lasershot.png");
-        setSoundFile("");
     }
     
     public void fire(Level level){
@@ -35,13 +34,14 @@ public class LaserCannon extends Weapon{
             shot.setDx(DX * -1);
             level.addEnemyShot(shot);
         }
-        
+        level.playSound("lasershot");
     }
     
     public void playSound(){
         
     }
     
+    // Debug method
     public void fire(TestDrive td){
         System.out.println("Weapon: fire()");
         Point position = clone(getPosition());

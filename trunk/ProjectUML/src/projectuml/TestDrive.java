@@ -22,12 +22,23 @@ public class TestDrive extends JFrame implements KeyListener{
     
     Player player;
     PlayerShip ship;
+    Path path;
+    EnemyShip enemy;
     ArrayList<Shot> shots;
     
     public TestDrive(){
+        path = new Path(false);
+        path.addPoint(new Point(400, 200));
+        path.addPoint(new Point(200, 170));
+        path.addPoint(new Point(150, 150));
+        path.addPoint(new Point(100, 100));
+        path.addPoint(new Point(50, 200));
         shots = new ArrayList<Shot>();
         player = new Player();
         ship = new PlayerShip(player);
+        enemy = new EnemyShip(path, "enemyship1.png");
+        enemy.show();
+        enemy.activate();
         addKeyListener(this);
         setSize(400, 400);
         setBackground(Color.BLACK);
@@ -41,6 +52,10 @@ public class TestDrive extends JFrame implements KeyListener{
         while(true){
             try{
                ship.update();
+               if(enemy.isActive()){
+                   enemy.update();
+               }
+
                for(Shot shot : shots){
                    shot.update();
                }
@@ -61,6 +76,10 @@ public class TestDrive extends JFrame implements KeyListener{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, this.getWidth(), this.getWidth());
         ship.draw((Graphics2D)g);
+        if(enemy.isActive()){
+        enemy.draw((Graphics2D)g);    
+        }
+        
         for(Shot shot : shots){
             shot.draw((Graphics2D)g);
            // System.out.println("shot.draw()");

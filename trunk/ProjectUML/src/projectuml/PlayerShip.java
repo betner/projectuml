@@ -20,6 +20,7 @@ public class PlayerShip extends Ship {
     private final int START_X = 20; // Starting position
     private final int START_Y = 200;
     private final int SPAWN_TIME = 2000; // Time before ship respawns after destruction 
+    private final int START_HEALTH = 1000;
     private final int DX = 3; // Movement speed x-axis. Positive is right
     private final int DY = 3; // Movement speed y-axis. Positive is down
     private Player player;  // Object representing the player
@@ -42,10 +43,8 @@ public class PlayerShip extends Ship {
         //setImage(loadImage(getImageFile()));
         loadImageFrom("playership.png");
 
-        // FIXED: not need, width&height is set in
-        //        loadImageFrom
-        //setHeight(getImage().getHeight());
-        //setWidth(getImage().getWidth());
+        // Set initial health
+        increaseHealth(START_HEALTH);
         
         // Set weapon mount positions
         setWeaponMounts();

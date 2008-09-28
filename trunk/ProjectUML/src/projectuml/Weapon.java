@@ -24,8 +24,7 @@ abstract public class Weapon {
     
     private String shotImageFile; // Path to the image representing a shot
     private Point position; // Weapon position
-    private boolean player; // True if weapon is on player ship
-    private SoundPlayer sound; 
+    private boolean player; // True if weapon is on player shipxs
     private String soundName; // Name of the sound to play
            
     /** Creates a new instance of Weapon */
@@ -42,15 +41,7 @@ abstract public class Weapon {
     //DEBUG Method
     abstract public void fire(TestDrive td);
    
-    abstract public void playSound();
-    
-    /**
-     *  Initialize the soundplayer
-     */
-    public void initSound(){
-       // sound = new SoundPlayer();
-    }
-
+       
     /**
      * Sets the player flag to true
      */
