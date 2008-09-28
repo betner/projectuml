@@ -14,14 +14,14 @@ import java.io.*;
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public class Sprite implements Externalizable {
+public class Sprite implements Serializable {
     
     private Point position;      // Objects upper left corner
     private Boolean visible;     // TRUE = object performs draw()
     private Boolean active;      // TRUE = object performs update()
     private int width;           // Should be set if inShape is used
     private int height;
-    private BufferedImage image; // Graphic representing this object
+    transient private BufferedImage image; // Graphic representing this object
     private String imageFile;    // Path to image
     
     /** 
@@ -306,29 +306,40 @@ public class Sprite implements Externalizable {
      * Serializable
      * @param out
      **/
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(position);
-        out.writeBoolean(visible);
-        out.writeBoolean(active);
-        out.writeInt(imageFile.length());
-        out.writeBytes(imageFile);
-    }
+//    public void writeExternal(ObjectOutput out) throws IOException {
+//        out.writeObject(position);
+//        out.writeBoolean(visible);
+//        out.writeBoolean(active);
+//        out.writeInt(imageFile.length());
+//        out.writeBytes(imageFile);
+//    }
 
     /**
      * Custom serializing because of BuffferedImage not being
      * Serializable
      * @param out
      **/
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        position.setLocation((Point)in.readObject());
-        visible = in.readBoolean();
-        active = in.readBoolean();
-
-        // Reload the image
-        int size = in.readInt();
-        byte[] buffer = new byte[size];
-        in.readFully(buffer);
-        loadImageFrom(new String(buffer));
+//    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+//        position.setLocation((Point)in.readObject());
+//        visible = in.readBoolean();
+//        active = in.readBoolean();
+//
+//        // Reload the image
+//        int size = in.readInt();
+//        byte[] buffer = new byte[size];
+//        in.readFully(buffer);
+//        loadImageFrom(new String(buffer));
+//    }
+    
+//    private void writeObject(ObjectOutputStream out) throws IOException {
+//        out.defaultWriteObject();
+//    }
+    
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        if (imageFile != null) {
+            loadImageFrom(imageFile);
+        }
     }
     
 }

@@ -2,7 +2,7 @@ package projectuml;
 
 import java.awt.Graphics2D;
 import java.awt.event.*;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Manages the different states in the game
