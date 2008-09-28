@@ -29,10 +29,10 @@ public class TestDrive extends JFrame implements KeyListener{
     public TestDrive(){
         path = new Path(false);
         path.addPoint(new Point(400, 200));
-        path.addPoint(new Point(200, 170));
-        path.addPoint(new Point(150, 150));
-        path.addPoint(new Point(100, 100));
-        path.addPoint(new Point(50, 200));
+        path.addPoint(new Point(380, 180));
+        path.addPoint(new Point(360, 160));
+        path.addPoint(new Point(340, 180));
+        path.addPoint(new Point(450, 400));
         shots = new ArrayList<Shot>();
         player = new Player();
         ship = new PlayerShip(player);

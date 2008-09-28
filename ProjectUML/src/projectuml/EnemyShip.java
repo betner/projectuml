@@ -15,7 +15,7 @@ import java.awt.Point;
  */
 public class EnemyShip extends Ship{
 
-    private final int SPEED = 2;  // Maximum speed
+    private final int SPEED = 3;  // Maximum speed
     private Timestamp time;       // Used to check if given time period has passed
     private Point weaponMountMid; // Weapon placement front center
     private int offset;           // Where enemy should appear in relation to level
@@ -93,7 +93,6 @@ public class EnemyShip extends Ship{
                 System.out.println("Enemy: nextPosition == null");
                 deactivate();
                 hide();
-                 System.out.println("XXX");
                 return;
             }
         }
