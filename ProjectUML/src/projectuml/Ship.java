@@ -191,11 +191,7 @@ public abstract class Ship extends Sprite {
         return health;
     }
     
-    public void setHealth(int newHealth){
-        health = newHealth;
-    }
-    
-    public void setDx(int newDx){
+    public void setDx(int newDx) {
         dx = newDx;
     }
     public void setDy(int newDy) {
