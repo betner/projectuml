@@ -122,11 +122,7 @@ public class EnemyShip extends Ship{
         /*
          * We could add a timer here and make the ship fire it's weapon
          * at a given time interval
-         * /
+         */ 
+            
     }
-       
-        
-        
-        
 }
-
