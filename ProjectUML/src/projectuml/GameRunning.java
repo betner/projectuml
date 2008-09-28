@@ -12,7 +12,9 @@ import java.awt.event.*;
  */
 public class GameRunning extends GameState {
     
+    // Time value in milliseconds for an offset
     private final long OFFSET_PERIOD = 1000;
+    
     private GeneralSerializer<Level> levelloader;
     private Level currentlevel;
     private PlayerShip playership;
@@ -67,6 +69,7 @@ public class GameRunning extends GameState {
         keys.put(KeyEvent.VK_P, GameCommandID.PAUSE);
         keys.put(KeyEvent.VK_PAUSE, GameCommandID.PAUSE);
         keys.put(KeyEvent.VK_F12, GameCommandID.START_LEVEL_EDITOR);
+        keys.put(KeyEvent.VK_SPACE, GameCommandID.FIRE_WEAPON);
     }
     
     /**
@@ -78,6 +81,7 @@ public class GameRunning extends GameState {
             currentlevel.update(playership);
         }
         playership.update();
+        restrictPlayerShip();
     }
     
     /**
@@ -99,7 +103,8 @@ public class GameRunning extends GameState {
     }
     
     /**
-     * Respond to key events
+     * Respond to key events, e.g. most importantly moving
+     * the player ship
      * @param event
      **/
     public void keyEvent(KeyEvent event) {
@@ -123,6 +128,10 @@ public class GameRunning extends GameState {
                     playership.goLeft();
                     break;
                     
+                case FIRE_WEAPON:
+                    playership.fire(currentlevel);
+                    break;
+                    
                 case PAUSE:
                     getGameStateManager().push(new Pause());
                     break;
@@ -134,6 +143,23 @@ public class GameRunning extends GameState {
                 default:
                     break;
             }
+        }
+    }
+    
+    /**
+     * Ensures the player ship isn't going off-screen
+     **/
+    private void restrictPlayerShip() {
+        final double MAX_X = 640 - playership.getWidth();
+        final double MAX_Y = 480 - playership.getHeight();
+        
+        Point pos = playership.getPosition();
+        if (pos.getX() <= 0 || pos.getX() >= MAX_X) {
+            playership.resetDx();
+        }
+        
+        if (pos.getY() <= 0 || pos.getY() >= MAX_Y) {
+            playership.resetDy();
         }
     }
     

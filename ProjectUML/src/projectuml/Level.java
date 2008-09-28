@@ -3,7 +3,7 @@ package projectuml;
 
 import java.util.*;
 import java.awt.*;
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * A level in the game
@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 public class Level implements Serializable {
     
+    private static final long serialVersionID = 1L;
     transient private SoundPlayer soundplayer;
     private Scenery background;
     private ArrayList<Shot> playershots;
@@ -221,6 +222,28 @@ public class Level implements Serializable {
      **/
     public void playSound(String keyname) {
         soundplayer.play(keyname);
+    }
+    
+    /**
+     * Does a normal serialization of the object
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+    
+    /**
+     * Does a normal serialization of the object AND restarts
+     * the sound player
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        soundplayer = new SoundPlayer();
+        
+        // TODO: should we reset the offset here? Every new level
+        //       we start should start at offset zero, but if we forget
+        //       to zero it out in the leveleditor it will be at that
+        //       last offset.
+        offset = 0;
     }
  
 }
