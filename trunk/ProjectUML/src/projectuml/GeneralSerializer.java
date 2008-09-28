@@ -21,6 +21,8 @@ public class GeneralSerializer<Type> {
                 FileOutputStream file = new FileOutputStream(filename);
                 ObjectOutputStream outstream = new ObjectOutputStream(file);
                 outstream.writeObject(object);
+                outstream.close();
+                file.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -40,7 +42,10 @@ public class GeneralSerializer<Type> {
         try {
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream instream = new ObjectInputStream(file);
-            return (Type)instream.readObject();
+            Type obj = (Type)instream.readObject();
+            instream.close();
+            file.close();
+            return obj;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

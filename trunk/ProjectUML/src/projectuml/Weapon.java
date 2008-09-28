@@ -93,10 +93,10 @@ abstract public class Weapon {
     }
 
     public void setSoundFile(String path){
-        soundFile = path;
+        soundName = path;
     }
     
     public String getSoundFile(){
-        return soundFile;
+        return soundName;
     }
 }
