@@ -30,10 +30,10 @@ public class LaserCannon extends Weapon{
 
         if(isPlayer()){
             shot.setDx(DX);
-  //          level.addPlayerShot(shot);
+            level.addPlayerShot(shot);
         }else{
             shot.setDx(DX * -1);
-//            level.addEnemyShot(shot);
+            level.addEnemyShot(shot);
         }
         
     }

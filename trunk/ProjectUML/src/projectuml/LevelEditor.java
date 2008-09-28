@@ -311,9 +311,9 @@ public class LevelEditor extends GameState {
             switch (activecommand) {
                 case PLACE_ENEMY:
                 {
-                    EnemyShip ship = new EnemyShip();
+                    // Create an enemy ship
+                    EnemyShip ship = new EnemyShip(new Path(false), "playership.png");
                     ship.setPosition(event.getPoint());
-                    ship.loadImageFrom("playership.png");
                     ship.show();
                     ship.activate();
                     level.addShip(ship);

@@ -142,6 +142,8 @@ public class Level implements Serializable {
      */
     public void addPlayerShot(Shot shot) {
         if (shot != null) {
+            // FIX: all sprites should be visible by default!
+            shot.show();
             playershots.add(shot);
         }
     }
@@ -152,6 +154,8 @@ public class Level implements Serializable {
      **/
     public void addEnemyShot(Shot shot) {
         if (shot != null) {
+            // FIX: see above
+            shot.show();
             enemyshots.add(shot);
         }
     }

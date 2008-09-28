@@ -1,12 +1,14 @@
 package projectuml;
 
+import java.io.*;
+
 /**
  * Records a marker in time and provides methods
  * for measuring how much time has passed since then
  *
  * @author Jens Thuresson, Steve Eriksson
  */
-public class Timestamp {
+public class Timestamp implements Serializable {
 
     private long stamp;
     
@@ -41,6 +43,14 @@ public class Timestamp {
      **/
     public long getTimePassed() {
         return System.currentTimeMillis() - stamp;
+    }
+    
+    /**
+     * Serialize it as normal AND restart the timer
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        reset();
     }
     
 }

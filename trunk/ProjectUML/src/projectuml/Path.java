@@ -39,6 +39,9 @@ public class Path implements Serializable {
             return pathlist.get(current);
         } else {
             return null;
+            // TODO: still return null, but we must change in
+            // EnemyShip
+            //return new Point(0, 0);
         }
     }
     
@@ -98,6 +101,21 @@ public class Path implements Serializable {
         for (Point point : pathlist) {
             point.translate(deltax, deltay);
         }
+    }
+    
+    /**
+     * Does a normal serialization
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+    
+    /**
+     * Does a normal serialization AND resets the current postition
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        reset();
     }
     
     public static void main(String[] args) {
