@@ -48,17 +48,31 @@ public class EnemyShip extends Ship{
      * Ship's takes the shortest path between to points.
      */
     public void update(){
-        // Due to avrundningar the ship could have traveled 1 unit
-        // wrong in either x or y direction. So if we are one unit 
-        // off in either axis we set ship's position to be the
-        // desired position.
-       if(getPosition().distance(nextPosition) < 2){
+        int remainingMoves = 0;
+        double distance = getPosition().distance(nextPosition);
+        
+        // If the distance between current position and the next is less than 
+        // ship's speed, move to next point and continue to the next saving 
+        // number of steps ship has left. This way the ship moves with a more
+        // even speed.
+       if(distance < 3){
            setPosition(nextPosition);
+           
+           // Fix loss of precision by adding 0.5 to the difference
+           remainingMoves = (int)(SPEED - distance + 0.5);
        }
         
         // If ship is at the checkpoint, get next point to move to
         if(getPosition().equals(nextPosition)){
             nextPosition = path.next();
+            
+            // If the previous position was the last to visit
+            // we are finished and should cease to exist.
+            if(nextPosition == null){
+                deactivate();
+                hide();
+                return;
+            }
             
             // Diff between current and next coordinates
             // diffX -> negative = ship is to the right
@@ -72,13 +86,7 @@ public class EnemyShip extends Ship{
             angleCos = Math.acos(Math.abs(diffX) / hypotenuse);
             angleSin = Math.asin(Math.abs(diffY) / hypotenuse);
 
-            // If the previous position was the last to visit
-            // we are finished and should cease to exist.
-            if(nextPosition == null){
-                deactivate();
-                hide();
-                return;
-            }
+           
         }
         
         // Continue to move to next point and check ship's position
@@ -90,11 +98,19 @@ public class EnemyShip extends Ship{
         // a = c * sin alfa
         tempDx = SPEED * angleCos;
         tempDy = SPEED * angleSin;
+        
+        // If we had remaining moves left from last update we should
+        // add them to the distance we travel this time.
+        if(remainingMoves < 0){
+            tempDx += remainingMoves * angleCos;
+            tempDy += remainingMoves * angleSin;
+        }
 
-        // Conversion from double to int later can give avrundningsfel.
+        // Conversion from double to int later can give rounding error.
         // add 0.5 to the result.
         tempDx += (tempDx < 0 ? -0.5 : 0.5);
         tempDy += (tempDy < 0 ? -0.5 : 0.5);
+         
         
         // Normalize speed, dx and dy. This is where we could get
         // loss off precision due to cast from double to int.
