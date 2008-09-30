@@ -6,7 +6,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * A path that a ship follows
+ * A path that a ship follows. A cyclic path is
+ * a path that returns to the first point when it
+ * reaches the end.
  *
  * @author Jens Thuresson, Steve Eriksson
  */
@@ -18,6 +20,7 @@ public class Path implements Serializable {
 
     /**
      * Creates an empty path
+     * @param cyclic True if the path should be cyclic
      **/
     public Path(boolean cyclic) {
         pathlist = new ArrayList<Point>();
@@ -47,7 +50,7 @@ public class Path implements Serializable {
     
     /**
      * Adds a point to the path
-     * @param point
+     * @param point Position
      **/
     public void addPoint(Point point) {
         pathlist.add(point);
@@ -63,7 +66,7 @@ public class Path implements Serializable {
     }
     
     /**
-     * Resets counter and restarts at the beginning
+     * Resets counter and (re)starts at the beginning
      * again
      */
     public void reset() {
@@ -79,7 +82,7 @@ public class Path implements Serializable {
     
     /**
      * Turns cyclic property on or off
-     * @param cyclic
+     * @param cyclic True if the path should be cyclic
      */
     public void setCyclic(boolean cyclic) {
         this.cyclic = cyclic;
@@ -105,32 +108,22 @@ public class Path implements Serializable {
     
     /**
      * Does a normal serialization
-     **/
+     * @param out Stream to write to
+     * @throws java.io.IOException
+     */
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-    
+
     /**
      * Does a normal serialization AND resets the current postition
-     **/
+     * @param in Stream to read from
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         reset();
-    }
-    
-    public static void main(String[] args) {
-        Path path = new Path(false);
-        path.addPoint(new Point(0, 0));
-        path.addPoint(new Point(10, 10));
-        path.addPoint(new Point(40, 0));
-        path.addPoint(new Point(-10, 200));
-        
-        while (true) {
-            Point p = path.next();
-            if (p == null)
-                break;
-            System.out.println(p);
-        }
     }
     
 }

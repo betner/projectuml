@@ -24,7 +24,7 @@ public class AnimatedSprite extends Sprite {
    private int sequence;   // Sequence number of image to draw
    private  Boolean repeat; // Should animation repeat
    private  Boolean done;   // Set to true when we don't repeat and we're done
-   transient private  ArrayList<BufferedImage> imageList;  // Images to animate
+   transient private ArrayList<BufferedImage> imageList;  // Images to animate
     
     
     /**

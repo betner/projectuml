@@ -82,7 +82,7 @@ public abstract class Ship extends Sprite {
         // If ship is destroyed we should make sure that
         // the animation is updated.
         if(destroyed){
-            destructionAnimation.update();
+           destructionAnimation.update();
            // System.out.println("Ship: destructionAnimation.update()");
         }
     }

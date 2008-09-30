@@ -13,12 +13,17 @@ import java.io.*;
 public class Level implements Serializable {
     
     private static final long serialVersionID = 1L;
-    transient private SoundPlayer soundplayer;
     private Scenery background;
     private ArrayList<Shot> playershots;
     private ArrayList<Shot> enemyshots;
     private ArrayList<EnemyShip> enemies;
     private int offset;
+    private boolean editormode;
+    
+    // These are transient, meaning that they
+    // aren't going to get serialized
+    transient private SoundPlayer soundplayer;
+    transient private Font font;
     
     /** Creates a new instance of Level */
     public Level() {
@@ -28,6 +33,8 @@ public class Level implements Serializable {
         background = null;
         offset = 0;
         soundplayer = new SoundPlayer();
+        editormode = false;
+        font = new Font("Courier New", Font.PLAIN, 10);
     }
 
     /**
@@ -44,6 +51,25 @@ public class Level implements Serializable {
      */
     public void setScenery(Scenery background) {
         this.background = background;
+    }
+    
+    /**
+     * Desides whether we're in level editor mode,
+     * or not. When we're in level editor mode, we're
+     * going to display more information when we draw
+     * our scene
+     * @param mode Set to true to turn level editor mode on
+     */
+    public void setEditorMode(boolean mode) {
+        editormode = mode;
+    }
+    
+    /**
+     * @see setEditorMode
+     * @return True if we're in level editor mode
+     */
+    public boolean inEditorMode() {
+        return editormode;
     }
     
     /**
@@ -88,8 +114,12 @@ public class Level implements Serializable {
             
             // Does it hit an enemy?
             for (Ship enemy : enemies) {
+                // TODO: only update enemies with >= offset
                 if (shot.inShape(enemy.getPosition())) {
                     shot.touch(enemy);
+                    // No need to check for additional
+                    // hits
+                    break;
                 }
             }
         }
@@ -106,6 +136,7 @@ public class Level implements Serializable {
         
         // All the enemies
         for (EnemyShip ship : enemies) {
+            // TODO: only update enemies with >= offset
             ship.update();
         }
     }
@@ -122,7 +153,18 @@ public class Level implements Serializable {
         
         // Draw the enemies
         for (EnemyShip ship : enemies) {
+            // TODO: only draw enemies with >= offset
             ship.draw(g);
+            
+            // Draw more info if we're in editor mode
+            if (editormode) {
+                g.setColor(Color.red);
+                g.setFont(font);
+                g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
+                        ship.getWidth(), ship.getHeight());
+                Integer health = new Integer(ship.getHealth());
+                g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
+            }
         }
         
         // Draw the enemy bullets
@@ -206,8 +248,7 @@ public class Level implements Serializable {
         enemyshots.clear();
         playershots.clear();
         offset = 0;
-        
-        // Erase background scenery too?
+        background = null;
     }
     
     /**
@@ -241,13 +282,20 @@ public class Level implements Serializable {
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        
+        // Recreate our transient objects since
+        // our constructor doesn't get called
         soundplayer = new SoundPlayer();
+        font = new Font("Courier New", Font.PLAIN, 10);
         
         // TODO: should we reset the offset here? Every new level
         //       we start should start at offset zero, but if we forget
         //       to zero it out in the leveleditor it will be at that
         //       last offset.
         offset = 0;
+        
+        // We always start in normal mode (as in NOT level editor mode)
+        editormode = false;
     }
  
 }
