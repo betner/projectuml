@@ -12,7 +12,7 @@ import java.io.*;
  */
 public class Level implements Serializable {
     
-    private static final long serialVersionID = 1L;
+    private static final long serialVersionUID = 1L;
     private Scenery background;
     private ArrayList<Shot> playershots;
     private ArrayList<Shot> enemyshots;
@@ -32,7 +32,7 @@ public class Level implements Serializable {
         enemies = new ArrayList<EnemyShip>();
         background = null;
         offset = 0;
-        soundplayer = new SoundPlayer();
+        soundplayer = new SoundPlayer(".");
         editormode = false;
         font = new Font("Courier New", Font.PLAIN, 10);
     }
@@ -270,6 +270,22 @@ public class Level implements Serializable {
     }
     
     /**
+     * Loop plays a previously loaded sound
+     * @param keyname Key name of the loaded sound
+     */
+    public void loopSound(String keyname) {
+        soundplayer.loopPlay(keyname);
+    }
+    
+    /**
+     * Stops a particular sound from playing
+     * @param keyname Key name of the loaded sound
+     */
+    public void stopSound(String keyname) {
+        soundplayer.stop(keyname);
+    }
+    
+    /**
      * Does a normal serialization of the object
      **/
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -285,7 +301,7 @@ public class Level implements Serializable {
         
         // Recreate our transient objects since
         // our constructor doesn't get called
-        soundplayer = new SoundPlayer();
+        soundplayer = new SoundPlayer(".");
         font = new Font("Courier New", Font.PLAIN, 10);
         
         // TODO: should we reset the offset here? Every new level

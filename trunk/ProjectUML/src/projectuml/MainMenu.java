@@ -2,7 +2,6 @@ package projectuml;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.JFrame;
 
 /**
  * Main menu in the game
@@ -37,7 +36,7 @@ public class MainMenu extends GameState {
 
         // Load theme sound and play it!
         sound = new SoundPlayer();
-        sound.loadSound("theme.wav");
+        sound.loadSound("mainmenu.wav");
 
         // Record the current time
         stamp = new Timestamp();
@@ -91,6 +90,8 @@ public class MainMenu extends GameState {
         if (stamp.havePassed(2000)) {
             logo.update();
 
+            // When the main logo is fully visible,
+            // start fading in the credits section
             if (logo.finished()) {
                 credits.update();
             }
@@ -101,7 +102,7 @@ public class MainMenu extends GameState {
      * We've lost focus, pause our music
      */
     public void lostFocus() {
-        sound.stop("theme");
+        sound.stop("mainmenu");
     }
 
     /**
@@ -109,7 +110,7 @@ public class MainMenu extends GameState {
      */
     public void gainedFocus() {
         // TODO: uncomment the following line
-        //sound.loopPlay("theme");
+        sound.loopPlay("mainmenu");
         //sound.play("theme");
     }
 }
