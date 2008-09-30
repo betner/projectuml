@@ -2,6 +2,7 @@
 package projectuml;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  * Weapon
@@ -20,7 +21,7 @@ import java.awt.Point;
  * @see Shot
  * @author Steve Eriksson, Jens Thuresson
  */
-abstract public class Weapon {
+abstract public class Weapon implements Serializable {
     
     private String shotImageFile; // Path to the image representing a shot
     private Point position; // Weapon position
