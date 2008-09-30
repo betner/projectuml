@@ -1,11 +1,7 @@
 package projectuml;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.*;
+import java.util.*;
 import javax.sound.sampled.*;
 import javax.sound.*;
 

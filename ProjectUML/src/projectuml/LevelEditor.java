@@ -18,9 +18,9 @@ public class LevelEditor extends GameState {
     private Level level;
     private Font smallfont;
     private PlayerShip playership;
+ 
     // Different commands the editor recognizes
     private enum EditorCommandID {
-
         DO_NOTHING,
         NEW, LOAD, SAVE,
         DELETE, CLEAR_ALL,
@@ -56,8 +56,14 @@ public class LevelEditor extends GameState {
         showhelp = true;
         update = false;
         unsavedchanges = false;
+        
+        // Level editor mode is ON by default
+        if (level != null) {
+            level.setEditorMode(true);
+        }
 
         // FIX: how do we get the playership
+        //      do we need it?
         playership = new PlayerShip(new Player());
 
         // Associate keybindings to specific
@@ -212,7 +218,6 @@ public class LevelEditor extends GameState {
 
         // Draw the level
         if (level != null) {
-            level.setEditorMode(true);
             level.draw(g);
         } else {
             g.setColor(Color.red);
@@ -273,12 +278,18 @@ public class LevelEditor extends GameState {
                         level.removeAll();
                     } else {
                         level = new Level();
+                        level.setEditorMode(showhelp);
                     }
                     unsavedchanges = false;
                     break;
 
                 case TOGGLE_HELP:
+                    // Doesn't only toggle help text but also
+                    // level editor mode
                     showhelp = !showhelp;
+                    if (level != null) {
+                        level.setEditorMode(showhelp);
+                    }
                     break;
 
                 case TOGGLE_UPDATE:
@@ -320,8 +331,8 @@ public class LevelEditor extends GameState {
                 case LOAD: {
                     File path = browse("Load level");
                     if (path != null) {
-                        //load(path.getAbsolutePath());
                         level = levelloader.load(path.getAbsolutePath());
+                        level.setEditorMode(showhelp);
                     }
                     break;
                 }
@@ -407,6 +418,7 @@ public class LevelEditor extends GameState {
                         int amount = askForValue("New health", ship.getHealth());
                         // Since there's no setHealth...
                         ship.increaseHealth(amount - ship.getHealth());
+                        unsavedchanges = true;
                     }
                     break;
                 }

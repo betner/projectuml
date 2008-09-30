@@ -88,7 +88,7 @@ public class GameRunning extends GameState {
      * Repaints the running game
      * @param g
      **/
-    public void draw(Graphics2D g) {
+    public synchronized void draw(Graphics2D g) {
         if (currentlevel != null) {
             currentlevel.draw(g);
         }
@@ -108,6 +108,8 @@ public class GameRunning extends GameState {
      * @param event
      **/
     public void keyEvent(KeyEvent event) {
+        playership.resetDx();
+        playership.resetDy();
         // Is it a game command?
         if (keys.containsKey(event.getKeyCode())) {
             GameCommandID cmd = keys.get(event.getKeyCode());
@@ -175,6 +177,7 @@ public class GameRunning extends GameState {
      **/
     public void gainedFocus() {
         active = true;
+        currentlevel.loopSound("theme");
     }
     
     /**
@@ -182,6 +185,7 @@ public class GameRunning extends GameState {
      **/
     public void lostFocus() {
         active = false;
+        currentlevel.stopSound("theme");
     }
     
     /**

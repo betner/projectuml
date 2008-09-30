@@ -92,6 +92,8 @@ public class GameStates {
 
     /**
      * Sends a key event to the active state
+     * @param event Key event generated
+     * @param down True if the key is down
      **/
     public void keyEvent(KeyEvent event) {
         if (!states.empty()) {
