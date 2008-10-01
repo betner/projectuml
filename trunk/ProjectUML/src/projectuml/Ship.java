@@ -94,7 +94,7 @@ public abstract class Ship extends Sprite {
      * If ship is inactive the super.draw() makes sure
      * it doesn't get drawn.
      * 
-     * @param g2d
+     * @param g2d Graphics to draw on
      */
     public void draw(Graphics2D g2d){
        super.draw(g2d);
@@ -120,6 +120,15 @@ public abstract class Ship extends Sprite {
         if (health <= 0) {
             destroyShip();
         }
+    }
+    
+   /**
+    * Get ship's current health
+    *
+    * @return health integer
+    */
+    public int getHealth(){
+        return health;
     }
 
     /**
@@ -186,10 +195,7 @@ public abstract class Ship extends Sprite {
         weaponList.add(weapon);
         
     }
-  
-    public int getHealth(){
-        return health;
-    }
+
     
     public void setDx(int newDx) {
         dx = newDx;

@@ -102,7 +102,6 @@ public class PlayerShip extends Ship {
      * enough time before the ship is reset.
      * Otherwise player gets thrown back in the game at the same 
      * second that the destruction animation is done.
-     * 
      */
     public void destroyShip(){
         if(!isDestroyed()){
@@ -149,38 +148,6 @@ public class PlayerShip extends Ship {
         weaponMountRight.translate(dx, dy);
     }
     
-    /*
-    private void setWeaponMountMid(Point position) {
-        weaponMountMid = position;
-    }
-    
-    private void setWeaponMountLeft(Point position) {
-        weaponMountLeft = position;
-    }
-        
-    private void setWeaponMountRight(Point position) {
-        weaponMountRight = position;
-    }
-    */
-    
-    /**
-     * Get weapon mount positions
-     * 
-     * @return Point position
-     */
-    /*
-    private Point getWeaponMountMid(){
-        return weaponMountMid;
-    }
-    
-    private Point getWeaponMountLeft(){
-        return weaponMountLeft;
-    }
-    
-    private Point getWeaponMountRight(){
-        return weaponMountRight;
-    }
-    */
    
      /**
      * Methods for steering the ship in eight directions.
