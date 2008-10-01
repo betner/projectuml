@@ -2,6 +2,7 @@
 package projectuml;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  * Navigator
@@ -11,7 +12,7 @@ import java.awt.Point;
  * 
  * @author Steve Eriksson, Jens Thuresson
  */
-abstract public class Navigator {
+abstract public class Navigator implements Serializable {
 
     /**
      * Set new goal

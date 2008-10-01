@@ -235,8 +235,8 @@ public class LevelEditor extends GameState {
      * Respons to key press
      * @param event Key event
      */
-    public void keyEvent(KeyEvent event) {
-        if (keys.containsKey(event.getKeyCode())) {
+    public void keyEvent(KeyEvent event, boolean down) {
+        if (down && keys.containsKey(event.getKeyCode())) {
             // It's a valid key binding, check what
             // editor command it represents
             EditorCommandID cmd = keys.get(event.getKeyCode());

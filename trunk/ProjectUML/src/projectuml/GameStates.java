@@ -95,9 +95,9 @@ public class GameStates {
      * @param event Key event generated
      * @param down True if the key is down
      **/
-    public void keyEvent(KeyEvent event) {
+    public void keyEvent(KeyEvent event, boolean down) {
         if (!states.empty()) {
-            states.peek().keyEvent(event);
+            states.peek().keyEvent(event, down);
         }
     }
 
