@@ -239,8 +239,8 @@ public class PathEditor extends GameState {
     /**
      * Reponds to editor keys
      **/
-    public void keyEvent(KeyEvent event) {
-        if (keys.containsKey(event.getKeyCode())) {
+    public void keyEvent(KeyEvent event, boolean down) {
+        if (down && keys.containsKey(event.getKeyCode())) {
             EditorCommandID cmd = keys.get(event.getKeyCode());
             switch (cmd) {
                 case EXIT:

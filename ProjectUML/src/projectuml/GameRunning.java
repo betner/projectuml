@@ -107,27 +107,41 @@ public class GameRunning extends GameState {
      * the player ship
      * @param event
      **/
-    public void keyEvent(KeyEvent event) {
-        playership.resetDx();
-        playership.resetDy();
+    public void keyEvent(KeyEvent event, boolean down) {
         // Is it a game command?
         if (keys.containsKey(event.getKeyCode())) {
             GameCommandID cmd = keys.get(event.getKeyCode());
             switch (cmd) {
                 case GO_UP:
-                    playership.goUp();
+                    if (down) {
+                        playership.goUp();
+                    } else {
+                        playership.resetDy();
+                    }
                     break;
                     
                 case GO_DOWN:
-                    playership.goDown();
+                    if (down) {
+                        playership.goDown();
+                    } else {
+                        playership.resetDy();
+                    }
                     break;
                     
                 case GO_RIGHT:
-                    playership.goRight();
+                    if (down) {
+                        playership.goRight();
+                    } else {
+                        playership.resetDx();
+                    }
                     break;
                     
                 case GO_LEFT:
-                    playership.goLeft();
+                    if (down) {
+                        playership.goLeft();
+                    } else {
+                        playership.resetDx();
+                    }
                     break;
                     
                 case FIRE_WEAPON:
@@ -177,7 +191,7 @@ public class GameRunning extends GameState {
      **/
     public void gainedFocus() {
         active = true;
-        currentlevel.loopSound("theme");
+        //currentlevel.loopSound("theme");
     }
     
     /**

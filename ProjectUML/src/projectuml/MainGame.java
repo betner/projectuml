@@ -53,11 +53,11 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
 
     /**  Various events **/
     public void keyPressed(KeyEvent e) {
-        gamestates.keyEvent(e);
+        gamestates.keyEvent(e, true);
     }
 
     public void keyReleased(KeyEvent e) {
-        //gamestates.keyEvent(e, false);
+        gamestates.keyEvent(e, false);
     }
 
     public void keyTyped(KeyEvent e) {

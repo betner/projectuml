@@ -50,7 +50,7 @@ public class Pause extends GameState {
      * We're ready to close
      * @param event
      */
-    public void keyEvent(KeyEvent event) {
+    public void keyEvent(KeyEvent event, boolean down) {
         closing = true;
     }
 
