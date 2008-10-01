@@ -58,7 +58,16 @@ public class TestDrive extends JFrame implements KeyListener{
 
                for(Shot shot : shots){
                    shot.update();
+                  // if(ship.inShape(shot.getPosition())){
+                  //     shot.touch(ship);
+                 //  }
+                   if(enemy.isActive()){
+                       if(enemy.inShape(shot.getPosition())){
+                           shot.touch(enemy);
+                       }
+                   }
                }
+               
                repaint();
             
             Thread.sleep(30);
