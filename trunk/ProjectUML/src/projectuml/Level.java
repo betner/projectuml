@@ -115,7 +115,7 @@ public class Level implements Serializable {
             // Does it hit an enemy?
             for (Ship enemy : enemies) {
                 // TODO: only update enemies with >= offset
-                if (shot.inShape(enemy.getPosition())) {
+                if (enemy.inShape(shot.getPosition())) {
                     shot.touch(enemy);
                     // No need to check for additional
                     // hits
@@ -129,7 +129,7 @@ public class Level implements Serializable {
             shot.update();
             
             // Does it hit the player?
-            if (shot.inShape(player.getPosition())) {
+            if (player.inShape(shot.getPosition())) {
                 shot.touch(player);
             }
         }
@@ -283,6 +283,14 @@ public class Level implements Serializable {
      */
     public void stopSound(String keyname) {
         soundplayer.stop(keyname);
+    }
+    
+    /**
+     * Stops all sounds!
+     **/
+    public void stopSound() {
+        soundplayer.mute();
+        soundplayer.unmute();
     }
     
     /**

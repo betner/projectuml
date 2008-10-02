@@ -24,7 +24,7 @@ public class GeneralSerializer<Type> {
                 outstream.close();
                 file.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         } else {
             // Wrong type
@@ -47,7 +47,7 @@ public class GeneralSerializer<Type> {
             file.close();
             return obj;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             return null;
         }
     }

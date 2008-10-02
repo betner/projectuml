@@ -379,7 +379,7 @@ public class LevelEditor extends GameState {
                     //EnemyShip ship = new EnemyShip(new Path(false), "playership.png");
                     //ship.setPosition(event.getPoint());
                     Path path = new Path(true);
-                    path.addPoint(new Point(0, 0));
+                    path.addPoint(event.getPoint());
                     EnemyShip ship = new EnemyShip(path, "enemyship1.png");
                     ship.setPosition(event.getPoint());
                     ship.show();
@@ -402,9 +402,7 @@ public class LevelEditor extends GameState {
                         File file = browse("Load path");
                         if (file != null) {
                             GeneralSerializer<Path> pathloader = new GeneralSerializer<Path>();
-                            // TODO: see below, method isn't implemented
-                            //ship.setPath(pathloader.load(file.getAbsoluteFile()));
-                            System.err.println("***  Implement ship.setPath!!!  ***");
+                            ship.setPath(pathloader.load(file.getAbsolutePath()));
                             unsavedchanges = true;
                         }
                     }

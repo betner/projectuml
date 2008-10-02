@@ -1,5 +1,6 @@
 package projectuml;
 
+import java.io.*;
 import java.util.*;
 import java.awt.*;
 
@@ -21,7 +22,7 @@ public abstract class Ship extends Sprite {
     private ArrayList<Weapon> weaponList; // Ship's arsenal
     private Level level; // Reference to current level
    
-    private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
+    transient private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
     private final String imagePath = "";//"resources/images/";
 
     /**
@@ -225,6 +226,14 @@ public abstract class Ship extends Sprite {
     
     public int getDy(){
         return dy;
+    }
+    
+    /**
+     * Used by the (de)serialization
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        destructionAnimation = AnimationFactory.createExplosion();
     }
         
 }
