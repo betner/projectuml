@@ -19,6 +19,7 @@ public abstract class Ship extends Sprite {
     private int dy;             // Change in y direction, negative is down
     private Boolean destroyed;     
     private ArrayList<Weapon> weaponList; // Ship's arsenal
+    private Level level; // Reference to current level
    
     private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
     private final String imagePath = "";//"resources/images/";

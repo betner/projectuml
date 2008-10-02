@@ -9,11 +9,12 @@ import java.awt.Point;
  * call to the destroy method, the ship respawns at the start position. 
  * When players life reach zero the ship won't respawn anymore.
  * 
- * Weapons are mounted on on of the three weaponmounts.
+ * Weapons are mounted on one of the three weaponmounts.
  * 
+ * 
+ * @author Steve Eriksson, Jens Thuresson
  * @see Ship.java
  * @see Weapon.java
- * @author Steve Eriksson, Jens Thuresson
  */
 public class PlayerShip extends Ship {
     
@@ -24,7 +25,7 @@ public class PlayerShip extends Ship {
     private final int DX = 3; // Movement speed x-axis. Positive is right
     private final int DY = 3; // Movement speed y-axis. Positive is down
     private Player player;  // Object representing the player
-    private Timestamp time; // Used to check if given time period has passed
+    private Timestamp timestamp; // Used to check if given timestamp period has passed
     private Point weaponMountMid;   // Weapon placement front center
     private Point weaponMountLeft;  // Weapon placement left side
     private Point weaponMountRight; // Weapon placement right side
@@ -37,7 +38,7 @@ public class PlayerShip extends Ship {
     
     public PlayerShip(Player player) {
         this.player = player;
-        time = new Timestamp();
+        timestamp = new Timestamp();
         setPosition(START_X, START_Y); // Set initial position
         //setImageFile("playership.png");
         //setImage(loadImage(getImageFile()));
@@ -78,7 +79,7 @@ public class PlayerShip extends Ship {
         // player has lives left.
         if(isDestroyed() && getDestructAnimation().isDone()){
             
-            if(time.havePassed(SPAWN_TIME) && player.getLives() > 0){
+            if(timestamp.havePassed(SPAWN_TIME) && player.getLives() > 0){
                 // Move weapons from current position back to ship's 
                 // starting location.
                 updateWeaponPositions(START_X - getIntPositionX(), START_Y - getIntPositionY());
@@ -99,13 +100,13 @@ public class PlayerShip extends Ship {
      * Overridden from Ship. 
      * If ship is destroyed, one life is removed from the player. 
      * Reset timer so that update() can check if there has passed
-     * enough time before the ship is reset.
+     * enough timestamp before the ship is reset.
      * Otherwise player gets thrown back in the game at the same 
      * second that the destruction animation is done.
      */
     public void destroyShip(){
         if(!isDestroyed()){
-            time.reset();
+            timestamp.reset();
             super.destroyShip();
             player.removeLife();
         }

@@ -7,11 +7,23 @@ package projectuml;
  */
 public class CrazyGunner extends Gunner{
     
+    private int time;
+    
     /** Creates a new instance of CrazyGunner */
-    public CrazyGunner() {
+    public CrazyGunner(Level level, Ship ship) {
+        setShip(ship);
+        setLevel(level);
+        setTimestamp(new Timestamp());
+        
+        // time is between 0 and 2 seconds
+        time = Randomizer.getRandomNumber(0, 2000); 
     }
     
-    public void update(Ship ship){
-        ship.fire();
+    public void update(){
+        if(getTimestamp().havePassed(time)){
+            // time is between 0 and 2 seconds
+            time = Randomizer.getRandomNumber(0, 2000); 
+            getShip().fire(getLevel());
+        }
     }
 }
