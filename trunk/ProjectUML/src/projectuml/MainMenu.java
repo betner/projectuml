@@ -94,6 +94,8 @@ public class MainMenu extends GameState {
             
             // When the main logo is fully visible,
             // start fading in the credits section
+            // When the main logo is fully visible,
+            // start fading in the credits section
             if (logo.finished()) {
                 credits.update();
             }

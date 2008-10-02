@@ -4,6 +4,7 @@ package projectuml;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 /**
  * The state that represents a running game
@@ -17,6 +18,7 @@ public class GameRunning extends GameState {
     
     private GeneralSerializer<Level> levelloader;
     private Level currentlevel;
+    private Stack<String> levelnames;
     private PlayerShip playership;
     private Font font;
     private enum GameCommandID {
@@ -39,7 +41,9 @@ public class GameRunning extends GameState {
         
         // Load a level
         levelloader = new GeneralSerializer<Level>();
-        currentlevel = levelloader.load("level1.level");
+        levelnames = new Stack<String>();
+        initLevelList();
+        loadNextLevel();
         
         // Get a font
         font = new Font("Courier New", Font.PLAIN, 10);
@@ -103,7 +107,7 @@ public class GameRunning extends GameState {
     }
     
     /**
-     * Respond to key events, e.g. most importantly moving
+     * Respond to key events, most importantly moving
      * the player ship
      * @param event
      **/
@@ -145,7 +149,9 @@ public class GameRunning extends GameState {
                     break;
                     
                 case FIRE_WEAPON:
-                    playership.fire(currentlevel);
+                    if (!down) {
+                        playership.fire(currentlevel);
+                    }
                     break;
                     
                 case PAUSE:
@@ -200,6 +206,31 @@ public class GameRunning extends GameState {
     public void lostFocus() {
         active = false;
         currentlevel.stopSound("theme");
+    }
+    
+    /**
+     * Scans the current directory for
+     * .level-files, and stores their names in
+     * levelnames
+     */
+    private void initLevelList() {
+        levelnames.clear();
+        File dir = new File(".");
+        for (String filename : dir.list()) {
+            levelnames.add(filename);
+        }
+    }
+    
+    /**
+     * Loads the next level. If there are no more levels to
+     * load, it will return null
+     */
+    private void loadNextLevel() {
+        if (levelnames.empty()) {
+            currentlevel = null;
+        } else {
+            currentlevel = levelloader.load(levelnames.pop());
+        }
     }
     
     /**
