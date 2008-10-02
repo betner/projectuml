@@ -1,6 +1,7 @@
 
 package projectuml;
 
+import java.io.FilenameFilter;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -99,6 +100,7 @@ public class GameRunning extends GameState {
         playership.draw(g);
         
         if (currentlevel != null) {
+            // TODO: remove when we're done!
             // Print out debug information
             g.setFont(font);
             g.setColor(Color.white);
@@ -155,11 +157,15 @@ public class GameRunning extends GameState {
                     break;
                     
                 case PAUSE:
-                    getGameStateManager().push(new Pause());
+                    if (down) {
+                        getGameStateManager().push(new Pause());
+                    }
                     break;
                     
                 case START_LEVEL_EDITOR:
-                    getGameStateManager().push(new LevelEditor(currentlevel));
+                    if (down) {
+                        getGameStateManager().push(new LevelEditor(currentlevel));
+                    }
                     break;
                     
                 default:
@@ -216,8 +222,18 @@ public class GameRunning extends GameState {
     private void initLevelList() {
         levelnames.clear();
         File dir = new File(".");
-        for (String filename : dir.list()) {
+        for (String filename : dir.list(new JustLevels())) {
             levelnames.add(filename);
+            System.out.println("Found level: " + filename);
+        }
+    }
+    
+    /**
+     * Used to get all the .level-files
+     **/
+    private class JustLevels implements FilenameFilter {
+        public boolean accept(File dir, String name) {
+            return (name.endsWith(".level"));
         }
     }
     
@@ -239,7 +255,7 @@ public class GameRunning extends GameState {
      **/
     private class OffsetTask extends TimerTask {
         public void run() {
-            if (currentlevel != null && active) {
+            if (active && currentlevel != null) {
                 currentlevel.increaseOffset(1);
             }
         }

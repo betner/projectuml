@@ -17,7 +17,9 @@ import java.util.ArrayList;
  * @author Steve Eriksson, Jens Thuresson
  */
 public class AnimatedSprite extends Sprite {
-    
+   
+   private static final long serialVersionUID = 1L;
+   
    private Timestamp time; // Timer
    private long speed;     // Amount of time one image should be shown
    private int runtime;    // Total running time of animation

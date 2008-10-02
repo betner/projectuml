@@ -10,16 +10,16 @@ import java.util.*;
  * @author Jens Thuresson, Steve Eriksson
  */
 public class GameStates {
-
+    
     private Stack<GameState> states;
-
+    
     /**
      * Initiates the game state stack
      **/
     public GameStates() {
         states = new Stack<GameState>();
     }
-
+    
     /**
      * Adds a new active state
      *
@@ -35,7 +35,7 @@ public class GameStates {
         state.setGameStateManager(this);
         state.gainedFocus();
     }
-
+    
     /**
      * Goes back to previous game state. Will not
      * remove the last state leaving the stack empty
@@ -49,22 +49,26 @@ public class GameStates {
             System.err.println("---  Trying to pop the last state!  ---");
         }
     }
-
+    
     /**
      * Clears the state list and switch to
      * the new one
      *
-     * @param state New state to switch to
+     * @param state New state to switch to, or null if we
+     *              just want to signal "lostFocus" to all
+     *              active gamestates
      **/
     public synchronized void change(GameState state) {
         for (GameState s : states) {
             s.lostFocus();
         }
         states.clear();
-        push(state);
-        state.gainedFocus();
+        if (state != null) {
+            push(state);
+            state.gainedFocus();
+        }
     }
-
+    
     /**
      * Updates the active state
      *
@@ -78,7 +82,7 @@ public class GameStates {
             }
         }
     }
-
+    
     /**
      * Draws every state to the screen
      *
@@ -89,7 +93,7 @@ public class GameStates {
             state.draw(g);
         }
     }
-
+    
     /**
      * Sends a key event to the active state
      * @param event Key event generated
@@ -100,7 +104,7 @@ public class GameStates {
             states.peek().keyEvent(event, down);
         }
     }
-
+    
     /**
      * Sends a mouse event to the active state
      **/

@@ -113,6 +113,8 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         int y = (int) (screen.getHeight() / 2) - (this.getHeight() / 2);
         this.setLocation(x, y);
     }
+    
+    
 
     /**
      * Override this to ensure that both our window and
@@ -143,7 +145,7 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         super.addKeyListener(l);
         canvas.addKeyListener(l);
     }
-    
+
     /**
      * The window gained focus, activate rendering loop
      * @param e
@@ -249,4 +251,5 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new RenderTask(), RENDER_INTERVAL, RENDER_INTERVAL);
     }
+
 }

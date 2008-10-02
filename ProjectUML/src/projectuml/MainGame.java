@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author Jens Thuresson, Steve Eriksson
  */
-public class MainGame implements KeyListener, MouseListener, MouseMotionListener, DrawListener {
+public class MainGame implements KeyListener, MouseListener, MouseMotionListener, DrawListener, WindowListener {
 
     private GameWindow gamewindow;
     private GameStates gamestates;
@@ -84,8 +84,9 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
     public void mouseEntered(MouseEvent e) {
     }
 
+    /** Not used **/
     public void mouseMoved(MouseEvent e) {
-        gamestates.mouseEvent(e);
+        //gamestates.mouseEvent(e);
     }
 
     /** Not used **/
@@ -97,6 +98,39 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
      **/
     public synchronized void draw(Graphics2D g) {
         gamestates.draw(g);
+    }
+
+    public void windowOpened(WindowEvent e) {
+    }
+
+    /**
+     * Notify all states that we're leaving
+     * @param e
+     **/
+    public void windowClosing(WindowEvent e) {
+        // This will cause the gamestate manager to
+        // call lostFocus on all active gamestates
+        gamestates.change(null);
+    }
+
+    /** Not used **/
+    public void windowClosed(WindowEvent e) {
+    }
+
+    /** Not used **/
+    public void windowIconified(WindowEvent e) {
+    }
+
+    /** Not used **/
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    /** Not used **/
+    public void windowActivated(WindowEvent e) {
+    }
+
+    /** Not used **/
+    public void windowDeactivated(WindowEvent e) {
     }
 
     /**
