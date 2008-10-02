@@ -20,8 +20,8 @@ public class EnemyShip extends Ship {
     private Point weaponMountMid; // Weapon placement front center
     private int offset;           // Where enemy should appear in relation to level
     private Point nextPosition;   // Next point to get to
-    private int newX;
-    private int newY;
+   // private int newX;
+   // private int newY;
     private Path path;            // Path to follow
     private Navigator navigator;
    // private Gunner gunner;
@@ -31,7 +31,6 @@ public class EnemyShip extends Ship {
         path.addPoint(new Point(400, 200));
         setPosition(path.next());
         setImage(loadImage("enemyship1.png"));
-       // gunner = new CrazyGunner(level, this);
     }
     
     // TODO: add code to bind ship to a level

@@ -149,7 +149,20 @@ public class PlayerShip extends Ship {
         weaponMountRight.translate(dx, dy);
     }
     
+   public void addMainWeapon(Weapon weapon){
+       // TODO:
+       // Way to select main weapon and swap it out
+       // if new weapon is "better" than the current
+   }
    
+   public void addAuxWeapon(Weapon weapon){
+       // TODO: 
+       // Add weapon to correct weapon mount
+       // If weapon mount already has a weapon
+       // it could be upgraded/replaced with the new weapon
+       weapon.setPosition(weaponMountRight);
+       addWeapon(weapon);
+   }
      /**
      * Methods for steering the ship in eight directions.
      * Default values for dx, dy are positive, which means
