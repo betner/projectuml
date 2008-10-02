@@ -13,7 +13,7 @@ import java.awt.Point;
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public class EnemyShip extends Ship{
+public class EnemyShip extends Ship {
 
     private final int SPEED = 3;  // Maximum speed
     private Timestamp time;       // Used to check if given time period has passed
@@ -24,12 +24,14 @@ public class EnemyShip extends Ship{
     private int newY;
     private Path path;            // Path to follow
     private Navigator navigator;
+   // private Gunner gunner;
     
     // Test method
-    public EnemyShip(){
+    public EnemyShip(Level level){
         path.addPoint(new Point(400, 200));
         setPosition(path.next());
         setImage(loadImage("enemyship1.png"));
+       // gunner = new CrazyGunner(level, this);
     }
     
     // TODO: add code to bind ship to a level
