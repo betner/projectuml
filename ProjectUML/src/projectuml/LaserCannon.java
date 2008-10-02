@@ -13,6 +13,14 @@ public class LaserCannon extends Weapon{
     private final int DX = 10; // Shot movement, x-axis
     private final int DY = 0;
     
+    /**
+     * Creates a cannon with default values.
+     * Position is (0,0) and it's a player weapon.
+     */
+    public LaserCannon(){
+     this(new Point(), true);     
+    }
+    
     /** Creates a new instance of LaserCannon */
     public LaserCannon(Point position, Boolean isPlayer) {
         setPosition(position);
