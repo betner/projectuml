@@ -31,7 +31,7 @@ public class Shot extends Sprite{
     }
     
     public Shot(int damage, int dx, int dy, Point position, String imageFile) {
-        setTouchBehaviour(new hurt(damage));
+        setTouchBehaviour(new Hurt(damage));
         //this.damage = damage;
         setDx(dx);
         setDy(dx);
