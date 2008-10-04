@@ -39,7 +39,7 @@ public class Sprite implements Serializable {
     /**
      * Update sprite. E.g set new position
      */
-    public void update(){
+    public void update(Level level) {
         
     }
     

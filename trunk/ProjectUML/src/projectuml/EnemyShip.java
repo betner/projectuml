@@ -78,7 +78,7 @@ public class EnemyShip extends Ship {
      * every update so that the ship will come close enough to 
      * desired position.
      */
-    public void update(){
+    public void update(Level level){
         
       // If ship is at nextPosition, get new destination from path
       if(getPosition().equals(nextPosition)){
@@ -105,7 +105,7 @@ public class EnemyShip extends Ship {
           setPosition(navigator.getNextPosition());
       }
       
-      super.update();
+      super.update(level);
         
         /*
          * We could add a timer here and make the ship fire it's weapon

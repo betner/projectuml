@@ -85,7 +85,7 @@ public class GameRunning extends GameState {
         if (currentlevel != null) {
             currentlevel.update(playership);
         }
-        playership.update();
+        playership.update(currentlevel);
         restrictPlayerShip();
     }
     
@@ -225,6 +225,9 @@ public class GameRunning extends GameState {
         for (String filename : dir.list(new JustLevels())) {
             levelnames.add(filename);
             System.out.println("Found level: " + filename);
+        }
+        if (levelnames.isEmpty()) {
+            System.err.println("Not a single level was found!");
         }
     }
     

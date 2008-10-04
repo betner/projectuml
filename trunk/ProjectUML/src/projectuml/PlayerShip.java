@@ -72,7 +72,7 @@ public class PlayerShip extends Ship {
      * unless players life has reached zero.
      * 
      */
-    public void update(){
+    public void update(Level level){
         // Ship is destroyed and its destruction animation is
         // done so we should "restart" by showing the ship again
         // and placing it in it's starting position providing that
@@ -89,7 +89,7 @@ public class PlayerShip extends Ship {
             }
         }else{
             // Handle ship movement
-            super.update(); 
+            super.update(level); 
             // Make sure weapons are relocated at ships new location
             updateWeaponPositions(getDx(), getDy());
         }

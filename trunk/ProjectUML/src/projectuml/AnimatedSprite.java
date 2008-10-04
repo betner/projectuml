@@ -86,7 +86,7 @@ public class AnimatedSprite extends Sprite {
      * If animation isn't looped future updates will be ignored
      * when we reach the end of the sequence.
      */
-    public void update(){
+    public void update(Level level) {
         if(isActive()){
             // Current picture should be changed if the time
             // set in speed has passed since last update

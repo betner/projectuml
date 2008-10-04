@@ -7,7 +7,7 @@ import java.io.*;
 
 /**
  * A level in the game
- * 
+ *
  * @author Steve Eriksson, Jens Thuresson
  */
 public class Level implements Serializable {
@@ -36,7 +36,7 @@ public class Level implements Serializable {
         editormode = false;
         font = new Font("Courier New", Font.PLAIN, 10);
     }
-
+    
     /**
      * Gets the scenery background
      * @return
@@ -44,7 +44,7 @@ public class Level implements Serializable {
     public Scenery getScenery() {
         return background;
     }
-
+    
     /**
      * Changes the scenery background
      * @param background
@@ -107,19 +107,20 @@ public class Level implements Serializable {
         if (background != null) {
             background.update();
         }
-
+        
         // All the shots the player fires
         for (Shot shot : playershots) {
             shot.update();
             
             // Does it hit an enemy?
-            for (Ship enemy : enemies) {
-                // TODO: only update enemies with >= offset
-                if (enemy.inShape(shot.getPosition())) {
-                    shot.touch(enemy);
-                    // No need to check for additional
-                    // hits
-                    break;
+            for (EnemyShip enemy : enemies) {
+                if (offset >= enemy.getOffset()) {
+                    if (enemy.inShape(shot.getPosition())) {
+                        shot.touch(enemy);
+                        // No need to check for additional
+                        // hits
+                        break;
+                    }
                 }
             }
         }
@@ -136,8 +137,9 @@ public class Level implements Serializable {
         
         // All the enemies
         for (EnemyShip ship : enemies) {
-            // TODO: only update enemies with >= offset
-            ship.update();
+            if (offset >= ship.getOffset()) {
+                ship.update(this);
+            }
         }
     }
     
@@ -151,19 +153,21 @@ public class Level implements Serializable {
             background.draw(g);
         }
         
-        // Draw the enemies
+        // Draw the enemies that's at least
+        // in our offset
         for (EnemyShip ship : enemies) {
-            // TODO: only draw enemies with >= offset
-            ship.draw(g);
-            
-            // Draw more info if we're in editor mode
-            if (editormode) {
-                g.setColor(Color.red);
-                g.setFont(font);
-                g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
-                        ship.getWidth(), ship.getHeight());
-                Integer health = new Integer(ship.getHealth());
-                g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
+            if (offset >= ship.getOffset()) {
+                ship.draw(g);
+                
+                // Draw more info if we're in editor mode
+                if (editormode) {
+                    g.setColor(Color.red);
+                    g.setFont(font);
+                    g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
+                            ship.getWidth(), ship.getHeight());
+                    Integer health = new Integer(ship.getHealth());
+                    g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
+                }
             }
         }
         
@@ -196,7 +200,7 @@ public class Level implements Serializable {
      **/
     public void addEnemyShot(Shot shot) {
         if (shot != null) {
-            // FIX: see above
+            // FIX: all enemy shots should be visible by default!
             shot.show();
             enemyshots.add(shot);
         }
@@ -218,7 +222,7 @@ public class Level implements Serializable {
      **/
     public void removeShipAt(Point point) {
         EnemyShip marked = getShipAt(point);
-                
+        
         // Did we find anyone?
         if (marked != null) {
             enemies.remove(marked);
@@ -321,5 +325,5 @@ public class Level implements Serializable {
         // We always start in normal mode (as in NOT level editor mode)
         editormode = false;
     }
- 
+    
 }
