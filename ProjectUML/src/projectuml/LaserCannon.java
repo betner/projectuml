@@ -28,13 +28,23 @@ public class LaserCannon extends Weapon{
         setShotImageFile("lasershot.png");
     }
     
-    public void fire(Level level){
-        // ToDo:
-        // add code for cool down timer
-        //level.addShot(new LaserShot(position));
-        Point position = clone(getPosition());
+    /**
+     * Fire weapon. Shots created gets position from the weapon translated
+     * over the owning sprite's current position.
+     * Depending on if it's a player that owns the weapon or an enemy we 
+     * must make sure that the shot travels in the apropriate direction.
+     *
+     * @param level
+     * @param sprite
+     */
+    public void fire(Level level, Sprite sprite){
+        // Clone weapons position
+        Point position = (Point)getPosition().clone();
+        // Translate position over the sprite that owns the weapon
+        position.translate(sprite.getIntPositionX(), sprite.getIntPositionY());
         Shot shot = new Shot(DAMAGE, position, getShotImageFile());
 
+        // Make the shot travel in the correct direction
         if(isPlayer()){
             shot.setDx(DX);
             level.addPlayerShot(shot);
@@ -47,18 +57,6 @@ public class LaserCannon extends Weapon{
     
     public void playSound(){
         
-    }
-    
-    // Debug method
-    public void fire(TestDrive td){
-        System.out.println("Weapon: fire()");
-        Point position = clone(getPosition());
-        Shot shot = new Shot(DAMAGE, DX, DY , position, getShotImageFile());
-        shot.activate();
-        shot.show();
-        td.addShot(shot);
-        System.out.println("Shot pos: " + position);
-       
     }
     
 }

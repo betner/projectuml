@@ -10,7 +10,8 @@ import java.io.Serializable;
  * Weapons aren't represented as graphic objects onscreen like a Sprite. 
  * Weapons create shots in the level when fired. That means it has to 
  * have a reference to the current Level object. 
- * Shots originate from weapon's position.
+ * Shots originate from weapon's position and it's position must be translated
+ * to the object who owns the weapons current position.
  * Depending on if the weapon is mounted on a player or enemy ship
  * the shots gets created differently.
  * It is the weapon that sets the Shot's parameters such as
@@ -37,11 +38,7 @@ abstract public class Weapon implements Serializable {
      *
      *@param game level
      */
-    abstract public void fire(Level level);
-    
-    //DEBUG Method
-    abstract public void fire(TestDrive td);
-   
+    abstract public void fire(Level level, Sprite sprite);
        
     /**
      * Sets the player flag to true
@@ -68,12 +65,6 @@ abstract public class Weapon implements Serializable {
     // Jens: added
     public Point getPosition() {
         return position;
-    }
-    
-    public Point clone(Point position){
-        Point clone = new Point();
-        clone.setLocation(position);
-        return clone;
     }
     
     public void setShotImageFile(String path){
