@@ -383,6 +383,7 @@ public class LevelEditor extends GameState {
                     EnemyShip ship = new EnemyShip(path, "enemyship1.png");
                     ship.setPosition(event.getPoint());
                     ship.show();
+                    ship.setOffset(level.getOffset());
                     ship.activate();
                     level.addShip(ship);
                     unsavedchanges = true;

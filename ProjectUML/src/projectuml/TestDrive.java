@@ -51,9 +51,9 @@ public class TestDrive extends JFrame implements KeyListener{
     public void run(){
         while(true){
             try{
-               ship.update();
+               ship.update(null);
                if(enemy.isActive()){
-                   enemy.update();
+                   enemy.update(null);
                }
 
                for(Shot shot : shots){

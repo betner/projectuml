@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 abstract public class Gunner implements Serializable {
     
-    private Level level;
+    //private Level level;
     private Ship ship;
     private Timestamp timestamp;
     
@@ -20,20 +20,20 @@ abstract public class Gunner implements Serializable {
     public Gunner() {
     }
     
-    abstract void update();
+    abstract void update(Level level);
     
     /**
      * Returns the level object stored in class Gunner
      *
      * @return level
      */
-    public Level getLevel(){
-        return level;
-    }
-    
-    public void setLevel(Level level){
-        this.level = level;
-    }
+//    public Level getLevel(){
+//        return level;
+//    }
+//    
+//    public void setLevel(Level level){
+//        this.level = level;
+//    }
     
     public Ship getShip(){
         return ship;
