@@ -20,21 +20,11 @@ public class EnemyShip extends Ship {
     private Point weaponMountMid; // Weapon placement front center
     private int offset;           // Where enemy should appear in relation to level
     private Point nextPosition;   // Next point to get to
-   // private int newX;
-   // private int newY;
     private Path path;            // Path to follow
     private Navigator navigator;
-   // private Gunner gunner;
+    private Gunner gunner;
     
-    // Test method
-    public EnemyShip(Level level){
-        path.addPoint(new Point(400, 200));
-        setPosition(path.next());
-        setImage(loadImage("enemyship1.png"));
-    }
     
-    // TODO: add code to bind ship to a level
-    // so that it can fire weapons
     public EnemyShip(Path path, String imageFile){
         
         // Check if the supplied path is valid
@@ -52,6 +42,9 @@ public class EnemyShip extends Ship {
             return;
         }
         
+        // Create a default gunner
+        gunner = new CrazyGunner(this);
+        
         setPosition(nextPosition); // Load the first position
         navigator = new SimpleLineFollower(nextPosition);
         navigator.setMaxMovement(SPEED);
@@ -61,10 +54,9 @@ public class EnemyShip extends Ship {
         increaseHealth(1);
         
         // Set up ship weapon
-        // Should be fixed so that weapon gets better placement.
+        getWeaponList().setNumberOfWeapons(1);
         weaponMountMid = clonePosition(getPosition());
-        addWeapon(new LaserCannon(weaponMountMid, false));
-        
+        getWeaponList().addWeapon(new LaserCannon(false));
     }
     
     /**
@@ -112,8 +104,12 @@ public class EnemyShip extends Ship {
          * at a given time interval or fire when it is a certain position
          * relative to player.
          * 
-         */ 
-            
+         */      
+    }
+    
+    protected void setWeaponMounts(){
+        Point mid = new Point(1, (getHeight() / 2));
+        getWeaponList().addWeaponMount(mid);
     }
     
     /**
@@ -142,4 +138,5 @@ public class EnemyShip extends Ship {
     public void setOffset(int offset){
         this.offset = offset;
     }
+
 }

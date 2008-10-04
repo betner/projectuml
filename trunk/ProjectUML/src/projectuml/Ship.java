@@ -32,6 +32,7 @@ public abstract class Ship extends Sprite {
      */
     public Ship() {
         destroyed = false;
+        weaponList = new WeaponList();
         // Create destructionAnimation animation
         destructionAnimation = new AnimatedSprite(500, false);
         // Should be solved more dynamically
@@ -43,6 +44,8 @@ public abstract class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
     }
 
+    protected abstract void setWeaponMounts();
+    
     /** 
      * Fire ship's ordinance.
      * If ship is destroyed the ship won't fire.

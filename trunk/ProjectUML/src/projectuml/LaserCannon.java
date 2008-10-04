@@ -21,6 +21,10 @@ public class LaserCannon extends Weapon{
      this(new Point(), true);     
     }
     
+    public LaserCannon(boolean isPlayer){
+        this(new Point(), true);
+    }
+    
     /** Creates a new instance of LaserCannon */
     public LaserCannon(Point position, Boolean isPlayer) {
         setPosition(position);
@@ -44,6 +48,8 @@ public class LaserCannon extends Weapon{
         position.translate(sprite.getIntPositionX(), sprite.getIntPositionY());
         Shot shot = new Shot(DAMAGE, position, getShotImageFile());
 
+        System.out.println("LaserCannon: fire()");
+        System.out.println("Level: " + level.toString());
         // Make the shot travel in the correct direction
         if(isPlayer()){
             shot.setDx(DX);

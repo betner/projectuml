@@ -21,15 +21,16 @@ import java.util.Iterator;
  */
 public class WeaponList implements Serializable, Iterable<Weapon>{
     
-    private ArrayList<Weapon> weaponList;
-    private ArrayList<Point> weaponMount;
+    private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
+    private ArrayList<Point> weaponMount = new ArrayList<Point>();
     private int numberOfWeapons;
     private int currentWeapon;
     private int currentMount;
-    
+
+            
     /** Creates a new instance of WeaponList */
-    public WeaponList(int numberOfWeapons) {
-        this.numberOfWeapons = numberOfWeapons;
+    public WeaponList() {
+        this.numberOfWeapons = 0;
         currentWeapon = 0;
         currentMount = 0;
     }
@@ -44,6 +45,15 @@ public class WeaponList implements Serializable, Iterable<Weapon>{
      */
     public void addWeapon(Weapon weapon){
         int index = currentWeapon % numberOfWeapons; // List is cyclic
+        
+        // If position in list i empty, add weapon, otherwise
+        // replace current.
+        if(weaponList.size() < 1){
+            weaponList.add(weapon);
+        }else{
+            weaponList.set(index, weapon);
+        }
+        
         weapon.setPosition(weaponMount.get(index));
         weaponList.set(index, weapon);
         currentWeapon++; // Point to next slot in list
@@ -54,13 +64,23 @@ public class WeaponList implements Serializable, Iterable<Weapon>{
      * where weapons are located. 
      */ 
     public void addWeaponMount(Point mount){
-        weaponMount.set(currentMount % numberOfWeapons, mount);
-        currentMount++;
+        System.out.println("WeaponList: addWeaponMount: " + mount);
+        System.out.println("WeaponList currentMount = " + currentMount);
+        System.out.println("WeaponList numberOfWeapons = " + numberOfWeapons);
+        
+        // Only add mount if there is place for it
+        if(currentMount < numberOfWeapons){
+            weaponMount.add(mount);
+            currentMount++;
+        }
     }
-    
     
     public Iterator<Weapon> iterator() {
         return weaponList.listIterator();
+    }
+    
+    public void setNumberOfWeapons(int number){
+        numberOfWeapons = number;
     }
 
 }

@@ -26,36 +26,28 @@ public class PlayerShip extends Ship {
     private final int DY = 3; // Movement speed y-axis. Positive is down
     private Player player;  // Object representing the player
     private Timestamp timestamp; // Used to check if given timestamp period has passed
-    private Point weaponMountMid;   // Weapon placement front center
-    private Point weaponMountLeft;  // Weapon placement left side
-    private Point weaponMountRight; // Weapon placement right side
-
 
     /** 
      * Creates a new instance of PlayerShip 
      *
      */
-
-    
     public PlayerShip(Player player) {
         this.player = player;
         timestamp = new Timestamp();
-        setPosition(START_X, START_Y); // Set initial position
-        //setImageFile("playership.png");
-        //setImage(loadImage(getImageFile()));
+        
+        // Set initial position
+        setPosition(START_X, START_Y); 
+
         loadImageFrom("playership.png");
 
         // Set initial health
         increaseHealth(START_HEALTH);
         
-        // Set weapon mount positions
+        // Set up ship's weapons
+        getWeaponList().setNumberOfWeapons(3);
         setWeaponMounts();
-        
-        // Set default weapon
-        // Give it the reference to ship's position object
-        // so that it get moved when the ship is
-        addWeapon(new LaserCannon(weaponMountMid, true));
-        
+        getWeaponList().addWeapon(new LaserCannon(true));
+
         // Make the ship listen to draw() and update() requests
         show();
         activate();
@@ -109,17 +101,18 @@ public class PlayerShip extends Ship {
      * Create Point's for all the weapon mounts. These points are relative
      * to upper left corner and not the ship's current position.
      */ 
-    private void setWeaponMounts(){
+    protected void setWeaponMounts(){
         // Set correct position for the mounts relative to x,y = 0,0
         Point mid = new Point(getWidth() - 1, (getHeight() / 2));
         Point right = new Point(getWidth() - 1, getHeight());
         Point left = new Point(getWidth() - 1, 0);
 
+        System.out.println("PlayerShip: addWeaponMount");
+        
         // Add weapon mounts to ship's weapon list
-        WeaponList weaponList = new WeaponList(3);
-        weaponList.addWeaponMount(mid);
-        weaponList.addWeaponMount(left);
-        weaponList.addWeaponMount(right);
+        getWeaponList().addWeaponMount(mid);
+        getWeaponList().addWeaponMount(left);
+        getWeaponList().addWeaponMount(right);
     }
     
    
