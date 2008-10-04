@@ -30,6 +30,7 @@ public class PlayerShip extends Ship {
     private Point weaponMountLeft;  // Weapon placement left side
     private Point weaponMountRight; // Weapon placement right side
 
+
     /** 
      * Creates a new instance of PlayerShip 
      *
@@ -58,10 +59,6 @@ public class PlayerShip extends Ship {
         // Make the ship listen to draw() and update() requests
         show();
         activate();
-       /* System.out.println("PlayerShip created:");
-        System.out.println("=> Width: " + getWidth());
-        System.out.println("=> Height: " + getHeight());
-        System.out.println("=> Health: " + getHealth());*/
     }
 
     /**
@@ -113,62 +110,28 @@ public class PlayerShip extends Ship {
     }
     
     /*
-     * Create Point's for all the weapon mounts
+     * Create Point's for all the weapon mounts. These points are relative
+     * to upper left corner and not the ship's current position.
      */ 
     private void setWeaponMounts(){
-        // Get x and y values from ship's current position
-        double x = getPositionX();
-        double y = getPositionY();
-        
-        // Create point objects
-        Point mid = clonePosition(getPosition());
-        Point right = clonePosition(getPosition());
-        Point left = clonePosition(getPosition());
-        
-        // Set correct position for the mounts
-        mid.setLocation(x + getWidth(), y + (getHeight() / 2));
-        left.setLocation(x + getWidth(), y);
-        right.setLocation(x + getWidth(), y + getHeight());
-        
-        // Set mount variables
-        weaponMountMid = mid;
-        weaponMountLeft = left;
-        weaponMountRight = right;
-       // setWeaponMountMid(mid);
-       // setWeaponMountLeft(left);
-       // setWeaponMountRight(right);   
-         
+        // Set correct position for the mounts relative to x,y = 0,0
+        Point mid = new Point(getWidth() - 1, (getHeight() / 2));
+        Point right = new Point(getWidth() - 1, getHeight());
+        Point left = new Point(getWidth() - 1, 0);
+
+        // Add weapon mounts to ship's weapon list
+        WeaponList weaponList = getWeaponList();
+        weaponList.addWeaponMount(mid);
+        weaponList.addWeaponMount(left);
+        weaponList.addWeaponMount(right);
     }
     
-    /*
-     * Update weapon positions
-     * */
-    private void updateWeaponPositions(int dx, int dy){
-        weaponMountMid.translate(dx, dy);
-        weaponMountLeft.translate(dx, dy);
-        weaponMountRight.translate(dx, dy);
-    }
-    
-   public void addMainWeapon(Weapon weapon){
-       // TODO:
-       // Way to select main weapon and swap it out
-       // if new weapon is "better" than the current
-   }
    
-   public void addAuxWeapon(Weapon weapon){
-       // TODO: 
-       // Add weapon to correct weapon mount
-       // If weapon mount already has a weapon
-       // it could be upgraded/replaced with the new weapon
-       weapon.setPosition(weaponMountRight);
-       addWeapon(weapon);
-   }
-     /**
+    /**
      * Methods for steering the ship in eight directions.
      * Default values for dx, dy are positive, which means
      * dx = right and dy = down
      */
-   
     public void goLeft(){
         setDx(DX * -1); // Invert movement
     }

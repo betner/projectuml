@@ -19,7 +19,7 @@ public abstract class Ship extends Sprite {
     private int dx;             // Change in x direction, negative is left
     private int dy;             // Change in y direction, negative is down
     private Boolean destroyed;     
-    private ArrayList<Weapon> weaponList; // Ship's arsenal
+    private WeaponList weaponList;
     private Level level; // Reference to current level
    
     transient private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
@@ -41,7 +41,6 @@ public abstract class Ship extends Sprite {
         destructionAnimation.addImage(loadImage(imagePath + "explosion4.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion5.png"));
         destructionAnimation.addImage(loadImage(imagePath + "explosion6.png"));
-        weaponList = new ArrayList<Weapon>();
     }
 
     /** 
@@ -190,15 +189,35 @@ public abstract class Ship extends Sprite {
     public void setDestructionAnimation(AnimatedSprite animation){
         destructionAnimation = animation;
     }
-    
-    public void addWeapon(Weapon weapon){
-        //System.out.println("Ship: addWeapon()");
-        //System.out.println(weapon);
-        weaponList.add(weapon);
-        
+ 
+    /**
+     * Return a reference to ship's weaponlist
+     *
+     * @return weaponList
+     */
+    public WeaponList getWeaponList(){
+        return weaponList;
     }
-
     
+    /**
+     * Adds a weapon to the ship.
+     * Weaponmounts for all possible weapons
+     * must be set, otherwise a null pointer exception
+     * will be thrown.
+     */
+    public void addWeapon(Weapon weapon){
+        try{
+        getWeaponList().addWeapon(weapon);
+        }catch(Exception e){
+            System.out.println("Weapon mount not set for weapon: " + e);
+        }
+   }
+    
+    /**
+     * Update DX and DY with new integer values.
+     *
+     * @param int
+     */
     public void setDx(int newDx) {
         dx = newDx;
     }
