@@ -48,23 +48,13 @@ public abstract class Ship extends Sprite {
      * If ship is destroyed the ship won't fire.
      * Obviously.
      */
-    public void fire(Level l) {
-        if(!isDestroyed()){
-            for (Weapon w : weaponList) {
-                w.fire(l);
+    public void fire(Level level){
+        if (!isDestroyed()){
+            for (Weapon w : weaponList){
+                w.fire(level, this);
             }
         }
     }
-    
-    //DEBUG method
-    public void fire(TestDrive td){
-        if(!isDestroyed()){
-            for (Weapon w : weaponList) {
-                w.fire(td);
-            }
-        }
-    }
-
     /**
      * A ship that gets touched doesn't do anything 
      */

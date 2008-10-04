@@ -120,7 +120,7 @@ public class PlayerShip extends Ship {
         Point left = new Point(getWidth() - 1, 0);
 
         // Add weapon mounts to ship's weapon list
-        WeaponList weaponList = getWeaponList();
+        WeaponList weaponList = new WeaponList(3);
         weaponList.addWeaponMount(mid);
         weaponList.addWeaponMount(left);
         weaponList.addWeaponMount(right);

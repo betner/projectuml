@@ -4,6 +4,7 @@ package projectuml;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * WeaponList
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * @see Ship
  * @author Steve Eriksson, Jens Thuresson
  */
-public class WeaponList implements Serializable{
+public class WeaponList implements Serializable, Iterable<Weapon>{
     
     private ArrayList<Weapon> weaponList;
     private ArrayList<Point> weaponMount;
@@ -56,4 +57,10 @@ public class WeaponList implements Serializable{
         weaponMount.set(currentMount % numberOfWeapons, mount);
         currentMount++;
     }
+    
+    
+    public Iterator<Weapon> iterator() {
+        return weaponList.listIterator();
+    }
+
 }
