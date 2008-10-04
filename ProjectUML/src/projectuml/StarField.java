@@ -2,7 +2,6 @@ package projectuml;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.*;
 
 /**
  * A floating star field
@@ -81,8 +80,8 @@ public class StarField extends Scenery {
         }
     }
     
-    private ArrayList<Star> stars;
-    private Random random;
+    //private ArrayList<Star> stars;
+    private Star[] stars;
     
     /**
      * Generates a star field
@@ -90,14 +89,15 @@ public class StarField extends Scenery {
      * @param Amount of stars
      **/
     public StarField(int amount) {
-        random = new Random();
-        stars = new ArrayList<Star>(amount);
+        //stars = new ArrayList<Star>(amount);
+        stars = new Star[amount];
         for (int i=0; i < amount; ++i) {
-            int x = random.nextInt(640);
-            int y = random.nextInt(480);
-            int dx = random.nextInt(3) + 1;
-            float brightness = random.nextFloat();
-            stars.add(new Star(x, y, -dx, 0, brightness));
+            int x = Randomizer.getRandomNumber(0, 640);
+            int y = Randomizer.getRandomNumber(0, 480);
+            int dx = Randomizer.getRandomNumber(1, 3);
+            float brightness = Randomizer.getRandomFloat();
+            //stars.add(new Star(x, y, -dx, 0, brightness));
+            stars[i] = new Star(x, y, -dx, 0, brightness);
         }
     }
 

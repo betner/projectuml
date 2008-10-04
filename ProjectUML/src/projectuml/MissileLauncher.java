@@ -37,9 +37,9 @@ public class MissileLauncher extends Weapon{
      * Overridden fire method
      * Uses a timer to check if weapons cooldown time has passed.
      */
-    public void fire(Level level){
+    public void fire(Level level, Sprite sprite){
         if(timestamp.havePassed(COOLDOWN)){
-            Point position = clone(getPosition());
+            Point position = new Point(); //clone(getPosition());
             Shot shot = new Shot(DAMAGE, position, getShotImageFile());
 
             if(isPlayer()){

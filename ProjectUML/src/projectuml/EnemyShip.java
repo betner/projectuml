@@ -83,19 +83,19 @@ public class EnemyShip extends Ship {
       // If ship is at nextPosition, get new destination from path
       if(getPosition().equals(nextPosition)){
           nextPosition = path.next();
-          System.out.println(" getPosition().equals(nextPosition = true");
-          System.out.println("nextPosition = " + nextPosition);
+//          System.out.println(" getPosition().equals(nextPosition = true");
+//          System.out.println("nextPosition = " + nextPosition);
           
           // If ship is at the end of the path it should disappear
           if (nextPosition == null) {
-              System.out.println("Enemy: nextPosition == null");
+//              System.out.println("Enemy: nextPosition == null");
               deactivate();
               hide();
               return;
               
           // Otherwise, update navigator calculator with new destination
           }else{
-              System.out.println("update(): route.newDestination " + nextPosition);
+//              System.out.println("update(): route.newDestination " + nextPosition);
               navigator.newDestination(nextPosition);
           }
       }

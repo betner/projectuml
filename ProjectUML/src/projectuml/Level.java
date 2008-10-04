@@ -14,11 +14,12 @@ public class Level implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Scenery background;
-    private ArrayList<Shot> playershots;
-    private ArrayList<Shot> enemyshots;
-    private ArrayList<EnemyShip> enemies;
+    private Vector<Shot> playershots;
+    private Vector<Shot> enemyshots;
+    private Vector<EnemyShip> enemies;
     private int offset;
     private boolean editormode;
+    private int health;
     
     // These are transient, meaning that they
     // aren't going to get serialized
@@ -27,14 +28,15 @@ public class Level implements Serializable {
     
     /** Creates a new instance of Level */
     public Level() {
-        playershots = new ArrayList<Shot>();
-        enemyshots = new ArrayList<Shot>();
-        enemies = new ArrayList<EnemyShip>();
+        playershots = new Vector<Shot>();
+        enemyshots = new Vector<Shot>();
+        enemies = new Vector<EnemyShip>();
         background = null;
         offset = 0;
         soundplayer = new SoundPlayer(".");
         editormode = false;
         font = new Font("Courier New", Font.PLAIN, 10);
+        health = 0;
     }
     
     /**
@@ -74,7 +76,7 @@ public class Level implements Serializable {
     
     /**
      * Travel forward
-     * @param amount
+     * @param amount How much
      */
     public void increaseOffset(int amount) {
         offset += amount;
@@ -82,7 +84,7 @@ public class Level implements Serializable {
     
     /**
      * Travel backwards (at least til zero)
-     * @param amount
+     * @param amount How much
      */
     public void decreaseOffset(int amount) {
         offset -= amount;
@@ -99,8 +101,19 @@ public class Level implements Serializable {
     }
     
     /**
+     * Sets the offset explicitly
+     * @param amount How much
+     **/
+    public void setOffset(int offset) {
+        this.offset = offset;
+        if (this.offset < 0) {
+            this.offset = 0;
+        }
+    }
+    
+    /**
      * Updates the level, handle collision detection and so on
-     * @param player
+     * @param player Active player ship
      */
     public synchronized void update(PlayerShip player) {
         // Background
@@ -115,13 +128,17 @@ public class Level implements Serializable {
             // Does it hit an enemy?
             for (EnemyShip enemy : enemies) {
                 if (offset >= enemy.getOffset()) {
-                    if (enemy.inShape(shot.getPosition())) {
+                    if (!enemy.isDestroyed() && enemy.inShape(shot.getPosition())) {
                         shot.touch(enemy);
-                        // No need to check for additional
-                        // hits
                         break;
                     }
                 }
+            }
+            
+            // Is it off-screen?
+            if (shot.getIntPositionX() > 640 || shot.getIntPositionY() > 480) {
+                shot.deactivate();
+                shot.hide();
             }
         }
         
@@ -136,11 +153,31 @@ public class Level implements Serializable {
         }
         
         // All the enemies
+//        Rectangle playerrect = new Rectangle(player.getIntPositionX(),
+//                player.getIntPositionY(),
+//                player.getWidth(),
+//                player.getHealth());
+        
         for (EnemyShip ship : enemies) {
             if (offset >= ship.getOffset()) {
                 ship.update(this);
+                
+                // Does the player crash inside the
+                // enemy?
+//                Rectangle enemyrect = new Rectangle(ship.getIntPositionX(),
+//                        ship.getIntPositionY(),
+//                        ship.getWidth(),
+//                        ship.getHeight());
+//                if (playerrect.intersects(enemyrect)) {
+                if (player.inShape(ship.getPosition())) {
+                    player.destroyShip();
+                    break;
+                }
             }
         }
+        
+        // Store away player lifes
+        health = player.getHealth();
     }
     
     /**
@@ -167,6 +204,9 @@ public class Level implements Serializable {
                             ship.getWidth(), ship.getHeight());
                     Integer health = new Integer(ship.getHealth());
                     g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
+                    
+                    Integer off = new Integer(ship.getOffset());
+                    g.drawString("Offset: " + off, ship.getIntPositionX(), ship.getIntPositionY() + ship.getHeight() + font.getSize());
                 }
             }
         }
@@ -180,16 +220,27 @@ public class Level implements Serializable {
         for (Shot shot : playershots) {
             shot.draw(g);
         }
+        
+        drawHUD(g);
+    }
+    
+    /**
+     * Draws the heads-up-display (info about player health)
+     **/
+    private synchronized void drawHUD(Graphics2D g) {
+        g.setFont(font);
+        g.setColor(Color.green);
+        g.drawString("Health: " + health, 10, 450);
     }
     
     /**
      * Adds a shot from the player to the level world
      * @param shot
      */
-    public void addPlayerShot(Shot shot) {
+    public synchronized void addPlayerShot(Shot shot) {
         if (shot != null) {
-            // FIX: all sprites should be visible by default!
             shot.show();
+            shot.activate();
             playershots.add(shot);
         }
     }
@@ -198,10 +249,10 @@ public class Level implements Serializable {
      * Adds a shot from the enemy to the level world
      * @param shot
      **/
-    public void addEnemyShot(Shot shot) {
+    public synchronized void addEnemyShot(Shot shot) {
         if (shot != null) {
-            // FIX: all enemy shots should be visible by default!
             shot.show();
+            shot.activate();
             enemyshots.add(shot);
         }
     }
@@ -230,13 +281,14 @@ public class Level implements Serializable {
     }
     
     /**
-     * TODO: can we allow this kind of methods?
-     * @param point
+     * Returns the ship at the specified position, if
+     * it's visible in the current offset
+     * @param point Expected point
      * @return EnemyShip at the position, or null
      **/
     public EnemyShip getShipAt(Point point) {
         for (EnemyShip ship : enemies) {
-            if (ship.inShape(point)) {
+            if (offset >= ship.getOffset() && ship.inShape(point)) {
                 return ship;
             }
         }

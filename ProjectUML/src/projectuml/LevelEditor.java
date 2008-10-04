@@ -30,6 +30,7 @@ public class LevelEditor extends GameState {
         SET_ENEMY_HEALTH,
         INCREASE_OFFSET, DECREASE_OFFSET,
         CHOOSE_SCENERY,
+        GOTO_MIN_OFFSET, GOTO_MAX_OFFSET,
         START_PATH_EDITOR,
     };
     private boolean showhelp;
@@ -96,6 +97,8 @@ public class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_F2, EditorCommandID.START_PATH_EDITOR);
         keys.put(KeyEvent.VK_P, EditorCommandID.SET_PATH_ON_ENEMY);
         keys.put(KeyEvent.VK_Z, EditorCommandID.SET_ENEMY_HEALTH);
+        keys.put(KeyEvent.VK_HOME, EditorCommandID.GOTO_MIN_OFFSET);
+        keys.put(KeyEvent.VK_END, EditorCommandID.GOTO_MAX_OFFSET);
     }
 
     /**
@@ -336,6 +339,21 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
+                
+                case GOTO_MIN_OFFSET:
+                    // Restores offset to zero, that is, the beginning
+                    if (level != null) {
+                        level.setOffset(0);
+                    }
+                    break;
+                    
+                case GOTO_MAX_OFFSET:
+                    // Travels to max offset, that is, the largest
+                    // number our type of offset can store
+                    if (level != null) {
+                        level.setOffset(Integer.MAX_VALUE);
+                    }
+                    break;
 
                 case CHOOSE_SCENERY: {
                     // Browse for a already saved scenery
@@ -380,12 +398,18 @@ public class LevelEditor extends GameState {
                     //ship.setPosition(event.getPoint());
                     Path path = new Path(true);
                     path.addPoint(event.getPoint());
-                    EnemyShip ship = new EnemyShip(path, "enemyship1.png");
-                    ship.setPosition(event.getPoint());
+                    EnemyFactory factory = new EnemyFactory();
+                    EnemyShip ship = factory.createEnemy(path);
                     ship.show();
                     ship.setOffset(level.getOffset());
-                    ship.activate();
                     level.addShip(ship);
+                    ship.setPosition(event.getPoint());
+//                    EnemyShip ship = new EnemyShip(path, "enemyship1.png");
+//                    ship.setPosition(event.getPoint());
+//                    ship.show();
+//                    ship.setOffset(level.getOffset());
+//                    ship.activate();
+//                    level.addShip(ship);
                     unsavedchanges = true;
                     break;
                 }
