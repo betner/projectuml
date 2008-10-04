@@ -25,6 +25,7 @@ public class Sprite implements Serializable {
     private int height;
     transient private BufferedImage image; // Graphic representing this object
     private String imageFile;    // Path to image
+    private TouchBehaviour touch; 
     
     /** 
      * Creates a new instance of Sprite and load
@@ -111,7 +112,11 @@ public class Sprite implements Serializable {
      * Touch gets a reference to touching Sprite so
      * that we can alter its state if needed.
      */
-    public void touch(Sprite s){}
+    public void touch(Sprite sprite){
+        if(touch != null){
+            touch.action(sprite);
+        }
+    }
     
     /**
      * Check if a point is within this objects boundries.
@@ -173,6 +178,14 @@ public class Sprite implements Serializable {
      */
     public void deactivate(){
         active = false;
+    }
+    
+    protected void setTouchBehaviour(TouchBehaviour touch){
+        this.touch = touch;
+    }
+    
+    protected TouchBehaviour getTouchBehaviour(){
+        return touch;
     }
     
     /**

@@ -31,7 +31,8 @@ public class Shot extends Sprite{
     }
     
     public Shot(int damage, int dx, int dy, Point position, String imageFile) {
-        this.damage = damage;
+        setTouchBehaviour(new hurt(damage));
+        //this.damage = damage;
         setDx(dx);
         setDy(dx);
         //setImageFile(imageFile); // Set image path
@@ -55,13 +56,14 @@ public class Shot extends Sprite{
      * If shot touches a ship it should cause damage.
      * Only runs if we're active
      */
-    public void touch(Ship ship) {
-        if (isActive()) {
-            ship.decreaseHealth(damage);
-            hide();
-            deactivate();
-        }
-    }
+//    public void touch(Ship ship) {
+//        if (isActive()) {
+//            getTouchBehaviour().action(ship);
+//            //ship.decreaseHealth(damage);
+//            hide();
+//            deactivate();
+//        }
+//    }
     
     public void setDx(int newDx){
         dx = newDx;
