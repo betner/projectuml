@@ -22,5 +22,13 @@ final class Randomizer {
     static public int getRandomNumber(int floor, int ceil){
         return random.nextInt((ceil-floor)+1)+floor;
     }
+    
+    /**
+     * Produce a random (float) number between
+     * 0.0 and 1.0
+     **/
+    static public float getRandomFloat() {
+        return random.nextFloat();
+    }
 }
 

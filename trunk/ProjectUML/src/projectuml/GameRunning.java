@@ -26,7 +26,9 @@ public class GameRunning extends GameState {
         GO_UP, GO_DOWN, GO_LEFT, GO_RIGHT,
         FIRE_WEAPON,
         PAUSE,
-        START_LEVEL_EDITOR
+        START_LEVEL_EDITOR,
+        TOGGLE_EDITOR_MODE,
+        EXIT
     };
     private Hashtable<Integer, GameCommandID> keys;
     private Timer timer;
@@ -56,11 +58,6 @@ public class GameRunning extends GameState {
         
         keys = new Hashtable<Integer, GameCommandID>();
         bindKeys();
-        
-        // TODO: do we choose our own level?
-        //       or should we use a level-factory
-        //       that reads in all available level files
-        //       and then selects one for us?
     }
     
     /**
@@ -75,6 +72,8 @@ public class GameRunning extends GameState {
         keys.put(KeyEvent.VK_PAUSE, GameCommandID.PAUSE);
         keys.put(KeyEvent.VK_F12, GameCommandID.START_LEVEL_EDITOR);
         keys.put(KeyEvent.VK_SPACE, GameCommandID.FIRE_WEAPON);
+        keys.put(KeyEvent.VK_H, GameCommandID.TOGGLE_EDITOR_MODE);
+        keys.put(KeyEvent.VK_ESCAPE, GameCommandID.EXIT);
     }
     
     /**
@@ -99,8 +98,7 @@ public class GameRunning extends GameState {
         }
         playership.draw(g);
         
-        if (currentlevel != null) {
-            // TODO: remove when we're done!
+        if (currentlevel != null && currentlevel.inEditorMode()) {
             // Print out debug information
             g.setFont(font);
             g.setColor(Color.white);
@@ -156,6 +154,12 @@ public class GameRunning extends GameState {
                     }
                     break;
                     
+                case TOGGLE_EDITOR_MODE:
+                    if (currentlevel != null && !down) {
+                        currentlevel.setEditorMode(!currentlevel.inEditorMode());
+                    }
+                    break;
+                    
                 case PAUSE:
                     if (down) {
                         getGameStateManager().push(new Pause());
@@ -166,6 +170,10 @@ public class GameRunning extends GameState {
                     if (down) {
                         getGameStateManager().push(new LevelEditor(currentlevel));
                     }
+                    break;
+                    
+                case EXIT:
+                    getGameStateManager().change(new MainMenu());
                     break;
                     
                 default:
@@ -203,7 +211,9 @@ public class GameRunning extends GameState {
      **/
     public void gainedFocus() {
         active = true;
-        //currentlevel.loopSound("theme");
+        if (currentlevel != null) {
+            //currentlevel.loopSound("theme");
+        }
     }
     
     /**
@@ -211,7 +221,9 @@ public class GameRunning extends GameState {
      **/
     public void lostFocus() {
         active = false;
-        currentlevel.stopSound("theme");
+        if (currentlevel != null) {
+            currentlevel.stopSound("theme");
+        }
     }
     
     /**

@@ -119,7 +119,7 @@ public class TestDrive extends JFrame implements KeyListener{
                 System.out.println("VK_DOWN");
                 break;
             case KeyEvent.VK_F:
-                ship.fire(this);
+                //ship.fire(this, );
                 System.out.println("VK_F");
             default:
                 break;

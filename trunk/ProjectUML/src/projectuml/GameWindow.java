@@ -19,7 +19,8 @@ public class GameWindow extends JFrame implements WindowFocusListener {
     private VolatileImage backbuffer;
     private GraphicsConfiguration config;
     private BufferStrategy strategy;
-    private ArrayList<DrawListener> drawlisteners;
+    //private ArrayList<DrawListener> drawlisteners;
+    private Vector<DrawListener> drawlisteners;
     private java.util.Timer timer;
     private final long RENDER_INTERVAL = 16;
     
@@ -89,7 +90,8 @@ public class GameWindow extends JFrame implements WindowFocusListener {
         getContentPane().setIgnoreRepaint(true);
         
         // Create space for our draw listeners
-        drawlisteners = new ArrayList<DrawListener>();
+        //drawlisteners = new ArrayList<DrawListener>();
+        drawlisteners = new Vector<DrawListener>();
         
         canvas = new Canvas();
         canvas.setIgnoreRepaint(true);

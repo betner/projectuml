@@ -77,9 +77,6 @@ public class PlayerShip extends Ship {
         if(isDestroyed() && getDestructAnimation().isDone()){
             
             if(timestamp.havePassed(SPAWN_TIME) && player.getLives() > 0){
-                // Move weapons from current position back to ship's 
-                // starting location.
-                updateWeaponPositions(START_X - getIntPositionX(), START_Y - getIntPositionY());
                 // Move ship to starting location
                 setPosition(START_X, START_Y);
                 resetShip();
@@ -88,7 +85,6 @@ public class PlayerShip extends Ship {
             // Handle ship movement
             super.update(level); 
             // Make sure weapons are relocated at ships new location
-            updateWeaponPositions(getDx(), getDy());
         }
        
     }

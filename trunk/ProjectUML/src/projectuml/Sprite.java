@@ -16,6 +16,8 @@ import java.io.*;
  */
 public class Sprite implements Serializable {
     
+    private static long serialVersionUID = 1l;
+    
     private Point position;      // Objects upper left corner
     private Boolean visible;     // TRUE = object performs draw()
     private Boolean active;      // TRUE = object performs update()
@@ -140,6 +142,13 @@ public class Sprite implements Serializable {
      */
     public void hide(){
         visible = false;
+    }
+    
+    /**
+     * Is the sprite visible on screen?
+     **/
+    public boolean isVisible() {
+        return visible;
     }
     
     /**
