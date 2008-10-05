@@ -417,8 +417,10 @@ public class LevelEditor extends GameState {
                     EnemyShip ship = factory.createEnemy(path);
                     ship.show();
                     ship.setOffset(level.getOffset());
-                    level.addShip(ship);
                     ship.setPosition(event.getPoint());
+                    ship.addWeapon(new MultiWeapon());
+
+                    level.addShip(ship);
                     
                     unsavedchanges = true;
                     break;

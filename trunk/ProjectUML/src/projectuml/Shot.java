@@ -33,7 +33,7 @@ public class Shot extends Sprite{
     public Shot(int damage, int dx, int dy, Point position, String imageFile) {   
         setTouchBehaviour(new HurtShip(damage));
         setDx(dx);
-        setDy(dx);
+        setDy(dy);
         loadImageFrom(imageFile);
         setPosition(position);
     }
@@ -66,7 +66,7 @@ public class Shot extends Sprite{
         dx = newDx;
     }
     public void setDy(int newDy) {
-        dx = newDy;
+        dy = newDy;
     }
     
     /**
