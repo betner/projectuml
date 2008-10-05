@@ -20,13 +20,10 @@ public class HealShip extends TouchBehaviour{
     }
     
     public void action(Sprite sprite){
-        // Not sure if this gets called due to Sprite's implementation of touch'
-        System.out.println("heal: action(sprite)"); 
+       if(sprite instanceof Ship){
+        System.out.println("heal: action(Ship)"); 
         Ship ship = (Ship)sprite;
         ship.increaseHealth(health);
-    }
-    
-    public void action(Ship ship){
-        ship.increaseHealth(health);
+       }
     }
 }
