@@ -17,6 +17,7 @@ public class Level implements Serializable {
     private Vector<Shot> playershots;
     private Vector<Shot> enemyshots;
     private Vector<EnemyShip> enemies;
+    private Vector<Sprite> pickables;
     private int offset;
     private boolean editormode;
     private int health;
@@ -31,6 +32,7 @@ public class Level implements Serializable {
         playershots = new Vector<Shot>();
         enemyshots = new Vector<Shot>();
         enemies = new Vector<EnemyShip>();
+        pickables = new Vector<Sprite>();
         background = null;
         offset = 0;
         soundplayer = new SoundPlayer(".");
@@ -147,7 +149,7 @@ public class Level implements Serializable {
             shot.update();
             
             // Does it hit the player?
-            if (player.inShape(shot.getPosition())) {
+            if (!player.isDestroyed() && player.inShape(shot.getPosition())) {
                 shot.touch(player);
             }
         }
@@ -175,6 +177,16 @@ public class Level implements Serializable {
                         break;
                     }
                 }
+            }
+        }
+        
+        // Update all pickables!
+        for (Sprite sprite : pickables) {
+            sprite.update(this);
+            
+            // Do we touch it?
+            if (player.inShape(sprite.getPosition())) {
+                sprite.touch(player);
             }
         }
         
@@ -223,6 +235,11 @@ public class Level implements Serializable {
             shot.draw(g);
         }
         
+        // Draw the pickables
+        for (Sprite sprite : pickables) {
+            sprite.draw(g);
+        }
+        
         drawHUD(g);
     }
     
@@ -266,6 +283,16 @@ public class Level implements Serializable {
     public void addShip(EnemyShip ship) {
         if (ship != null) {
             enemies.add(ship);
+        }
+    }
+    
+    /**
+     * Adds a pickable object (i.e. PowerUps)
+     * @param sprite
+     **/
+    public void addPickable(Sprite sprite) {
+        if (sprite != null) {
+            pickables.add(sprite);
         }
     }
     
