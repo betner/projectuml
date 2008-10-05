@@ -101,6 +101,7 @@ public class EnemyShip extends Ship {
           setPosition(navigator.getNextPosition());
       }
       
+      gunner.update(level);
       super.update(level);
         
         /*

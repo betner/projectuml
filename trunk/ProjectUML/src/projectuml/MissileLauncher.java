@@ -33,6 +33,10 @@ public class MissileLauncher extends Weapon{
         timestamp = new Timestamp();
     }
     
+    public MissileLauncher(boolean isPlayer){
+        this(new Point(), isPlayer);
+    }
+    
     /**
      * Overridden fire method
      * Uses a timer to check if weapons cooldown time has passed.

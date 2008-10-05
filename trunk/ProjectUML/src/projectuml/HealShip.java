@@ -19,6 +19,9 @@ public class HealShip extends TouchBehaviour{
         this.health = health;
     }
     
+    /**
+     * If the type of object that is touching is a ship, increase it's health.
+     */
     public void action(Sprite sprite){
        if(sprite instanceof Ship){
         System.out.println("heal: action(Ship)"); 
