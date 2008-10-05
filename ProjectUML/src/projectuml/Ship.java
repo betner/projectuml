@@ -112,6 +112,7 @@ public abstract class Ship extends Sprite {
     public void decreaseHealth(int units) {
         health -= units;
         if (health <= 0) {
+            health = 0;
             destroyShip();
         }
     }
@@ -132,7 +133,7 @@ public abstract class Ship extends Sprite {
      * the ships.
      */
     protected void destroyShip() {  
-        System.out.println("Ship: destroyShip()");
+      //  System.out.println("Ship: destroyShip()");
         hide();           // Make sure ship isn't drawn
         destroyed = true; // Mark as destroyed
         destructionAnimation.reset(); // Make sure the animation is restarted
@@ -140,8 +141,8 @@ public abstract class Ship extends Sprite {
         destructionAnimation.show();
         destructionAnimation.activate();
        
-        System.out.println("Ship: destructionAnimation()");
-        System.out.println("Ship: done = true");
+      //  System.out.println("Ship: destructionAnimation()");
+      //  System.out.println("Ship: done = true");
     }
 
     /**

@@ -26,7 +26,7 @@ public class CrazyGunner extends Gunner{
         setShip(ship);
         this.maxTime = maxTime;
         setTimestamp(new Timestamp());
-        time = Randomizer.getRandomNumber(0, maxTime); 
+        time = Randomizer.getRandomNumber(500, maxTime); 
     }
     
     /**
@@ -45,9 +45,10 @@ public class CrazyGunner extends Gunner{
     public void update(Level level){
         if(getTimestamp().havePassed(time)){
             // time is between 0 and 2 seconds
-            time = Randomizer.getRandomNumber(0, maxTime); 
+            time = Randomizer.getRandomNumber(500, maxTime); 
             //getShip().fire(getLevel());
             getShip().fire(level);
+            getTimestamp().reset();
         }
     }
 }

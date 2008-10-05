@@ -22,7 +22,7 @@ public class LaserCannon extends Weapon{
     }
     
     public LaserCannon(boolean isPlayer){
-        this(new Point(), true);
+        this(new Point(), isPlayer);
     }
     
     /** Creates a new instance of LaserCannon */

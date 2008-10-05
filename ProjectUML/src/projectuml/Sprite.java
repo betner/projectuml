@@ -113,6 +113,7 @@ public class Sprite implements Serializable {
      * that we can alter its state if needed.
      */
     public void touch(Sprite sprite){
+        System.out.println("Sprite.touch()");
         if(touch != null){
             touch.action(sprite);
         }
