@@ -61,8 +61,8 @@ public abstract class Ship extends Sprite {
     /**
      * A ship that gets touched doesn't do anything 
      */
-    public void touch(Sprite s) {
-    }
+  //  public void touch(Sprite s) {
+   // }
 
     /**
      * Update position of the ship onscreen if it is active.
