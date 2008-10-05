@@ -47,7 +47,7 @@ public class PlayerShip extends Ship {
         getWeaponList().setNumberOfWeapons(3);
         setWeaponMounts();
         getWeaponList().addWeapon(new LaserCannon(true));
-
+        getWeaponList().addWeapon(new MissileLauncher(true));
         // Make the ship listen to draw() and update() requests
         show();
         activate();
@@ -67,7 +67,6 @@ public class PlayerShip extends Ship {
         // and placing it in it's starting position providing that
         // player has lives left.
         if(isDestroyed() && getDestructAnimation().isDone()){
-            
             if(timestamp.havePassed(SPAWN_TIME) && player.getLives() > 0){
                 // Move ship to starting location
                 setPosition(START_X, START_Y);
@@ -76,7 +75,6 @@ public class PlayerShip extends Ship {
         }else{
             // Handle ship movement
             super.update(level); 
-            // Make sure weapons are relocated at ships new location
         }
        
     }

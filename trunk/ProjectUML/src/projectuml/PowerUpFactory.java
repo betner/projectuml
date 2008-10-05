@@ -15,14 +15,14 @@ public class PowerUpFactory {
     }
 
 
-  public static PowerUp createHealthPowerUp(int health){
-      PowerUp powerUp = new PowerUp(new Point(), 0, "heart.png");
+  public static PowerUp createHealthPowerUp(Point position, int health){
+      PowerUp powerUp = new PowerUp(position, "heart.png");
       powerUp.setTouchBehaviour(new HealShip(100));
       return powerUp;
   }
   
-  public static PowerUp createMissileLauncherPowerUp(){
-      PowerUp powerUp = new PowerUp(new Point(), 0, "missilepowerup.png");
+  public static PowerUp createMissileLauncherPowerUp(Point position){
+      PowerUp powerUp = new PowerUp(position, "missilepowerup.png");
       powerUp.setTouchBehaviour(new GiveWeapon(new MissileLauncher(true)));
       return powerUp;
   }

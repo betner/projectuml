@@ -59,7 +59,6 @@ public class EnemyShip extends Ship {
        // weaponMountMid = clonePosition(getPosition());
         weaponMountMid = (Point)getPosition().clone();
         setWeaponMounts();
-        
         getWeaponList().addWeapon(new LaserCannon(false));
     }
     
@@ -99,6 +98,21 @@ public class EnemyShip extends Ship {
       // Update new position if ship isn't destroyed
       if(!isDestroyed()){
           setPosition(navigator.getNextPosition());
+          
+      // Ship is destroyed. Chances are that it will leave 
+      // a powerup behind.
+      // This should be solved a little more dynamic if time permits.    
+      }else if(getDestructAnimation().isDone()){
+          if(Randomizer.getRandomNumber(0, 0) == 0){
+              System.out.println("Random: drop");
+              if(Randomizer.getRandomNumber(0,0) == 0){
+                  System.out.println("Drop: missile");
+               //   level.addEnemyShot(PowerUpFactory.createMissileLauncherPowerUp(getPosition()));
+              }else{
+                //  level.addEnemyShot(PowerUpFactory.createHealthPowerUp(getPosition(), 100));
+              }
+          }
+          deactivate();
       }
       
       gunner.update(level);
