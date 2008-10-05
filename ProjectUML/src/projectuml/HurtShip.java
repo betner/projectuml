@@ -20,9 +20,11 @@ public class HurtShip extends TouchBehaviour {
     }
     
     public void action(Sprite sprite){
+        if(sprite instanceof Ship){
+            Ship ship = (Ship)sprite;
+            ship.decreaseHealth(damage);
+        }
     }
     
-    public void action(Ship ship){
-        ship.decreaseHealth(damage);
-    }
+
 }
