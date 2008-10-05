@@ -36,7 +36,7 @@ public class TestDrive extends JFrame implements KeyListener{
         shots = new ArrayList<Shot>();
         player = new Player();
         ship = new PlayerShip(player);
-        enemy = new EnemyShip(path, "enemyship1.png");
+        enemy = null;
         enemy.show();
         enemy.activate();
         addKeyListener(this);
