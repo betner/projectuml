@@ -55,7 +55,9 @@ public class EnemyShip extends Ship {
         
         // Set up ship weapon
         getWeaponList().setNumberOfWeapons(1);
-        weaponMountMid = clonePosition(getPosition());
+       // weaponMountMid = clonePosition(getPosition());
+        setWeaponMounts();
+        weaponMountMid = (Point)getPosition().clone();
         getWeaponList().addWeapon(new LaserCannon(false));
     }
     

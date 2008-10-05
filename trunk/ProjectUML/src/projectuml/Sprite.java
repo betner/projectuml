@@ -215,11 +215,11 @@ public class Sprite implements Serializable {
      * Clone the point object representing
      * sprite's position
      */
-    public Point clonePosition(Point position){
-        Point clone = new Point();
-        clone.setLocation(position);
-        return clone;
-    }
+//    public Point clonePosition(Point position){
+//        Point clone = new Point();
+//        clone.setLocation(position);
+//        return clone;
+//    }
         
     /**
      * Set new position for sprite
