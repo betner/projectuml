@@ -17,7 +17,7 @@ public class PowerUpFactory {
 
   public static PowerUp createHealthPowerUp(int health){
       PowerUp powerUp = new PowerUp(new Point(), 0, "heart.png");
-      powerUp.setTouchBehaviour(new Heal(100));
+      powerUp.setTouchBehaviour(new HealShip(100));
       return powerUp;
   }
 }
