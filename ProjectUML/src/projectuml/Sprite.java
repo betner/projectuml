@@ -113,11 +113,13 @@ public class Sprite implements Serializable {
      * that we can alter its state if needed.
      */
     public void touch(Sprite sprite){
-        System.out.println("Sprite.touch()");
-        if(touch != null){
-            touch.action(sprite);
+        if(isActive() && isVisible()){
+            if(touch != null){
+                touch.action(sprite);
+            }
         }
     }
+        
     
     /**
      * Check if a point is within this objects boundries.

@@ -22,18 +22,6 @@ abstract public class Gunner implements Serializable {
     
     abstract void update(Level level);
     
-    /**
-     * Returns the level object stored in class Gunner
-     *
-     * @return level
-     */
-//    public Level getLevel(){
-//        return level;
-//    }
-//    
-//    public void setLevel(Level level){
-//        this.level = level;
-//    }
     
     public Ship getShip(){
         return ship;

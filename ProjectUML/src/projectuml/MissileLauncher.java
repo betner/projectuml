@@ -43,7 +43,9 @@ public class MissileLauncher extends Weapon{
      */
     public void fire(Level level, Sprite sprite){
         if(timestamp.havePassed(COOLDOWN)){
-            Point position = new Point(); //clone(getPosition());
+            Point position = (Point)getPosition().clone();
+            // Translate position over the sprite that owns the weapon
+            position.translate(sprite.getIntPositionX(), sprite.getIntPositionY());
             Shot shot = new Shot(DAMAGE, position, getShotImageFile());
 
             if(isPlayer()){

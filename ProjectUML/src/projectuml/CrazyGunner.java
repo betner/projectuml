@@ -8,34 +8,32 @@ package projectuml;
  * This one calls ship's fire method in a random manner based 
  * on time.
  *
+ * @see Ship
+ * @see Gunner
  * @author Steve Eriksson, Jens Thuresson
  */
 public class CrazyGunner extends Gunner{
     
     private int maxTime;
+    private int minTime;
     private int time;
     
 
     /**
      * Creates new instance of CrazyGunner
-     *
-     * @param ship reference to the ship that contains CrazyGunner
+     * Ship must be bound to this gunner before it is
+     * used by calling setShip(Ship).
+     * 
      * @param maxTime maximum time before gunner fires
+     * @param minTime minimum time before gunner fires
      */
-    public CrazyGunner(Ship ship, int maxTime){
-        setShip(ship);
+    public CrazyGunner(int minTime, int maxTime){
         this.maxTime = maxTime;
+        this.minTime = minTime;
         setTimestamp(new Timestamp());
-        time = Randomizer.getRandomNumber(500, maxTime); 
+        time = Randomizer.getRandomNumber(minTime, maxTime); 
     }
     
-    /**
-     * Creates a new instance of CrazyGunner
-     * with default value for maxTime.
-     */
-    public CrazyGunner(Ship ship) {
-        this(ship, 2000);
-    }
     
     /**
      * Overriden update
@@ -44,9 +42,7 @@ public class CrazyGunner extends Gunner{
      **/
     public void update(Level level){
         if(getTimestamp().havePassed(time)){
-            // time is between 0 and 2 seconds
-            time = Randomizer.getRandomNumber(500, maxTime); 
-            //getShip().fire(getLevel());
+            time = Randomizer.getRandomNumber(minTime, maxTime); 
             getShip().fire(level);
             getTimestamp().reset();
         }

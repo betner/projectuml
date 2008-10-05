@@ -47,7 +47,6 @@ public class PlayerShip extends Ship {
         getWeaponList().setNumberOfWeapons(3);
         setWeaponMounts();
         getWeaponList().addWeapon(new LaserCannon(true));
-        getWeaponList().addWeapon(new MissileLauncher(true));
         // Make the ship listen to draw() and update() requests
         show();
         activate();
