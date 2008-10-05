@@ -30,13 +30,10 @@ public class Shot extends Sprite{
         this(damage, 0, 0, position, imageFile);
     }
     
-    public Shot(int damage, int dx, int dy, Point position, String imageFile) {
-        setTouchBehaviour(new Hurt(damage));
-        //this.damage = damage;
+    public Shot(int damage, int dx, int dy, Point position, String imageFile) {   
+        setTouchBehaviour(new HurtShip(damage));
         setDx(dx);
         setDy(dx);
-        //setImageFile(imageFile); // Set image path
-        //setImage(loadImage(getImageFile())); // set the loaded image
         loadImageFrom(imageFile);
         setPosition(position);
     }
