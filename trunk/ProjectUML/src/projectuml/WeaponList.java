@@ -2,6 +2,8 @@
 package projectuml;
 
 import java.awt.Point;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +21,7 @@ import java.util.Iterator;
  * @see Ship
  * @author Steve Eriksson, Jens Thuresson
  */
-public class WeaponList implements Serializable, Iterable<Weapon>{
+public class WeaponList implements Serializable, Iterable<Weapon> {
     
     private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
     private ArrayList<Point> weaponMount = new ArrayList<Point>();
@@ -81,6 +83,10 @@ public class WeaponList implements Serializable, Iterable<Weapon>{
     
     public void setNumberOfWeapons(int number){
         numberOfWeapons = number;
+    }
+    
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
     }
 
 }

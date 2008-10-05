@@ -16,7 +16,7 @@ import java.io.*;
  */
 public class Sprite implements Serializable {
     
-    private static long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1l;
     
     private Point position;      // Objects upper left corner
     private Boolean visible;     // TRUE = object performs draw()

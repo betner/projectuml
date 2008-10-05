@@ -53,6 +53,7 @@ public class EnemyShip extends Ship {
         // Set ship's health
         increaseHealth(1);
         
+        
         // Set up ship weapon
         getWeaponList().setNumberOfWeapons(1);
        // weaponMountMid = clonePosition(getPosition());
