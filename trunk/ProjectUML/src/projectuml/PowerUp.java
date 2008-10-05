@@ -4,8 +4,11 @@ package projectuml;
 import java.awt.Point;
 
 /**
+ * PowerUp
  *
- * @author Steve Eriksson
+ * PowerUp is a pickable sprite that gives a player some sort of bonus.
+ * @see Sprite
+ * @author Steve Eriksson, Jens Thuresson
  */
 public class PowerUp extends Sprite{
     
@@ -23,10 +26,13 @@ public class PowerUp extends Sprite{
     /**
      * Overridden touch method. We want power up's to dissapear
      * after they are picked up.
+     * PowerUp must be visible and active to bless player with it's goodies.
      */
     public void touch(Sprite sprite){
-       getTouchBehaviour().action(sprite);
-       deactivate();
-       hide();
+        if(isActive() && isVisible()){
+            getTouchBehaviour().action(sprite);
+            deactivate();
+            hide();
+        }
     }
 }

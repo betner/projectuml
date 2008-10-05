@@ -1,6 +1,9 @@
 
 package projectuml;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 /**
  * EnemyFactory
  *
@@ -27,8 +30,14 @@ public class EnemyFactory {
      * @return EnemyShip
      */
     public static EnemyShip createEnemyShip1(Path path) {
-        return new EnemyShip(path, "enemyship1.png");
-        
+        ArrayList<Point> weaponMounts = new ArrayList<Point>();
+        weaponMounts.add(new Point(1, 20));
+        Gunner gunner = new CrazyGunner(500, 2000);
+        EnemyShip enemy = new EnemyShip(1, weaponMounts, gunner, path, "enemyship1.png");
+        enemy.addWeapon(new LaserCannon(false));
+        enemy.activate();
+        enemy.show();
+        return enemy;
     }
 }
 
