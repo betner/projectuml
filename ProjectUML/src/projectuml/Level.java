@@ -169,9 +169,11 @@ public class Level implements Serializable {
 //                        ship.getWidth(),
 //                        ship.getHeight());
 //                if (playerrect.intersects(enemyrect)) {
-                if (player.inShape(ship.getPosition())) {
-                    player.destroyShip();
-                    break;
+                if (!ship.isDestroyed()) {
+                    if (player.inShape(ship.getPosition())) {
+                        player.destroyShip();
+                        break;
+                    }
                 }
             }
         }

@@ -13,12 +13,12 @@ import javax.swing.*;
  * @author Jens Thuresson, Steve Eriksson
  */
 public class LevelEditor extends GameState {
-
+    
     private GeneralSerializer<Level> levelloader;
     private Level level;
     private Font smallfont;
     private PlayerShip playership;
- 
+    
     // Different commands the editor recognizes
     private enum EditorCommandID {
         DO_NOTHING,
@@ -38,14 +38,14 @@ public class LevelEditor extends GameState {
     private boolean unsavedchanges;
     private Hashtable<Integer, EditorCommandID> keys;
     private EditorCommandID activecommand;
-
+    
     /**
      * Starts the level editor
      */
     public LevelEditor() {
         this(null);
     }
-
+    
     /**
      * Starts editing a certain level
      * @param level Level to edit
@@ -62,22 +62,22 @@ public class LevelEditor extends GameState {
         if (level != null) {
             level.setEditorMode(true);
         }
-
+        
         // FIX: how do we get the playership
         //      do we need it?
         playership = new PlayerShip(new Player());
-
+        
         // Associate keybindings to specific
         // editor commands, of at least the size
         // of the enum structure
         keys = new Hashtable<Integer, EditorCommandID>();
         bindEditorKeys();
-
+        
         // The active command to execute when we click
         // the mouse button. By default, do nothing
         activecommand = EditorCommandID.DO_NOTHING;
     }
-
+    
     /**
      * Binds editor commands to specific keys
      */
@@ -100,7 +100,7 @@ public class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_HOME, EditorCommandID.GOTO_MIN_OFFSET);
         keys.put(KeyEvent.VK_END, EditorCommandID.GOTO_MAX_OFFSET);
     }
-
+    
     /**
      * Helper function to print text. Will return the next line
      * to start printing on (the y-value)
@@ -112,7 +112,7 @@ public class LevelEditor extends GameState {
         g.drawString(text, x, y);
         return y + g.getFont().getSize();
     }
-
+    
     /**
      * Display help text (key bindings)
      * @param g Graphics context to draw on
@@ -128,13 +128,13 @@ public class LevelEditor extends GameState {
             g.setColor(Color.white);
             y = println(g, keys.get(i).toString(), 80, y);
         }
-
+        
         // Display other information two rows below
         y += smallfont.getSize();
         if (update) {
             y = println(g, "Updating is ON", 0, y);
         }
-
+        
         // Display offset at bottom
         if (level != null) {
             g.setColor(Color.white);
@@ -142,7 +142,7 @@ public class LevelEditor extends GameState {
             g.drawString("Active command: " + activecommand.toString(), 0, 480);
         }
     }
-
+    
     /**
      * Browse for a filename
      * @param title Title of the dialog
@@ -157,7 +157,7 @@ public class LevelEditor extends GameState {
             return null;
         }
     }
-
+    
     /**
      * Browse for a file to save information to
      * @param title Title of the dialog
@@ -172,7 +172,7 @@ public class LevelEditor extends GameState {
             return null;
         }
     }
-
+    
     /**
      * Displays a "Are you sure?"-dialog with
      * @param title Title of the dialog
@@ -183,7 +183,7 @@ public class LevelEditor extends GameState {
         int opt = JOptionPane.showConfirmDialog(null, text, title, JOptionPane.YES_NO_OPTION);
         return opt == JOptionPane.YES_OPTION;
     }
-
+    
     /**
      * Displays a input dialog, asking for an amount
      * (e.g. health)
@@ -199,7 +199,16 @@ public class LevelEditor extends GameState {
             return Integer.parseInt(opt);
         }
     }
-
+    
+    /**
+     * Displays a message to the user in a dialog box
+     * @param title Dialog title
+     * @param text Text in the window
+     **/
+    private void showMessage(String text) {
+        JOptionPane.showMessageDialog(null, text, "Level editor", JOptionPane.PLAIN_MESSAGE);
+    }
+    
     /**
      * Only updates if the user has turned it on
      * @param player
@@ -209,7 +218,7 @@ public class LevelEditor extends GameState {
             level.update(playership);
         }
     }
-
+    
     /**
      * Paint the level
      * @param g Graphics context to draw on
@@ -218,7 +227,7 @@ public class LevelEditor extends GameState {
         // Always draw a black background
         g.setColor(Color.black);
         g.fillRect(0, 0, 640, 480);
-
+        
         // Draw the level
         if (level != null) {
             level.draw(g);
@@ -227,13 +236,13 @@ public class LevelEditor extends GameState {
             g.setFont(smallfont);
             g.drawString("***  No active level, please create a new  ***", 170, 220);
         }
-
+        
         // Display help (if active)
         if (showhelp) {
             showHelp(g);
         }
     }
-
+    
     /**
      * Respons to key press
      * @param event Key event
@@ -258,14 +267,15 @@ public class LevelEditor extends GameState {
                     }
                     removeMe();
                     break;
-
+                    
                 case CLEAR_ALL:
                     // TODO: ask "Really clear everything?"
                     if (level != null) {
                         level.removeAll();
+                        level.setScenery(null);
                     }
                     break;
-
+                    
                 case NEW:
                     // If there's unsaved changes, ask the user
                     // if he wants to abort
@@ -279,13 +289,14 @@ public class LevelEditor extends GameState {
                     // everything on the current one
                     if (level != null) {
                         level.removeAll();
+                        level.setScenery(null);
                     } else {
                         level = new Level();
                         level.setEditorMode(showhelp);
                     }
                     unsavedchanges = false;
                     break;
-
+                    
                 case TOGGLE_HELP:
                     // Doesn't only toggle help text but also
                     // level editor mode
@@ -294,25 +305,25 @@ public class LevelEditor extends GameState {
                         level.setEditorMode(showhelp);
                     }
                     break;
-
+                    
                 case TOGGLE_UPDATE:
                     // Enables updates on the level, i.e.
                     // we're "pretending" to run the level
                     update = !update;
                     break;
-
+                    
                 case INCREASE_OFFSET:
                     if (level != null) {
                         level.increaseOffset(1);
                     }
                     break;
-
+                    
                 case DECREASE_OFFSET:
                     if (level != null) {
                         level.decreaseOffset(1);
                     }
                     break;
-
+                    
                 case DO_NOTHING:
                 case DELETE:
                 case PLACE_ENEMY:
@@ -321,7 +332,7 @@ public class LevelEditor extends GameState {
                     // Just change the active mouse command
                     activecommand = cmd;
                     break;
-
+                    
                 case SAVE: {
                     File path = browseForSave("Save level");
                     if (path != null) {
@@ -330,12 +341,16 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
-
+                
                 case LOAD: {
                     File path = browse("Load level");
                     if (path != null) {
                         level = levelloader.load(path.getAbsolutePath());
-                        level.setEditorMode(showhelp);
+                        if (level != null) {
+                            level.setEditorMode(showhelp);
+                        } else {
+                            showMessage("Couldn't load " + path.getAbsolutePath() + "!");
+                        }
                     }
                     break;
                 }
@@ -354,7 +369,7 @@ public class LevelEditor extends GameState {
                         level.setOffset(Integer.MAX_VALUE);
                     }
                     break;
-
+                    
                 case CHOOSE_SCENERY: {
                     // Browse for a already saved scenery
                     if (level != null) {
@@ -365,26 +380,28 @@ public class LevelEditor extends GameState {
                             // Did it get loaded?
                             if (scenery != null) {
                                 level.setScenery(scenery);
+                            } else {
+                                showMessage("Couldn't load scenary " + path.getAbsolutePath() + "!");
                             }
                         }
                     }
                     break;
                 }
-
+                
                 case START_PATH_EDITOR: {
                     // Switch to the path editor
                     getGameStateManager().push(new PathEditor());
                     break;
                 }
-
+                
                 default:
                     // The current editor command id isn't implemented
-                    System.err.println("***  Unknown EditorCommandID: " + cmd + "  ***");
+                    showMessage("Editor command " + cmd + " not implemented!");
                     break;
             }
         }
     }
-
+    
     /**
      * Respond to the active command
      * @param event
@@ -394,8 +411,6 @@ public class LevelEditor extends GameState {
             switch (activecommand) {
                 case PLACE_ENEMY: {
                     // Create an enemy ship
-                    //EnemyShip ship = new EnemyShip(new Path(false), "playership.png");
-                    //ship.setPosition(event.getPoint());
                     Path path = new Path(true);
                     path.addPoint(event.getPoint());
                     EnemyFactory factory = new EnemyFactory();
@@ -404,22 +419,17 @@ public class LevelEditor extends GameState {
                     ship.setOffset(level.getOffset());
                     level.addShip(ship);
                     ship.setPosition(event.getPoint());
-//                    EnemyShip ship = new EnemyShip(path, "enemyship1.png");
-//                    ship.setPosition(event.getPoint());
-//                    ship.show();
-//                    ship.setOffset(level.getOffset());
-//                    ship.activate();
-//                    level.addShip(ship);
+                    
                     unsavedchanges = true;
                     break;
                 }
-
+                
                 case DELETE:
                     // Delete enemy at the position
                     level.removeShipAt(event.getPoint());
                     unsavedchanges = true;
                     break;
-
+                    
                 case SET_PATH_ON_ENEMY: {
                     // Gives an enemy a pre-created path
                     EnemyShip ship = level.getShipAt(event.getPoint());
@@ -433,7 +443,7 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
-
+                
                 case SET_ENEMY_HEALTH: {
                     // Changes the health of an enemy
                     EnemyShip ship = level.getShipAt(event.getPoint());
@@ -445,21 +455,21 @@ public class LevelEditor extends GameState {
                     }
                     break;
                 }
-
+                
                 default:
                     break;
             }
         }
     }
-
+    
     /** Not used **/
     public void gainedFocus() {
     }
-
+    
     /** Not used **/
     public void lostFocus() {
     }
-
+    
     /**
      * Gets the level object we've been working
      * on
