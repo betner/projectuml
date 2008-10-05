@@ -1,6 +1,7 @@
 
 package projectuml;
 
+
 /**
  * HurtShip
  *
@@ -8,7 +9,7 @@ package projectuml;
  *
  * @author Steve Eriksson, Jens Thuresson
  */
-public class HurtShip extends TouchBehaviour {
+public class HurtShip extends TouchBehaviour{
     
     private int damage;
     

@@ -50,7 +50,7 @@ public class WeaponList implements Serializable, Iterable<Weapon> {
         
         // If position in list i empty, add weapon, otherwise
         // replace current.
-        if(weaponList.size() < 1){
+        if(weaponList.size() <= index){
             weaponList.add(weapon);
         }else{
             weaponList.set(index, weapon);

@@ -131,6 +131,7 @@ public abstract class Ship extends Sprite {
      * The ship is hidden and flagged as destroyed.
      * Here we set the animations position to be the same as 
      * the ships.
+     * Ship is still active so it will listen to update() calls.
      */
     protected void destroyShip() {  
       //  System.out.println("Ship: destroyShip()");

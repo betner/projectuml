@@ -1,6 +1,8 @@
 
 package projectuml;
 
+import java.io.Serializable;
+
 /**
  * TouchBehaviour
  *
@@ -8,7 +10,7 @@ package projectuml;
  *
  * @author Steve Eriksson
  */
-abstract public class TouchBehaviour {
+abstract public class TouchBehaviour implements Serializable{
     
     /** Creates a new instance of TouchBehaviour */
     public TouchBehaviour() {
