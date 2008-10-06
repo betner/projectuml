@@ -16,6 +16,7 @@ abstract public class Navigator implements Serializable {
 
     /**
      * Set new goal
+     * 
      * @param p
      */
     abstract void newDestination(Point p);

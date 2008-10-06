@@ -128,7 +128,6 @@ public class EnemyShip extends Ship {
             
         }
     }
-    
     /**
      * Set up weaponmounts for the weaponlist.
      */

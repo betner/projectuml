@@ -229,7 +229,7 @@ public class Sprite implements Serializable {
      * Three versions are provided with different argument types
      */
     public void setPosition(Point newPosition){
-        position = newPosition;
+        position.setLocation(newPosition);
     }
     
     public void setPosition(double x, double y){
