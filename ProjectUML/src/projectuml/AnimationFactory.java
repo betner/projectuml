@@ -3,28 +3,29 @@ package projectuml;
 import java.awt.image.BufferedImage;
 
 /**
- * Factory for animations. The method's in the
- * factory are static, meaning there's no need
- * to instanciate the factory itself (which makes
- * sense since it doesn't hold any information
- * by itself)
+ * AnimationFactory
  * 
+ * Factory for animations. The methods in the factory are static,
+ * meaning there's no need to instanciate the factory itself 
+ * (which makes sense since it doesn't hold any information by itself)
+ * 
+ * @see AnimatedSprite
  * @author Jens Thuresson, Steve Eriksson
  */
 public class AnimationFactory {
-    
+
     /**
-     * Creates a default explosion, running for
-     * 500 ms
+     * Creates a default explosion, running for 500 ms.
+     * 
      * @return AnimatedSprite
      */
     public static AnimatedSprite createExplosion() {
         return AnimationFactory.createExplosion(500);
     }
-    
+
     /**
-     * Creates an explosion that runs for a
-     * certain amount of time
+     * Creates an explosion that runs for a certain amount of time.
+     * 
      * @param time How long it should run
      * @return AnimatedSprite
      */
@@ -47,5 +48,4 @@ public class AnimationFactory {
         }
         return sprite;
     }
-
 }

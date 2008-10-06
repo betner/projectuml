@@ -39,7 +39,7 @@ public class CrazyGunner extends Gunner{
      * Overriden update
      * If time interval has passed the gunner fires and 
      * the timer is reset with new random value
-     **/
+     */
     public void update(Level level){
         if(getTimestamp().havePassed(time)){
             time = Randomizer.getRandomNumber(minTime, maxTime); 

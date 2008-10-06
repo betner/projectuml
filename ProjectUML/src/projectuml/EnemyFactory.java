@@ -8,6 +8,7 @@ import java.awt.Point;
  *
  * Rudimentary factory that creates enemyships
  *
+ * @see EnemyShip
  * @author Steve Eriksson, Jens Thuresson
  */
 public class EnemyFactory implements Iterable<String> {
@@ -15,7 +16,8 @@ public class EnemyFactory implements Iterable<String> {
     private Hashtable<String, EnemyCreator> creators;
 
     /**
-     * Creates the factory
+     * Create the factory and initiate hashtable that holds the 
+     * possible enemy types it can make.
      */
     public EnemyFactory() {
         creators = new Hashtable<String, EnemyCreator>();
@@ -26,9 +28,10 @@ public class EnemyFactory implements Iterable<String> {
     }
 
     /**
-     * Creates an enemy of the specified type
+     * Creates an enemy of the specified type.
+     * 
      * @param type Textual representation of the enemy type
-     * @return EnemyShip, or null if it couldn't be found
+     * @return EnemyShip or null if it couldn't be found
      */
     public EnemyShip create(String type) {
         if (creators.containsKey(type)) {
@@ -40,7 +43,8 @@ public class EnemyFactory implements Iterable<String> {
 
     /**
      * Provides an iterator for iterating amongst
-     * the creator types
+     * the creator types.
+     * 
      * @return Iterator of String
      */
     public Iterator<String> iterator() {
@@ -49,20 +53,22 @@ public class EnemyFactory implements Iterable<String> {
 
     /**
      * Inner abstract class that represents a factory
-     * for creating enemies of a certain type
+     * for creating enemies of a certain type.
      */
     abstract private class EnemyCreator {
 
         /**
-         * Creates enemy of this factory's type
+         * Creates enemy of this factory's type.
+         * 
          * @param path Path the enemy follows
-         * @return
          */
         abstract public EnemyShip createEnemy();
     }
 
     /**
      * Factory for creating an enemy of default type
+     * 
+     * @return EnemyShip
      */
     private class DefaultEnemy extends EnemyCreator {
 
@@ -80,7 +86,9 @@ public class EnemyFactory implements Iterable<String> {
 
     /**
      * Factory for creating an enemy of default type, but
-     * with a different weapon
+     * with a different weapon.
+     * 
+     * @return EnemyShip
      */
     private class DefaultEnemyMultiShot extends EnemyCreator {
 
@@ -93,6 +101,12 @@ public class EnemyFactory implements Iterable<String> {
         }
     }
 
+    /**
+     * Factory for creating an enemy equipped with 
+     * a missile launcher.
+     * 
+     * @return EnemyShip
+     */
     private class EnemyMissileLauncher extends EnemyCreator {
 
         public EnemyShip createEnemy() {
@@ -107,6 +121,11 @@ public class EnemyFactory implements Iterable<String> {
         }
     }
 
+    /**
+     * Factory for creating a default boss.
+     * 
+     * @return EnemyShip
+     */
     private class DefaultBoss extends EnemyCreator {
 
         public EnemyShip createEnemy() {
@@ -123,7 +142,6 @@ public class EnemyFactory implements Iterable<String> {
             return enemy;
         }
     }
-
 }
 
 
