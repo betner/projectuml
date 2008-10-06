@@ -71,7 +71,7 @@ public class MainMenu extends GameState {
                     
                 default:
                     // Any other key starts the game
-                    getGameStateManager().change(new GameRunning(new Player()));
+                    getGameStateManager().change(new GameRunning());
                     break;
             }
         }
