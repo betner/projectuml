@@ -147,6 +147,13 @@ public class EnemyShip extends Ship {
     }
     
     /**
+     * @return Ships current path, or null
+     */
+    public Path getPath() {
+        return path;
+    }
+    
+    /**
      * Get enemy's offset
      *
      * @return offset integer

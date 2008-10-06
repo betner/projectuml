@@ -27,7 +27,8 @@ public final class LevelEditor extends GameState {
         DELETE, CLEAR_ALL,
         TOGGLE_HELP, TOGGLE_UPDATE,
         EXIT,
-        PLACE_ENEMY, SET_PATH_ON_ENEMY,
+        PLACE_ENEMY,
+        SET_PATH_ON_ENEMY, EDIT_PATH_ON_ENEMY,
         SET_ENEMY_HEALTH,
         INCREASE_OFFSET, DECREASE_OFFSET,
         CHOOSE_SCENERY,
@@ -98,6 +99,7 @@ public final class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_U, EditorCommandID.TOGGLE_UPDATE);
         keys.put(KeyEvent.VK_F2, EditorCommandID.START_PATH_EDITOR);
         keys.put(KeyEvent.VK_P, EditorCommandID.SET_PATH_ON_ENEMY);
+        keys.put(KeyEvent.VK_E, EditorCommandID.EDIT_PATH_ON_ENEMY);
         keys.put(KeyEvent.VK_Z, EditorCommandID.SET_ENEMY_HEALTH);
         keys.put(KeyEvent.VK_HOME, EditorCommandID.GOTO_MIN_OFFSET);
         keys.put(KeyEvent.VK_END, EditorCommandID.GOTO_MAX_OFFSET);
@@ -334,6 +336,7 @@ public final class LevelEditor extends GameState {
                 case DELETE:
                 case PLACE_ENEMY:
                 case SET_PATH_ON_ENEMY:
+                case EDIT_PATH_ON_ENEMY:
                 case SET_ENEMY_HEALTH:
                     // Just change the active mouse command
                     activecommand = cmd;
@@ -452,6 +455,15 @@ public final class LevelEditor extends GameState {
                             ship.setPath(pathloader.load(file.getAbsolutePath()));
                             unsavedchanges = true;
                         }
+                    }
+                    break;
+                }
+                
+                case EDIT_PATH_ON_ENEMY: {
+                    // Edits a path on a enemy
+                    EnemyShip ship = level.getShipAt(event.getPoint());
+                    if (ship != null) {
+                        getGameStateManager().push(new PathEditor(ship.getPath()));
                     }
                     break;
                 }
