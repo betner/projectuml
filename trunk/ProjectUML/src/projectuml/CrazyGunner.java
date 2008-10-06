@@ -1,4 +1,3 @@
-
 package projectuml;
 
 /**
@@ -12,12 +11,12 @@ package projectuml;
  * @see Gunner
  * @author Steve Eriksson, Jens Thuresson
  */
-public class CrazyGunner extends Gunner{
-    
+public class CrazyGunner extends Gunner {
+
     private int maxTime;
     private int minTime;
     private int time;
-    
+    private Timestamp timestamp;
 
     /**
      * Creates new instance of CrazyGunner
@@ -27,24 +26,25 @@ public class CrazyGunner extends Gunner{
      * @param maxTime maximum time before gunner fires
      * @param minTime minimum time before gunner fires
      */
-    public CrazyGunner(int minTime, int maxTime){
+    public CrazyGunner(int minTime, int maxTime) {
         this.maxTime = maxTime;
         this.minTime = minTime;
-        setTimestamp(new Timestamp());
-        time = Randomizer.getRandomNumber(minTime, maxTime); 
+        timestamp = new Timestamp();
+        time = Randomizer.getRandomNumber(minTime, maxTime);
     }
-    
-    
+
     /**
-     * Overriden update
+     * Overriden update.
      * If time interval has passed the gunner fires and 
-     * the timer is reset with new random value
+     * the timer is reset with new random value.
+     * 
+     * @param level reference
      */
-    public void update(Level level){
-        if(getTimestamp().havePassed(time)){
-            time = Randomizer.getRandomNumber(minTime, maxTime); 
+    public void update(Level level) {
+        if (timestamp.havePassed(time)) {
+            time = Randomizer.getRandomNumber(minTime, maxTime);
             getShip().fire(level);
-            getTimestamp().reset();
+            timestamp.reset();
         }
     }
 }

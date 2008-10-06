@@ -3,14 +3,18 @@ package projectuml;
 import java.io.*;
 
 /**
+ * GeneralSerializer
+ * 
  * Implements a save and load-method for a specified
- * type (that must be serializable)
+ * type (that must be serializable).
+ * 
  * @author Jens Thuresson, Steve Eriksson
  */
 public class GeneralSerializer<Type> {
 
     /**
-     * Serializes an object to file
+     * Serializes an object to file.
+     * 
      * @param object Serializable object to save
      * @param filename Path to file
      * @throws NotSerializableException
@@ -31,9 +35,10 @@ public class GeneralSerializer<Type> {
             System.err.println("***  " + object.toString() + " doesn't extend Serializable!  ***");
         }
     }
-    
+
     /**
-     * Deserializes an object from file
+     * Deserializes an object from file.
+     * 
      * @param filename Path to file
      * @return Object of the specified type, or null
      */
@@ -42,7 +47,7 @@ public class GeneralSerializer<Type> {
         try {
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream instream = new ObjectInputStream(file);
-            Type obj = (Type)instream.readObject();
+            Type obj = (Type) instream.readObject();
             instream.close();
             file.close();
             return obj;
