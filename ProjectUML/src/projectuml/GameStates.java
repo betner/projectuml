@@ -5,26 +5,27 @@ import java.awt.event.*;
 import java.util.*;
 
 /**
- * Manages the different states in the game
+ * Manages the different states in the game. 
  *
+ * @see GameState
  * @author Jens Thuresson, Steve Eriksson
  */
 public class GameStates {
-    
+
     private Stack<GameState> states;
-    
+
     /**
-     * Initiates the game state stack
-     **/
+     * Initiates the game state stack.
+     */
     public GameStates() {
         states = new Stack<GameState>();
     }
-    
+
     /**
-     * Adds a new active state
+     * Adds a new active state.
      *
-     * @param state New state to display
-     **/
+     * @param state to display
+     */
     public synchronized void push(GameState state) {
         if (!states.isEmpty()) {
             // Not empty, notify active state about
@@ -35,11 +36,11 @@ public class GameStates {
         state.setGameStateManager(this);
         state.gainedFocus();
     }
-    
+
     /**
      * Goes back to previous game state. Will not
-     * remove the last state leaving the stack empty
-     **/
+     * remove the last state leaving the stack empty.
+     */
     private synchronized void pop() {
         if (states.size() > 1) {
             GameState old = states.pop();
@@ -49,10 +50,9 @@ public class GameStates {
             System.err.println("---  Trying to pop the last state!  ---");
         }
     }
-    
+
     /**
-     * Clears the state list and switch to
-     * the new one
+     * Clears the state list and switch to the new one.
      *
      * @param state New state to switch to, or null if we
      *              just want to signal "lostFocus" to all
@@ -68,12 +68,12 @@ public class GameStates {
             state.gainedFocus();
         }
     }
-    
+
     /**
-     * Updates the active state
+     * Updates the active state.
      *
      * @param player
-     **/
+     */
     public synchronized void update(Player player) {
         if (!states.empty()) {
             states.peek().update(player);
@@ -82,32 +82,35 @@ public class GameStates {
             }
         }
     }
-    
+
     /**
-     * Draws every state to the screen
+     * Draws every state to the screen.
      *
-     * @param g
-     **/
-    public synchronized void draw(Graphics2D g) {
+     * @param g2D
+     */
+    public synchronized void draw(Graphics2D g2D) {
         for (GameState state : states) {
-            state.draw(g);
+            state.draw(g2D);
         }
     }
-    
+
     /**
-     * Sends a key event to the active state
-     * @param event Key event generated
-     * @param down True if the key is down
-     **/
+     * Sends a key event to the active state.
+     * 
+     * @param event key event generated
+     * @param down true if the key is down
+     */
     public void keyEvent(KeyEvent event, boolean down) {
         if (!states.empty()) {
             states.peek().keyEvent(event, down);
         }
     }
-    
+
     /**
-     * Sends a mouse event to the active state
-     **/
+     * Sends a mouse event to the active state.
+     * 
+     * @param event generated mouse event
+     */
     public void mouseEvent(MouseEvent event) {
         if (!states.empty()) {
             states.peek().mouseEvent(event);

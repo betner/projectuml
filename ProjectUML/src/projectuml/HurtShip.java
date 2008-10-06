@@ -14,7 +14,9 @@ public class HurtShip extends TouchBehaviour{
     private int damage;
     
     /**
-     * Creates a new instance of Hurt
+     * Creates a new instance of HurtShip.
+     * 
+     * @param damage 
      */
     public HurtShip(int damage){
         this.damage = damage;
@@ -22,6 +24,8 @@ public class HurtShip extends TouchBehaviour{
     
     /**
      * If the type of object that is touching is a ship, decrease it's health.
+     * 
+     * @param sprite
      */
     public void action(Sprite sprite){
         if(sprite instanceof Ship){

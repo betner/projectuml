@@ -3,6 +3,7 @@ package projectuml;
 import java.awt.*;
 
 /**
+ * FadeText
  * Fades in/out a text
  * 
  * @author Jens Thuresson, Steve Eriksson
@@ -12,15 +13,16 @@ public class FadeText {
     private String text;
     private Color finalcolor;
     private int alpha;
-    private Boolean fadein;
+    private boolean fadein;
     private Point position;
     private Font font;
     private int speed;
-    
+
     /**
-     * Constructs the fading text with a standard font
-     * @param text Text to display
-     * @param finalcolor Final color of the fully visible text
+     * Constructs the fading text with a standard font.
+     * 
+     * @param text to display
+     * @param finalcolor color of the fully visible text
      */
     public FadeText(String text, Color finalcolor) {
         this.text = text;
@@ -31,66 +33,71 @@ public class FadeText {
         font = new Font("Arial", Font.PLAIN, 10);
         speed = 1;
     }
-    
+
     /**
-     * Changes the in/out fading speed (default value is 1)
+     * Changes the in/out fading speed (default value is 1).
+     * 
      * @param speed
      */
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    
+
     /**
-     * Sets the position of our text
-     * @param x
-     * @param y
+     * Sets the position of our text.
+     * 
+     * @param x position
+     * @param y position
      */
     public void setPosition(int x, int y) {
         position.setLocation(x, y);
     }
-    
+
     /**
-     * Retrieves the position
-     * @return
+     * Retrieves the position.
+     * 
+     * @return position Point
      */
     public Point getPosition() {
         return position;
     }
-    
+
     /**
-     * Starts fading in
+     * Starts fading in.
      */
     public void fadeIn() {
         fadein = true;
     }
-    
+
     public void fadeIn(int speed) {
         setSpeed(speed);
         fadein = true;
     }
-    
+
     /**
-     * Starts fading out
+     * Starts fading out.
      */
     public void fadeOut() {
         fadein = false;
     }
-    
+
     public void fadeOut(int speed) {
         setSpeed(speed);
         fadein = false;
     }
-    
+
     /**
-     * Changes the font
+     * Changes the font.
+     * 
      * @param font
      */
     public void setFont(Font font) {
         this.font = font;
     }
-    
+
     /**
      * Are we finished fading?
+     * 
      * @return True if the text is finished fading, whether in or out
      */
     public Boolean finished() {
@@ -102,9 +109,9 @@ public class FadeText {
             return false;
         }
     }
-    
+
     /**
-     * Updates the text, e.g. the fade in/out-logic
+     * Updates the text, e.g. the fade in/out-logic.
      */
     public void update() {
         if (fadein) {
@@ -119,18 +126,18 @@ public class FadeText {
             }
         }
     }
-    
+
     /**
-     * Display the text on the screen
-     * @param g
+     * Display the text on the screen.
+     * 
+     * @param g2D Graphics2D to draw on
      */
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g2D) {
         // Only draw if it's visible
         if (alpha > 0) {
-            g.setFont(font);
-            g.setColor(new Color(finalcolor.getRed(), finalcolor.getGreen(), finalcolor.getBlue(), alpha));
-            g.drawString(text, (int)position.getX(), (int)position.getY());
+            g2D.setFont(font);
+            g2D.setColor(new Color(finalcolor.getRed(), finalcolor.getGreen(), finalcolor.getBlue(), alpha));
+            g2D.drawString(text, (int) position.getX(), (int) position.getY());
         }
     }
-    
 }
