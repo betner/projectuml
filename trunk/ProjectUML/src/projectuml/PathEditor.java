@@ -7,7 +7,9 @@ import java.util.*;
 import javax.swing.*;
 
 /**
- * An editor for paths
+ * PathEditor
+ * 
+ * An editor for paths.
  *
  * @author Jens Thuresson, Steve Eriksson
  */
@@ -17,9 +19,9 @@ public class PathEditor extends GameState {
     private Font smallfont;
     private boolean showhelp;
     private GeneralSerializer<Path> pathloader;
-    
     // Available editor commands
     private enum EditorCommandID {
+
         NEW, SAVE, LOAD,
         TOGGLE_HELP, TOGGLE_CYCLIC,
         CLEAR_ALL,
@@ -30,29 +32,29 @@ public class PathEditor extends GameState {
     private Hashtable<Integer, EditorCommandID> keys;
 
     /**
-     * Initiates the path editor
-     **/
+     * Creates new instance of PathEditor.
+     */
     public PathEditor() {
         this(null);
     }
 
     /**
-     * Creates the path editor
+     * Creates new instance of PathEditor.
+     * 
      * @param path
-     **/
+     */
     public PathEditor(Path path) {
         this.path = path;
         keys = new Hashtable<Integer, EditorCommandID>();
         smallfont = new Font("Courier New", Font.PLAIN, 12);
         showhelp = true;
         pathloader = new GeneralSerializer<Path>();
-
         bindKeys();
     }
 
     /**
-     * Binds our editor keys
-     ***/
+     * Binds our editor keys.
+     */
     private void bindKeys() {
         keys.put(KeyEvent.VK_ESCAPE, EditorCommandID.EXIT);
         keys.put(KeyEvent.VK_N, EditorCommandID.NEW);
@@ -69,7 +71,8 @@ public class PathEditor extends GameState {
 
     /**
      * Helper function to print text. Will return the next line
-     * to start printing on (the y-value)
+     * to start printing on (the y-value).
+     * 
      * @param text
      * @param x
      * @return Y-value of next line to start on
@@ -80,7 +83,7 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Display help text (key bindings)
+     * Display help text (key bindings).
      */
     private void showHelp(Graphics2D g) {
         // Where to start displaying
@@ -112,30 +115,32 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Repaints the path editor
-     * @param g
-     **/
-    public void draw(Graphics2D g) {
+     * Repaints the path editor.
+     * 
+     * @param g2D Graphics2D
+     */
+    public void draw(Graphics2D g2D) {
         // Always draw a black background
-        g.setColor(Color.black);
-        g.fillRect(0, 0, 640, 480);
+        g2D.setColor(Color.black);
+        g2D.fillRect(0, 0, 640, 480);
 
         if (showhelp) {
-            showHelp(g);
+            showHelp(g2D);
         }
 
         // No path loaded/created?
         if (path == null) {
-            g.setFont(smallfont);
-            g.setColor(Color.red);
-            g.drawString("***  No active path, please create a new  ***", 170, 220);
+            g2D.setFont(smallfont);
+            g2D.setColor(Color.red);
+            g2D.drawString("***  No active path, please create a new  ***", 170, 220);
         } else {
-            drawPath(g);
+            drawPath(g2D);
         }
     }
 
     /**
-     * Browse for a filename
+     * Browse for a filename.
+     * 
      * @param title Title of the dialog
      * @return The file object, or null
      */
@@ -150,7 +155,8 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Browse for a file to save information to
+     * Browse for a file to save information to.
+     * 
      * @param title Title of the dialog
      * @return The file object, or null
      */
@@ -172,8 +178,9 @@ public class PathEditor extends GameState {
     public void lostFocus() {
     }
 
-    /***
-     * Respond to mouse events
+    /**
+     * Respond to mouse events.
+     * 
      * @param event
      */
     public void mouseEvent(MouseEvent event) {
@@ -205,7 +212,7 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Draw our path (if we have any)
+     * Draw our path (if we have any).
      */
     private void drawPath(Graphics2D g) {
         if (path != null) {
@@ -237,8 +244,8 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Reponds to editor keys
-     **/
+     * Reponds to editor keys.
+     */
     public void keyEvent(KeyEvent event, boolean down) {
         if (down && keys.containsKey(event.getKeyCode())) {
             EditorCommandID cmd = keys.get(event.getKeyCode());

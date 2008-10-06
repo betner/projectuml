@@ -4,8 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * A overengineered pause screen
+ * Pause
  * 
+ * A overengineered pause screen.
+ * 
+ * @see GameState
+ * @see GameStates
  * @author Jens Thuresson, Steve Eriksson
  */
 public class Pause extends GameState {
@@ -25,14 +29,15 @@ public class Pause extends GameState {
     }
 
     /**
-     * Displays our fancy pause screen
-     * @param g
+     * Displays our fancy pause screen.
+     * 
+     * @param g2D Graphics2D
      */
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g2D) {
         // Fade out background
-        g.setColor(new Color(0, 0, 0, alpha));
-        g.fillRect(0, 0, 640, 480);
-        
+        g2D.setColor(new Color(0, 0, 0, alpha));
+        g2D.fillRect(0, 0, 640, 480);
+
         // If alpha-blending doesn't work, we'll
         // have to use this 80-ish method instead
 //        g.setColor(Color.black);
@@ -41,13 +46,14 @@ public class Pause extends GameState {
 //        }
 
         // Draw text, final alpha value will be 255
-        g.setColor(new Color(255, 255, 255, alpha + (255 - MAX_ALPHA)));
-        g.setFont(font);
-        g.drawString("Paused", 0, 480);
+        g2D.setColor(new Color(255, 255, 255, alpha + (255 - MAX_ALPHA)));
+        g2D.setFont(font);
+        g2D.drawString("Paused", 0, 480);
     }
 
     /**
-     * We're ready to close
+     * We're ready to close.
+     * 
      * @param event
      */
     public void keyEvent(KeyEvent event, boolean down) {
@@ -59,7 +65,8 @@ public class Pause extends GameState {
     }
 
     /**
-     * Updates our alpha value for fading out/in
+     * Updates our alpha value for fading out/in.
+     * 
      * @param player
      */
     public void update(Player player) {
@@ -86,9 +93,8 @@ public class Pause extends GameState {
     /** Not used **/
     public void lostFocus() {
     }
-    
+
     /** Not used **/
     public void gainedFocus() {
     }
-    
 }
