@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class Path implements Serializable {
     
+    private static final long serialVersionUID = 1L;
     private ArrayList<Point> pathlist;
     private boolean cyclic;
     private int current;
@@ -104,6 +105,28 @@ public class Path implements Serializable {
         for (Point point : pathlist) {
             point.translate(deltax, deltay);
         }
+    }
+    
+    /**
+     * Helper function to create a path that cycles
+     * around 0, 0
+     * @return Path
+     */
+    public static Path create() {
+        return Path.create(0, 0);
+    }
+    
+    /**
+     * Helper function to create a path that cycles
+     * on a single point
+     * @param x
+     * @param y
+     * @return Path
+     */
+    public static Path create(int x, int y) {
+        Path path = new Path(true);
+        path.addPoint(new Point(x, y));
+        return path;
     }
     
     /**
