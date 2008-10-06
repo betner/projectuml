@@ -39,9 +39,7 @@ public class GameRunning extends GameState {
      * a certain player
      * @param player
      **/
-    public GameRunning(Player player)  {
-        playership = new PlayerShip(player);
-        
+    public GameRunning()  {
         // Load a level
         levelloader = new GeneralSerializer<Level>();
         levelnames = new Stack<String>();
@@ -81,11 +79,36 @@ public class GameRunning extends GameState {
      * @param player
      **/
     public void update(Player player) {
+        // We haven't created our player ship
+        // yet - do it!
+        if (playership == null) {
+            playership = new PlayerShip(player);
+        }
+        
         if (currentlevel != null) {
             currentlevel.update(playership);
+            playership.update(currentlevel);
         }
-        playership.update(currentlevel);
         restrictPlayerShip();
+        
+        // Show game over-screen if we're dead and
+        // destruction animation finished
+        if (player.getLives() <= 0 && playership.getDestructAnimation().isDone()) {
+            getGameStateManager().change(new GameOver());
+        }
+        
+        // Level completed?
+        if (currentlevel != null) {
+            if (currentlevel.isCompleted()) {
+                loadNextLevel();
+                
+                // If there are no more levels, we've completed
+                // the game!
+                if (currentlevel == null) {
+                    // TODO: switch to victory screen!
+                }
+            }
+        }
     }
     
     /**
@@ -96,7 +119,9 @@ public class GameRunning extends GameState {
         if (currentlevel != null) {
             currentlevel.draw(g);
         }
-        playership.draw(g);
+        if (playership != null) {
+            playership.draw(g);
+        }
         
         if (currentlevel != null && currentlevel.inEditorMode()) {
             // Print out debug information
@@ -235,7 +260,7 @@ public class GameRunning extends GameState {
         levelnames.clear();
         File dir = new File(".");
         for (String filename : dir.list(new JustLevels())) {
-            levelnames.add(filename);
+            levelnames.add(0, filename);
             System.out.println("Found level: " + filename);
         }
         if (levelnames.isEmpty()) {

@@ -284,7 +284,7 @@ public class SoundPlayer implements LineListener {
      * @param event
      */
     public void update(LineEvent event) {
-        System.out.println("SoundPlayer: " + event.toString());
+        //System.out.println("SoundPlayer: " + event.toString());
     }
     
     /**

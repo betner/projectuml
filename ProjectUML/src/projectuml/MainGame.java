@@ -34,6 +34,9 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
         gamewindow = new GameWindow("Project U.M.L.");
         gamestates = new GameStates();
         timer = new Timer();
+        
+        // Create the player!
+        player = new Player();
 
         // Add receivers
         gamewindow.addKeyListener(this);

@@ -222,12 +222,12 @@ public class Level implements Serializable {
                 ship.draw(g);
                 
                 // Draw more info if we're in editor mode
-                Integer health = new Integer(ship.getHealth());
                 if (editormode) {
                     g.setColor(Color.red);
                     g.setFont(font);
                     g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
                             ship.getWidth(), ship.getHeight());
+                    Integer health = new Integer(ship.getHealth());
                     g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
                     
                     Integer off = new Integer(ship.getOffset());
@@ -420,6 +420,25 @@ public class Level implements Serializable {
     public void stopSound() {
         soundplayer.mute();
         soundplayer.unmute();
+    }
+    
+    /**
+     * Checks if the player has completed the level, which
+     * means that there are no more waiting or active enemies
+     * 
+     * @return True if the level is considered completed
+     */
+    public boolean isCompleted() {
+        int waiting = enemies.size();
+        for (EnemyShip ship : enemies) {
+            if (offset >= ship.getOffset() && ship.isDestroyed()) {
+                // Has it finished playing the destruction animation?
+                if (ship.getDestructAnimation().isDone()) {
+                    waiting--;
+                }
+            }
+        }
+        return waiting == 0;
     }
     
     /**

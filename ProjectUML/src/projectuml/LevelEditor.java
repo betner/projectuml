@@ -21,7 +21,6 @@ public final class LevelEditor extends GameState {
     private PlayerShip playership;
     // Different commands the editor recognizes
     private enum EditorCommandID {
-
         DO_NOTHING,
         NEW, LOAD, SAVE,
         DELETE, CLEAR_ALL,
@@ -30,6 +29,7 @@ public final class LevelEditor extends GameState {
         PLACE_ENEMY,
         SET_PATH_ON_ENEMY, EDIT_PATH_ON_ENEMY,
         SET_ENEMY_HEALTH,
+        CHANGE_ENEMY_OFFSET,
         INCREASE_OFFSET, DECREASE_OFFSET,
         CHOOSE_SCENERY,
         GOTO_MIN_OFFSET, GOTO_MAX_OFFSET,
@@ -103,6 +103,7 @@ public final class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_Z, EditorCommandID.SET_ENEMY_HEALTH);
         keys.put(KeyEvent.VK_HOME, EditorCommandID.GOTO_MIN_OFFSET);
         keys.put(KeyEvent.VK_END, EditorCommandID.GOTO_MAX_OFFSET);
+        keys.put(KeyEvent.VK_O, EditorCommandID.CHANGE_ENEMY_OFFSET);
     }
 
     /**
@@ -338,6 +339,7 @@ public final class LevelEditor extends GameState {
                 case SET_PATH_ON_ENEMY:
                 case EDIT_PATH_ON_ENEMY:
                 case SET_ENEMY_HEALTH:
+                case CHANGE_ENEMY_OFFSET:
                     // Just change the active mouse command
                     activecommand = cmd;
                     break;
@@ -430,6 +432,7 @@ public final class LevelEditor extends GameState {
                         EnemyShip ship = enemyfactory.create(choice);
                         if (ship != null) {
                             ship.setPosition(event.getPoint());
+                            ship.setOffset(level.getOffset());
                             level.addShip(ship);
                             unsavedchanges = true;
                         } else {
@@ -464,6 +467,16 @@ public final class LevelEditor extends GameState {
                     EnemyShip ship = level.getShipAt(event.getPoint());
                     if (ship != null) {
                         getGameStateManager().push(new PathEditor(ship.getPath()));
+                    }
+                    break;
+                }
+                
+                case CHANGE_ENEMY_OFFSET: {
+                    // Changes an enemy's offset
+                    EnemyShip ship = level.getShipAt(event.getPoint());
+                    if (ship != null) {
+                        int newoffset = askForValue("New offset", ship.getOffset());
+                        ship.setOffset(newoffset);
                     }
                     break;
                 }
