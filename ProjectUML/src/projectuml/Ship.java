@@ -14,6 +14,7 @@ import java.awt.*;
  */
 public abstract class Ship extends Sprite {
    
+    private int maxhealth;          // Ship's max health
     private int health;            // Ship's health
     private int speed;             // Speed relative to gamelevel
     private int dx;             // Change in x direction, negative is left
@@ -103,6 +104,9 @@ public abstract class Ship extends Sprite {
      **/
     public void increaseHealth(int units) {
         health += units;
+        if (health > maxhealth) {
+            maxhealth = health;
+        }
     }
 
     /**
@@ -125,6 +129,31 @@ public abstract class Ship extends Sprite {
     public int getHealth(){
         return health;
     }
+    
+    /**
+     * Gets ship's max health
+     * @return Integer
+     */
+    public int getMaxHealth() {
+        return maxhealth;
+    }
+    
+    /**
+     * Sets ship's health to a exact amount. Will
+     * invoke destroyShip if health is zero or below
+     * @param health Exact amount of health
+     */
+    public void setHealth(int health) {
+        this.health = health;
+        // Leave logic of "what happens when we
+        // reach health of below zero" and "is this
+        // a new maximum health" to the two other
+        // functions, so we don't duplicate
+        // code
+        increaseHealth(0);
+        decreaseHealth(0);
+    }
+    
 
     /**
      * Destroy the ship and start it's destruction animation.

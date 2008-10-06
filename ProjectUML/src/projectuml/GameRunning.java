@@ -212,7 +212,7 @@ public class GameRunning extends GameState {
     public void gainedFocus() {
         active = true;
         if (currentlevel != null) {
-            //currentlevel.loopSound("theme");
+            currentlevel.loopSound("theme");
         }
     }
     

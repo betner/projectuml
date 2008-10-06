@@ -21,11 +21,13 @@ public class Level implements Serializable {
     private int offset;
     private boolean editormode;
     private int health;
+    private int maxhealth;
     
     // These are transient, meaning that they
     // aren't going to get serialized
     transient private SoundPlayer soundplayer;
     transient private Font font;
+    transient private Font healthfont;
     
     /** Creates a new instance of Level */
     public Level() {
@@ -35,10 +37,10 @@ public class Level implements Serializable {
         pickables = new Vector<Sprite>();
         background = null;
         offset = 0;
-        soundplayer = new SoundPlayer(".");
         editormode = false;
-        font = new Font("Courier New", Font.PLAIN, 10);
         health = 0;
+        maxhealth = 0;
+        initTransientObjects();
     }
     
     /**
@@ -200,6 +202,7 @@ public class Level implements Serializable {
         
         // Store away player lifes
         health = player.getHealth();
+        maxhealth = player.getMaxHealth();
     }
     
     /**
@@ -219,16 +222,27 @@ public class Level implements Serializable {
                 ship.draw(g);
                 
                 // Draw more info if we're in editor mode
+                Integer health = new Integer(ship.getHealth());
                 if (editormode) {
                     g.setColor(Color.red);
                     g.setFont(font);
                     g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
                             ship.getWidth(), ship.getHeight());
-                    Integer health = new Integer(ship.getHealth());
                     g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
                     
                     Integer off = new Integer(ship.getOffset());
                     g.drawString("Offset: " + off, ship.getIntPositionX(), ship.getIntPositionY() + ship.getHeight() + font.getSize());
+                } else {
+                    // Just draw health
+                    if (!ship.isDestroyed()) {
+                        float percent = ship.getHealth() / (float)ship.getMaxHealth();
+                        if (percent > 0.5) {
+                            g.setColor(Color.green);
+                        } else {
+                            g.setColor(Color.red);
+                        }
+                        g.fillRect(ship.getIntPositionX(), ship.getIntPositionY()+ship.getHeight(), (int)(percent*ship.getWidth()), 2);
+                    }
                 }
             }
         }
@@ -248,16 +262,38 @@ public class Level implements Serializable {
             sprite.draw(g);
         }
         
-        drawHUD(g);
+        // Don't draw the HUD if we're in
+        // editor mode, because it isn't of
+        // importance there
+        if (!editormode) {
+            drawHUD(g);
+        }
     }
     
     /**
      * Draws the heads-up-display (info about player health)
      **/
     private synchronized void drawHUD(Graphics2D g) {
-        g.setFont(font);
+        float percent = 0f;
+        if (maxhealth > 0) {
+            percent = health / (float)maxhealth;
+        }
+
+        final int startx = 20;
+        final int starty = 20;
+        final int border = 2;
+        final int height = 5;
+
         g.setColor(Color.green);
-        g.drawString("Health: " + health, 10, 450);
+        g.setFont(healthfont);
+        g.drawString("Life", startx, starty-border);
+        g.drawLine(startx, starty-border, 640-startx, starty-border);
+        if (percent > 0.5) {
+            g.setColor(new Color(0, 128, 0));
+        } else {
+            g.setColor(Color.red);
+        }
+        g.fillRect(startx, starty, (int)((640-startx-startx)*percent), height);
     }
     
     /**
@@ -387,6 +423,15 @@ public class Level implements Serializable {
     }
     
     /**
+     * Recreates transient objects
+     */
+    private void initTransientObjects() {
+        font = new Font("Courier New", Font.PLAIN, 10);
+        healthfont = new Font("Arial", Font.PLAIN, 12);
+        soundplayer = new SoundPlayer(".");
+    }
+    
+    /**
      * Does a normal serialization of the object
      **/
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -402,8 +447,7 @@ public class Level implements Serializable {
         
         // Recreate our transient objects since
         // our constructor doesn't get called
-        soundplayer = new SoundPlayer(".");
-        font = new Font("Courier New", Font.PLAIN, 10);
+        initTransientObjects();
         
         // TODO: should we reset the offset here? Every new level
         //       we start should start at offset zero, but if we forget

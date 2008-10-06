@@ -92,6 +92,9 @@ public class PlayerShip extends Ship {
             timestamp.reset();
             super.destroyShip();
             player.removeLife();
+            
+            // Restore life
+            setHealth(START_HEALTH);
         }
     }
     
@@ -142,7 +145,5 @@ public class PlayerShip extends Ship {
     public void resetDy(){
         setDy(0);
     }
-    
-  
             
 }
