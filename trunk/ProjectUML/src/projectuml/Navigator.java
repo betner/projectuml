@@ -1,4 +1,3 @@
-
 package projectuml;
 
 import java.awt.Point;
@@ -20,6 +19,8 @@ abstract public class Navigator implements Serializable {
      * @param p
      */
     abstract void newDestination(Point p);
+
     abstract Point getNextPosition();
+
     abstract void setMaxMovement(int m);
 }

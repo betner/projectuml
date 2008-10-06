@@ -1,4 +1,3 @@
-
 package projectuml;
 
 import java.util.*;
@@ -6,12 +5,14 @@ import java.awt.*;
 import java.io.*;
 
 /**
- * A level in the game
+ * Level 
+ * 
+ * A level in the game.
  *
  * @author Steve Eriksson, Jens Thuresson
  */
 public class Level implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     private Scenery background;
     private Vector<Shot> playershots;
@@ -21,15 +22,15 @@ public class Level implements Serializable {
     private int offset;
     private boolean editormode;
     private int health;
-    private int maxhealth;
-    
-    // These are transient, meaning that they
+    private int maxhealth;    // These are transient, meaning that they
     // aren't going to get serialized
     transient private SoundPlayer soundplayer;
     transient private Font font;
     transient private Font healthfont;
-    
-    /** Creates a new instance of Level */
+
+    /** 
+     * Creates a new instance of Level 
+     */
     public Level() {
         playershots = new Vector<Shot>();
         enemyshots = new Vector<Shot>();
@@ -42,52 +43,59 @@ public class Level implements Serializable {
         maxhealth = 0;
         initTransientObjects();
     }
-    
+
     /**
-     * Gets the scenery background
-     * @return
+     * Gets the scenery background.
+     * 
+     * @return background
      */
     public Scenery getScenery() {
         return background;
     }
-    
+
     /**
-     * Changes the scenery background
+     * Changes the scenery background.
+     * 
      * @param background
      */
     public void setScenery(Scenery background) {
         this.background = background;
     }
-    
+
     /**
      * Desides whether we're in level editor mode,
      * or not. When we're in level editor mode, we're
      * going to display more information when we draw
-     * our scene
+     * our scene.
+     * 
      * @param mode Set to true to turn level editor mode on
      */
     public void setEditorMode(boolean mode) {
         editormode = mode;
     }
-    
+
     /**
+     * Check if Level is in editor mode.
+     * 
      * @see setEditorMode
      * @return True if we're in level editor mode
      */
     public boolean inEditorMode() {
         return editormode;
     }
-    
+
     /**
-     * Travel forward
+     * Travel forward.
+     * 
      * @param amount How much
      */
     public void increaseOffset(int amount) {
         offset += amount;
     }
-    
+
     /**
-     * Travel backwards (at least til zero)
+     * Travel backwards (at least til zero).
+     * 
      * @param amount How much
      */
     public void decreaseOffset(int amount) {
@@ -96,16 +104,17 @@ public class Level implements Serializable {
             offset = 0;
         }
     }
-    
+
     /**
-     * @return The current offset
+     * @return The current offset.
      */
     public int getOffset() {
         return offset;
     }
-    
+
     /**
-     * Sets the offset explicitly
+     * Sets the offset explicitly.
+     * 
      * @param amount How much
      **/
     public void setOffset(int offset) {
@@ -114,9 +123,10 @@ public class Level implements Serializable {
             this.offset = 0;
         }
     }
-    
+
     /**
-     * Updates the level, handle collision detection and so on
+     * Updates the level, handle collision detection and so on.
+     * 
      * @param player Active player ship
      */
     public synchronized void update(PlayerShip player) {
@@ -124,11 +134,11 @@ public class Level implements Serializable {
         if (background != null) {
             background.update();
         }
-        
+
         // All the shots the player fires
         for (Shot shot : playershots) {
             shot.update();
-            
+
             // Does it hit an enemy?
             for (EnemyShip enemy : enemies) {
                 if (offset >= enemy.getOffset()) {
@@ -142,18 +152,18 @@ public class Level implements Serializable {
                     }
                 }
             }
-            
+
             // Is it off-screen?
             if (shot.getIntPositionX() > 640 || shot.getIntPositionY() > 480) {
                 shot.deactivate();
                 shot.hide();
             }
         }
-        
+
         // All the shots the enemies fires
         for (Shot shot : enemyshots) {
             shot.update();
-            
+
             // Does it hit the player?
             if (!player.isDestroyed() && player.inShape(shot.getPosition())) {
                 if (shot.isActive()) {
@@ -163,17 +173,17 @@ public class Level implements Serializable {
                 }
             }
         }
-        
+
         // All the enemies
 //        Rectangle playerrect = new Rectangle(player.getIntPositionX(),
 //                player.getIntPositionY(),
 //                player.getWidth(),
 //                player.getHealth());
-        
+
         for (EnemyShip ship : enemies) {
             if (offset >= ship.getOffset()) {
                 ship.update(this);
-                
+
                 // Does the player crash inside the
                 // enemy?
 //                Rectangle enemyrect = new Rectangle(ship.getIntPositionX(),
@@ -189,94 +199,97 @@ public class Level implements Serializable {
                 }
             }
         }
-        
+
         // Update all pickables!
         for (Sprite sprite : pickables) {
             sprite.update(this);
-            
+
             // Do we touch it?
             if (player.inShape(sprite.getPosition())) {
                 sprite.touch(player);
             }
         }
-        
+
         // Store away player lifes
         health = player.getHealth();
         maxhealth = player.getMaxHealth();
     }
-    
+
     /**
-     * Draws the level on the screen
-     * @param g
+     * Draws the level on the screen.
+     * 
+     * @param g2D
      */
-    public synchronized void draw(Graphics2D g) {
+    public synchronized void draw(Graphics2D g2D) {
         // Only draw a scenery if we got one!
         if (background != null) {
-            background.draw(g);
+            background.draw(g2D);
         }
-        
+
         // Draw the enemies that's at least
         // in our offset
         for (EnemyShip ship : enemies) {
             if (offset >= ship.getOffset()) {
-                ship.draw(g);
-                
+                ship.draw(g2D);
+
                 // Draw more info if we're in editor mode
                 if (editormode) {
-                    g.setColor(Color.red);
-                    g.setFont(font);
-                    g.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
+                    g2D.setColor(Color.red);
+                    g2D.setFont(font);
+                    g2D.drawRect(ship.getIntPositionX(), ship.getIntPositionY(),
                             ship.getWidth(), ship.getHeight());
                     Integer health = new Integer(ship.getHealth());
-                    g.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
-                    
+                    g2D.drawString("Health: " + health, ship.getIntPositionX(), ship.getIntPositionY());
+
                     Integer off = new Integer(ship.getOffset());
-                    g.drawString("Offset: " + off, ship.getIntPositionX(), ship.getIntPositionY() + ship.getHeight() + font.getSize());
+                    g2D.drawString("Offset: " + off, ship.getIntPositionX(), ship.getIntPositionY() + ship.getHeight() + font.getSize());
                 } else {
                     // Just draw health
                     if (!ship.isDestroyed()) {
-                        float percent = ship.getHealth() / (float)ship.getMaxHealth();
+                        float percent = ship.getHealth() / (float) ship.getMaxHealth();
                         if (percent > 0.5) {
-                            g.setColor(Color.green);
+                            g2D.setColor(Color.green);
                         } else {
-                            g.setColor(Color.red);
+                            g2D.setColor(Color.red);
                         }
-                        g.fillRect(ship.getIntPositionX(), ship.getIntPositionY()+ship.getHeight(), (int)(percent*ship.getWidth()), 2);
+                        g2D.fillRect(ship.getIntPositionX(), ship.getIntPositionY() + ship.getHeight(), (int) (percent * ship.getWidth()), 2);
                     }
                 }
             }
         }
-        
+
         // Draw the enemy bullets
         for (Shot shot : enemyshots) {
-            shot.draw(g);
+            shot.draw(g2D);
         }
-        
+
         // Draw the player's bullets
         for (Shot shot : playershots) {
-            shot.draw(g);
+            shot.draw(g2D);
         }
-        
+
         // Draw the pickables
         for (Sprite sprite : pickables) {
-            sprite.draw(g);
+            sprite.draw(g2D);
         }
-        
+
         // Don't draw the HUD if we're in
         // editor mode, because it isn't of
         // importance there
         if (!editormode) {
-            drawHUD(g);
+            drawHUD(g2D);
         }
     }
-    
+
     /**
-     * Draws the heads-up-display (info about player health)
-     **/
-    private synchronized void drawHUD(Graphics2D g) {
+     * Draws the heads-up-display (info about player health).
+     * 
+     * @param g2D
+     */
+    private synchronized void drawHUD(Graphics2D g2D) {
         float percent = 0f;
         if (maxhealth > 0) {
-            percent = health / (float)maxhealth;
+            percent = health / (float) maxhealth;
         }
 
         final int startx = 20;
@@ -284,20 +297,21 @@ public class Level implements Serializable {
         final int border = 2;
         final int height = 5;
 
-        g.setColor(Color.green);
-        g.setFont(healthfont);
-        g.drawString("Life", startx, starty-border);
-        g.drawLine(startx, starty-border, 640-startx, starty-border);
+        g2D.setColor(Color.green);
+        g2D.setFont(healthfont);
+        g2D.drawString("Life", startx, starty - border);
+        g2D.drawLine(startx, starty - border, 640 - startx, starty - border);
         if (percent > 0.5) {
-            g.setColor(new Color(0, 128, 0));
+            g2D.setColor(new Color(0, 128, 0));
         } else {
-            g.setColor(Color.red);
+            g2D.setColor(Color.red);
         }
-        g.fillRect(startx, starty, (int)((640-startx-startx)*percent), height);
+        g2D.fillRect(startx, starty, (int) ((640 - startx - startx) * percent), height);
     }
-    
+
     /**
-     * Adds a shot from the player to the level world
+     * Adds a shot from the player to the level world.
+     * 
      * @param shot
      */
     public synchronized void addPlayerShot(Shot shot) {
@@ -307,11 +321,12 @@ public class Level implements Serializable {
             playershots.add(shot);
         }
     }
-    
+
     /**
-     * Adds a shot from the enemy to the level world
+     * Adds a shot from the enemy to the level world.
+     * 
      * @param shot
-     **/
+     */
     public synchronized void addEnemyShot(Shot shot) {
         if (shot != null) {
             shot.show();
@@ -319,46 +334,50 @@ public class Level implements Serializable {
             enemyshots.add(shot);
         }
     }
-    
+
     /**
-     * Adds an enemy ship to the level
+     * Adds an enemy ship to the level.
+     * 
      * @param ship
-     **/
+     */
     public void addShip(EnemyShip ship) {
         if (ship != null) {
             enemies.add(ship);
         }
     }
-    
+
     /**
-     * Adds a pickable object (i.e. PowerUps)
+     * Adds a pickable object (i.e. PowerUps).
+     * 
      * @param sprite
-     **/
+     */
     public void addPickable(Sprite sprite) {
         if (sprite != null) {
             pickables.add(sprite);
         }
     }
-    
+
     /**
-     * Removes an enemy ship at a certain position
+     * Removes an enemy ship at a certain position.
+     * 
      * @param point
-     **/
+     */
     public void removeShipAt(Point point) {
         EnemyShip marked = getShipAt(point);
-        
+
         // Did we find anyone?
         if (marked != null) {
             enemies.remove(marked);
         }
     }
-    
+
     /**
      * Returns the ship at the specified position, if
-     * it's visible in the current offset
+     * it's visible in the current offset.
+     * 
      * @param point Expected point
      * @return EnemyShip at the position, or null
-     **/
+     */
     public EnemyShip getShipAt(Point point) {
         for (EnemyShip ship : enemies) {
             if (offset >= ship.getOffset() && ship.inShape(point)) {
@@ -368,7 +387,7 @@ public class Level implements Serializable {
         // None found
         return null;
     }
-    
+
     /**
      * Clears out the level
      */
@@ -379,52 +398,56 @@ public class Level implements Serializable {
         offset = 0;
         background = null;
     }
-    
+
     /**
      * Loads a sound. It's keyname will be the
      * simple filename without extensions
-     * (e.g. "/misc/sounds/pang.wav" becomes "pang")
+     * (e.g. "/misc/sounds/pang.wav" becomes "pang").
+     * 
      * @param filename Path to soundfile (wav)
-     **/
+     */
     public void loadSound(String filename) {
         soundplayer.loadSound(filename);
     }
-    
+
     /**
-     * Plays a previously loaded sound
+     * Plays a previously loaded sound.
+     * 
      * @param keyname Key name of the loaded sound
-     **/
+     */
     public void playSound(String keyname) {
         soundplayer.play(keyname);
     }
-    
+
     /**
-     * Loop plays a previously loaded sound
+     * Loop plays a previously loaded sound.
+     * 
      * @param keyname Key name of the loaded sound
      */
     public void loopSound(String keyname) {
         soundplayer.loopPlay(keyname);
     }
-    
+
     /**
-     * Stops a particular sound from playing
+     * Stops a particular sound from playing.
+     * 
      * @param keyname Key name of the loaded sound
      */
     public void stopSound(String keyname) {
         soundplayer.stop(keyname);
     }
-    
+
     /**
      * Stops all sounds!
-     **/
+     */
     public void stopSound() {
         soundplayer.mute();
         soundplayer.unmute();
     }
-    
+
     /**
      * Checks if the player has completed the level, which
-     * means that there are no more waiting or active enemies
+     * means that there are no more waiting or active enemies.
      * 
      * @return True if the level is considered completed
      */
@@ -440,42 +463,41 @@ public class Level implements Serializable {
         }
         return waiting == 0;
     }
-    
+
     /**
-     * Recreates transient objects
+     * Recreates transient objects.
      */
     private void initTransientObjects() {
         font = new Font("Courier New", Font.PLAIN, 10);
         healthfont = new Font("Arial", Font.PLAIN, 12);
         soundplayer = new SoundPlayer(".");
     }
-    
+
     /**
-     * Does a normal serialization of the object
-     **/
+     * Does a normal serialization of the object.
+     */
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-    
+
     /**
      * Does a normal serialization of the object AND restarts
-     * the sound player
-     **/
+     * the sound player.
+     */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        
+
         // Recreate our transient objects since
         // our constructor doesn't get called
         initTransientObjects();
-        
+
         // TODO: should we reset the offset here? Every new level
         //       we start should start at offset zero, but if we forget
         //       to zero it out in the leveleditor it will be at that
         //       last offset.
         offset = 0;
-        
+
         // We always start in normal mode (as in NOT level editor mode)
         editormode = false;
     }
-    
 }
