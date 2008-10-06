@@ -1,4 +1,3 @@
-
 package projectuml;
 
 import java.awt.*;
@@ -6,6 +5,8 @@ import java.io.*;
 import java.util.*;
 
 /**
+ * Path
+ * 
  * A path that a ship follows. A cyclic path is
  * a path that returns to the first point when it
  * reaches the end.
@@ -13,26 +14,28 @@ import java.util.*;
  * @author Jens Thuresson, Steve Eriksson
  */
 public class Path implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     private ArrayList<Point> pathlist;
     private boolean cyclic;
     private int current;
 
     /**
-     * Creates an empty path
+     * Creates an empty path.
+     * 
      * @param cyclic True if the path should be cyclic
-     **/
+     */
     public Path(boolean cyclic) {
         pathlist = new ArrayList<Point>();
         current = -1;
         this.cyclic = cyclic;
     }
-    
+
     /**
-     * Retrieves the next point on the path
+     * Retrieves the next point on the path.
+     * 
      * @return Point
-     **/
+     */
     public Point next() {
         if (cyclic) {
             current = (current + 1) % pathlist.size();
@@ -43,61 +46,65 @@ public class Path implements Serializable {
             return pathlist.get(current);
         } else {
             return null;
-            // TODO: still return null, but we must change in
-            // EnemyShip
-            //return new Point(0, 0);
+        // TODO: still return null, but we must change in
+        // EnemyShip
+        //return new Point(0, 0);
         }
     }
-    
+
     /**
-     * Adds a point to the path
+     * Adds a point to the path.
+     * 
      * @param point Position
-     **/
+     */
     public void addPoint(Point point) {
         pathlist.add(point);
     }
-    
+
     /**
-     * Removes the last point in the list
-     **/
+     * Removes the last point in the list.
+     */
     public void removeLast() {
         if (!pathlist.isEmpty()) {
-            pathlist.remove(pathlist.size()-1);
+            pathlist.remove(pathlist.size() - 1);
         }
     }
-    
+
     /**
-     * Resets counter and (re)starts at the beginning
-     * again
+     * Resets counter and (re)starts at the beginning again.
      */
     public void reset() {
         current = -1;
     }
-    
+
     /**
+     * Check if path is cyclic.
+     * 
      * @return True if it's cyclic
      */
     public boolean isCyclic() {
         return cyclic;
     }
-    
+
     /**
-     * Turns cyclic property on or off
+     * Turns cyclic property on or off.
+     * 
      * @param cyclic True if the path should be cyclic
      */
     public void setCyclic(boolean cyclic) {
         this.cyclic = cyclic;
     }
-    
+
     /**
-     * Removes all points from the path
-     **/
+     * Removes all points from the path.
+     */
     public void removeAll() {
         pathlist.clear();
     }
-    
+
     /**
-     * Moves the path as a whole a certain amount
+     * Moves the path as a whole a certain amount.
+     * 
      * @param deltax How many points to move on the x-axis
      * @param deltay How many points to move on the y-axis
      */
@@ -106,19 +113,21 @@ public class Path implements Serializable {
             point.translate(deltax, deltay);
         }
     }
-    
+
     /**
      * Helper function to create a path that cycles
-     * around 0, 0
+     * around 0, 0.
+     * 
      * @return Path
      */
     public static Path create() {
         return Path.create(0, 0);
     }
-    
+
     /**
      * Helper function to create a path that cycles
-     * on a single point
+     * on a single point.
+     * 
      * @param x
      * @param y
      * @return Path
@@ -128,9 +137,10 @@ public class Path implements Serializable {
         path.addPoint(new Point(x, y));
         return path;
     }
-    
+
     /**
-     * Does a normal serialization
+     * Does a normal serialization.
+     * 
      * @param out Stream to write to
      * @throws java.io.IOException
      */
@@ -139,7 +149,8 @@ public class Path implements Serializable {
     }
 
     /**
-     * Does a normal serialization AND resets the current postition
+     * Does a normal serialization AND resets the current postition.
+     * 
      * @param in Stream to read from
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
@@ -148,5 +159,4 @@ public class Path implements Serializable {
         in.defaultReadObject();
         reset();
     }
-    
 }

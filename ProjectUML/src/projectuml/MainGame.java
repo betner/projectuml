@@ -5,9 +5,13 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 /**
+ * MainGame
+ * 
  * Main startup for the most awesome game in
- * the known universe
+ * the known universe!
  *
+ * @see GameState
+ * @see GameWindow
  * @author Jens Thuresson, Steve Eriksson
  */
 public class MainGame implements KeyListener, MouseListener, MouseMotionListener, DrawListener, WindowListener {
@@ -19,22 +23,22 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
     private final long LOGIC_INTERVAL = 34;
 
     /**
-     * Startup method
+     * Startup method.
      *
      * @param args
-     **/
+     */
     public static void main(String[] args) {
         new MainGame();
     }
 
     /**
-     * Initiates the game
+     * Initiates the game.
      */
     public MainGame() {
         gamewindow = new GameWindow("Project U.M.L.");
         gamestates = new GameStates();
         timer = new Timer();
-        
+
         // Create the player!
         player = new Player();
 
@@ -107,9 +111,10 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
     }
 
     /**
-     * Notify all states that we're leaving
+     * Notify all states that we're leaving.
+     * 
      * @param e
-     **/
+     */
     public void windowClosing(WindowEvent e) {
         // This will cause the gamestate manager to
         // call lostFocus on all active gamestates
@@ -138,8 +143,9 @@ public class MainGame implements KeyListener, MouseListener, MouseMotionListener
 
     /**
      * Updates the states at a fixed interval
-     **/
+     */
     private class LogicTask extends TimerTask {
+
         public void run() {
             gamestates.update(player);
         }

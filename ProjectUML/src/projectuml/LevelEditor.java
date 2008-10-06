@@ -7,9 +7,12 @@ import java.util.*;
 import javax.swing.*;
 
 /**
+ * LevelEditor
+ * 
  * The game's level editor, implemented using one
  * of the game's states for easier access
  *
+ * @see Level
  * @author Jens Thuresson, Steve Eriksson
  */
 public final class LevelEditor extends GameState {
@@ -21,6 +24,7 @@ public final class LevelEditor extends GameState {
     private PlayerShip playership;
     // Different commands the editor recognizes
     private enum EditorCommandID {
+
         DO_NOTHING,
         NEW, LOAD, SAVE,
         DELETE, CLEAR_ALL,
@@ -42,14 +46,15 @@ public final class LevelEditor extends GameState {
     private EditorCommandID activecommand;
 
     /**
-     * Starts the level editor
+     * Starts the level editor.
      */
     public LevelEditor() {
         this(null);
     }
 
     /**
-     * Starts editing a certain level
+     * Starts editing a certain level.
+     * 
      * @param level Level to edit
      */
     public LevelEditor(Level level) {
@@ -82,7 +87,7 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Binds editor commands to specific keys
+     * Binds editor commands to specific keys.
      */
     private void bindEditorKeys() {
         keys.put(KeyEvent.VK_N, EditorCommandID.NEW);
@@ -108,48 +113,51 @@ public final class LevelEditor extends GameState {
 
     /**
      * Helper function to print text. Will return the next line
-     * to start printing on (the y-value)
+     * to start printing on (the y-value).
+     * 
      * @param text What to print
      * @param x Where to start printing on the x-axis
      * @return Y-value of next line to start on
      */
-    private int println(Graphics2D g, String text, int x, int y) {
-        g.drawString(text, x, y);
-        return y + g.getFont().getSize();
+    private int println(Graphics2D g2D, String text, int x, int y) {
+        g2D.drawString(text, x, y);
+        return y + g2D.getFont().getSize();
     }
 
     /**
-     * Display help text (key bindings)
-     * @param g Graphics context to draw on
+     * Display help text (key bindings).
+     * 
+     * @param g2D Graphics2D context to draw on
      */
-    private void showHelp(Graphics2D g) {
+    private void showHelp(Graphics2D g2D) {
         // Where to start displaying
         int y = smallfont.getSize();
-        g.setFont(smallfont);
+        g2D.setFont(smallfont);
         for (Integer i : keys.keySet()) {
             String keyname = KeyEvent.getKeyText(i.intValue());
-            g.setColor(Color.green);
-            println(g, keyname, 0, y);
-            g.setColor(Color.white);
-            y = println(g, keys.get(i).toString(), 80, y);
+            g2D.setColor(Color.green);
+            println(g2D, keyname, 0, y);
+            g2D.setColor(Color.white);
+            y = println(g2D, keys.get(i).toString(), 80, y);
         }
 
         // Display other information two rows below
         y += smallfont.getSize();
         if (update) {
-            y = println(g, "Updating is ON", 0, y);
+            y = println(g2D, "Updating is ON", 0, y);
         }
 
         // Display offset at bottom
         if (level != null) {
-            g.setColor(Color.white);
-            g.drawString("Level offset:   " + level.getOffset(), 0, 480 - smallfont.getSize());
-            g.drawString("Active command: " + activecommand.toString(), 0, 480);
+            g2D.setColor(Color.white);
+            g2D.drawString("Level offset:   " + level.getOffset(), 0, 480 - smallfont.getSize());
+            g2D.drawString("Active command: " + activecommand.toString(), 0, 480);
         }
     }
 
     /**
-     * Browse for a filename
+     * Browse for a filename.
+     * 
      * @param title Title of the dialog
      * @return The file object, or null
      */
@@ -164,7 +172,8 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Browse for a file to save information to
+     * Browse for a file to save information to.
+     * 
      * @param title Title of the dialog
      * @return The file object, or null
      */
@@ -179,7 +188,8 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Displays a "Are you sure?"-dialog with
+     * Displays a "Are you sure?"-dialog with.
+     * 
      * @param title Title of the dialog
      * @param text Question to ask
      * @return True if the user picked "Yes"
@@ -190,8 +200,8 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Displays a input dialog, asking for an amount
-     * (e.g. health)
+     * Displays a input dialog, asking for an amount (e.g. health).
+     * 
      * @param title Title of the dialog
      * @param defaultvalue Default value to return if users cancels
      * @return The amount
@@ -210,16 +220,18 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Displays a message to the user in a dialog box
+     * Displays a message to the user in a dialog box.
+     * 
      * @param title Dialog title
      * @param text Text in the window
-     **/
+     */
     private void showMessage(String text) {
         JOptionPane.showMessageDialog(null, text, "Level editor", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
-     * Only updates if the user has turned it on
+     * Only updates if the user has turned it on.
+     * 
      * @param player
      */
     public void update(Player player) {
@@ -229,31 +241,33 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Paint the level
-     * @param g Graphics context to draw on
+     * Paint the level.
+     * 
+     * @param g2D Graphics2D context to draw on
      */
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g2D) {
         // Always draw a black background
-        g.setColor(Color.black);
-        g.fillRect(0, 0, 640, 480);
+        g2D.setColor(Color.black);
+        g2D.fillRect(0, 0, 640, 480);
 
         // Draw the level
         if (level != null) {
-            level.draw(g);
+            level.draw(g2D);
         } else {
-            g.setColor(Color.red);
-            g.setFont(smallfont);
-            g.drawString("***  No active level, please create a new  ***", 170, 220);
+            g2D.setColor(Color.red);
+            g2D.setFont(smallfont);
+            g2D.drawString("***  No active level, please create a new  ***", 170, 220);
         }
 
         // Display help (if active)
         if (showhelp) {
-            showHelp(g);
+            showHelp(g2D);
         }
     }
 
     /**
-     * Respons to key press
+     * Respons to key press.
+     * 
      * @param event Key event
      */
     public void keyEvent(KeyEvent event, boolean down) {
@@ -414,7 +428,8 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Respond to the active command
+     * Respond to the active command.
+     * 
      * @param event
      */
     public void mouseEvent(MouseEvent event) {
@@ -461,7 +476,7 @@ public final class LevelEditor extends GameState {
                     }
                     break;
                 }
-                
+
                 case EDIT_PATH_ON_ENEMY: {
                     // Edits a path on a enemy
                     EnemyShip ship = level.getShipAt(event.getPoint());
@@ -470,7 +485,7 @@ public final class LevelEditor extends GameState {
                     }
                     break;
                 }
-                
+
                 case CHANGE_ENEMY_OFFSET: {
                     // Changes an enemy's offset
                     EnemyShip ship = level.getShipAt(event.getPoint());
@@ -508,8 +523,8 @@ public final class LevelEditor extends GameState {
     }
 
     /**
-     * Gets the level object we've been working
-     * on
+     * Gets the level object we've been working on.
+     * 
      * @return Active level, or null
      */
     public Level getLevel() {
