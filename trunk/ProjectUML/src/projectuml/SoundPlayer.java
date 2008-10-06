@@ -5,33 +5,36 @@ import java.util.*;
 import javax.sound.sampled.*;
 
 /**
+ * SoundPlayer
+ * 
  * Implements a basic sound player that can load
  * audio files automatically from a given path.
  *
  * @author Jens Thuresson, Steve Eriksson
  */
 public class SoundPlayer implements LineListener {
-    
+
     private Boolean mute;
     private Timer timer;
     private Hashtable<String, Clip> clips;
-    
+
     /**
      * Don't load any files
      */
     public SoundPlayer() {
         this(null);
     }
-    
+
     /**
-     * Loads all soundfiles found at the path
+     * Loads all soundfiles found at the path.
+     * 
      * @param path Path to search
      */
     public SoundPlayer(String path) {
         timer = new Timer();
         clips = new Hashtable<String, Clip>();
         mute = false;
-        
+
         if (path != null) {
             // Traverse the directory and search
             // for sound files
@@ -43,19 +46,19 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
-     * Filter class that only accepts audio files
+     * Filter class that only accepts audio files.
      */
     private class AudioFilesOnly implements FilenameFilter {
-        
+
         public boolean accept(File dir, String name) {
             return name.endsWith(".wav");
         }
     }
-    
+
     /**
-     * Stops all sound immediately
+     * Stops all sound immediately.
      */
     public void mute() {
         mute = true;
@@ -64,17 +67,18 @@ public class SoundPlayer implements LineListener {
             clip.stop();
         }
     }
-    
+
     /**
-     * Restore sound playing
+     * Restore sound playing.
      */
     public void unmute() {
         mute = false;
     }
-    
+
     /**
      * Loads an audio file. To play it, access it by
-     * its short filename ("pling.wav" becomes "pling")
+     * its short filename ("pling.wav" becomes "pling").
+     * 
      * @param filename
      * @return True if successful
      */
@@ -84,11 +88,12 @@ public class SoundPlayer implements LineListener {
         String keyname = file.getName().substring(0, dot);
         return loadSound(filename, keyname);
     }
-    
+
     /**
      * Loads an audio file and associates it with the
      * specified keyname. Use the keyname to play it
      * later.
+     * 
      * @param filename
      * @param keyname
      * @return True if successful
@@ -96,7 +101,7 @@ public class SoundPlayer implements LineListener {
     public Boolean loadSound(String filename, String keyname) {
         // Always assume failure
         boolean success = false;
-        
+
         System.out.println("Trying to load " + filename);
         try {
             // Don't store twice
@@ -110,7 +115,7 @@ public class SoundPlayer implements LineListener {
                 clips.put(keyname, clip);
                 Thread.sleep(0);
             }
-            
+
             // Loading was a success!
             success = true;
         } catch (FileNotFoundException ex) {
@@ -127,9 +132,10 @@ public class SoundPlayer implements LineListener {
             return success;
         }
     }
-    
+
     /**
-     * Plays a loaded file, if not muted
+     * Plays a loaded file, if not muted.
+     * 
      * @param name
      */
     public void play(String name) {
@@ -147,9 +153,10 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
-     * Loop a loaded sound
+     * Loop a loaded sound.
+     * 
      * @param name
      * @param count How many times it should loop
      */
@@ -168,17 +175,19 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
-     * Loop a loaded sound forever
+     * Loop a loaded sound forever.
+     * 
      * @param name
      */
     public void loopPlay(String name) {
         loopPlay(name, Clip.LOOP_CONTINUOUSLY);
     }
-    
+
     /**
-     * Stops an active playing sound
+     * Stops an active playing sound.
+     * 
      * @param name
      */
     public void stop(String name) {
@@ -189,9 +198,10 @@ public class SoundPlayer implements LineListener {
             System.out.println("Sound " + name + " not found!");
         }
     }
-    
+
     /**
-     * Resumes a previously stopped sound clip
+     * Resumes a previously stopped sound clip.
+     * 
      * @param name
      */
     public void resume(String name) {
@@ -202,9 +212,10 @@ public class SoundPlayer implements LineListener {
             System.out.println("Sound " + name + " not found!");
         }
     }
-    
+
     /**
-     * Returns true if there's a sound still playing
+     * Returns true if there's a sound still playing.
+     * 
      * @return
      */
     public Boolean isPlaying() {
@@ -221,9 +232,10 @@ public class SoundPlayer implements LineListener {
             return false;
         }
     }
-    
+
     /**
-     * Starts fading out a playing sound
+     * Starts fading out a playing sound.
+     * 
      * @param keyname Clip to fade out
      */
     public void fadeOut(String keyname) {
@@ -232,7 +244,7 @@ public class SoundPlayer implements LineListener {
             timer.scheduleAtFixedRate(new FadeOutTask(clip), 0, 100);
         }
     }
-    
+
     /**
      * Starts fading out all sounds playing
      */
@@ -243,16 +255,16 @@ public class SoundPlayer implements LineListener {
             }
         }
     }
-    
+
     /**
-     * Outputs debug information
+     * Outputs debug information.
      */
     public void debugDump() {
         System.out.println("--- SoundPlayer ---");
         for (Map.Entry<String, Clip> key : clips.entrySet()) {
             System.out.println(key.getKey() + ": " + key.getValue().toString());
         }
-        
+
         System.out.println("   --- Mixer ---");
         try {
             Mixer mixer = AudioSystem.getMixer(null);
@@ -260,13 +272,14 @@ public class SoundPlayer implements LineListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
         System.out.println("-------------------");
     }
-    
+
     /**
      * Outputs debug information about a certain clip
-     * @param keyname
+     * @param keyname.
+     * 
      */
     public void debugDump(String keyname) {
         System.out.println("--- SoundPlayer, clip: " + keyname + " ---");
@@ -278,36 +291,37 @@ public class SoundPlayer implements LineListener {
         System.out.println(clip.getFormat());
         System.out.println("-------------------");
     }
-    
+
     /**
-     * Receives updates from loaded clips
+     * Receives updates from loaded clips.
+     * 
      * @param event
      */
     public void update(LineEvent event) {
         //System.out.println("SoundPlayer: " + event.toString());
     }
-    
+
     /**
      * A task that fades out a clip under a certain amount
-     * of time
+     * of time.
      */
     private class FadeOutTask extends TimerTask {
-        
+
         private Clip clip;
         private FloatControl volume;
         private float x;
         private final float STEP_AMOUNT = 0.006f;
         private float start;
-        
+
         public FadeOutTask(Clip clip) {
             this.clip = clip;
             volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             start = volume.getValue();
             x = 0.0f;
         }
-        
+
         /**
-         * Decreases the volume until not heared
+         * Decreases the volume until not heared.
          */
         public void run() {
             float vol = -80 * x;
