@@ -1,4 +1,3 @@
-
 package projectuml;
 
 import java.awt.Point;
@@ -22,21 +21,22 @@ import java.util.Iterator;
  * @author Steve Eriksson, Jens Thuresson
  */
 public class WeaponList implements Serializable, Iterable<Weapon> {
-    
+
     private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
     private ArrayList<Point> weaponMount = new ArrayList<Point>();
     private int numberOfWeapons;
     private int currentWeapon;
     private int currentMount;
 
-            
-    /** Creates a new instance of WeaponList */
+    /** 
+     * Creates a new instance of WeaponList 
+     */
     public WeaponList() {
         this.numberOfWeapons = 0;
         currentWeapon = 0;
         currentMount = 0;
     }
-    
+
     /**
      * Adds a weapon the cyclic list.
      * The weapon gets it's position from the weaponmountlist
@@ -45,48 +45,67 @@ public class WeaponList implements Serializable, Iterable<Weapon> {
      *
      * @param weapon
      */
-    public void addWeapon(Weapon weapon){
+    public void addWeapon(Weapon weapon) {
         int index = currentWeapon % numberOfWeapons; // List is cyclic
-        
+
         // If position in list i empty, add weapon, otherwise
         // replace current.
-        if(weaponList.size() <= index){
+        if (weaponList.size() <= index) {
             weaponList.add(weapon);
-        }else{
+        } else {
             weaponList.set(index, weapon);
         }
-        
+
         weapon.setPosition(weaponMount.get(index));
         weaponList.set(index, weapon);
         currentWeapon++; // Point to next slot in list
     }
-    
+
     /**
      * Add a weaponmount. Weaponmount is a position on the object
      * where weapons are located. 
-     */ 
-    public void addWeaponMount(Point mount){
+     */
+    public void addWeaponMount(Point mount) {
         System.out.println("WeaponList: addWeaponMount: " + mount);
         System.out.println("WeaponList currentMount = " + currentMount);
         System.out.println("WeaponList numberOfWeapons = " + numberOfWeapons);
-        
+
         // Only add mount if there is place for it
-        if(currentMount < numberOfWeapons){
+        if (currentMount < numberOfWeapons) {
             weaponMount.add(mount);
             currentMount++;
         }
     }
-    
+
+    /**
+     * Create iterator for the list.
+     * 
+     * @return listIterator
+     */
     public Iterator<Weapon> iterator() {
         return weaponList.listIterator();
     }
-    
-    public void setNumberOfWeapons(int number){
+
+    /**
+     * Set number of weapons that is supported by the ship.
+     * This number is used to make the list cyclic. 
+     * The list wraps when an index higher than this value
+     * is used.
+     * 
+     * @param number
+     */
+    public void setNumberOfWeapons(int number) {
         numberOfWeapons = number;
     }
-    
+
+    /**
+     * Method used in serialization.
+     * 
+     * @param in
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
     }
-
 }

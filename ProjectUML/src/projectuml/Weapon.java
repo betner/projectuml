@@ -1,4 +1,3 @@
-
 package projectuml;
 
 import java.awt.Point;
@@ -23,63 +22,112 @@ import java.io.Serializable;
  * @author Steve Eriksson, Jens Thuresson
  */
 abstract public class Weapon implements Serializable {
-    
+
     private String shotImageFile; // Path to the image representing a shot
     private Point position; // Weapon position
     private boolean player; // True if weapon is on player shipxs
     private String soundName; // Name of the sound to play
-           
-    /** Creates a new instance of Weapon */
+
+    /** 
+     * Creates a new instance of Weapon 
+     */
     public Weapon() {
     }
-    
+
     /**
-     * Fire weapon
+     * Fire weapon.
      *
      *@param game level
      */
     abstract public void fire(Level level, Sprite sprite);
-       
+
     /**
-     * Sets the player flag to true
+     * Sets the player flag to true.
      */
-    public void setPlayer(Boolean isPlayer){
+    public void setPlayer(Boolean isPlayer) {
         player = isPlayer;
     }
-    public Boolean isPlayer(){
+
+    /**
+     * Check if the weapon is a player weapon.
+     * 
+     * @return player
+     */
+    public Boolean isPlayer() {
         return player;
     }
-    
-    public void setPosition(Point newPosition){
+
+    /**
+     * Set weapon's position.
+     * 
+     * @param newPosition Point
+     */
+    public void setPosition(Point newPosition) {
         position = newPosition;
     }
-    
-    public void setPosition(double x, double y){
+
+    /**
+     * Set weapon's position.
+     * 
+     * @param x double
+     * @param y double
+     */
+    public void setPosition(double x, double y) {
         position.setLocation(x, y);
     }
-    
+
+    /**
+     * Set weapon's position.
+     * 
+     * @param x integer
+     * @param y integer
+     */
     public void setPosition(int x, int y) {
         position.setLocation(x, y);
     }
-    
-    // Jens: added
+
+    /**
+     * Get weapon's position.
+     * 
+     * @return position Point
+     */
     public Point getPosition() {
         return position;
     }
-    
-    public void setShotImageFile(String path){
+
+    /**
+     * Set the image generated shots get.
+     * 
+     * @param path to image file
+     */
+    public void setShotImageFile(String path) {
         shotImageFile = path;
     }
-    
-    public String getShotImageFile(){
+
+    /**
+     * Get the image used by shots.
+     * 
+     * @return shotImageFile
+     */
+    public String getShotImageFile() {
         return shotImageFile;
     }
 
-    public void setSoundFile(String path){
+    /**
+     * Set the sound file used when weapon is fired.
+     * 
+     * @param path to sound file
+     */
+    public void setSoundFile(String path) {
         soundName = path;
     }
-    
-    public String getSoundFile(){
+
+    /**
+     * Get the name of the sound used by the weapon.
+     * 
+     * @return soundName
+     */
+    public String getSoundFile() {
         return soundName;
     }
 }
