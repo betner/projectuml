@@ -131,7 +131,11 @@ public class Level implements Serializable {
             for (EnemyShip enemy : enemies) {
                 if (offset >= enemy.getOffset()) {
                     if (!enemy.isDestroyed() && enemy.inShape(shot.getPosition())) {
-                        shot.touch(enemy);
+                        if (shot.isActive()) {
+                            shot.touch(enemy);
+                            shot.deactivate();
+                            shot.hide();
+                        }
                         break;
                     }
                 }
