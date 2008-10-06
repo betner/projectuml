@@ -32,6 +32,7 @@ public class GameOver extends GameState {
         // Sound
         sound = new SoundPlayer();
         sound.loadSound("gameover.wav");
+        sound.play("gameover");
     }
 
     /**

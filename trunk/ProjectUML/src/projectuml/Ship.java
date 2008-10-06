@@ -17,13 +17,13 @@ import java.awt.*;
  */
 public abstract class Ship extends Sprite {
 
+    private static final long serialVersionUID = 1L;
     private int maxhealth;      // Ship's max health
     private int health;         // Ship's health
     private int dx;             // Change in x direction, negative is left
     private int dy;             // Change in y direction, negative is down
     private Boolean destroyed;  // Flags the ship as destroyed    
     private WeaponList weaponList;
-    private Level level;        // Reference to current level
     transient private AnimatedSprite destructionAnimation; // Animation of ships destructionAnimation
 
     /**
