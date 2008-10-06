@@ -1,8 +1,8 @@
 
 package projectuml;
 
-import java.awt.Point;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 
 /**
  * EnemyShip

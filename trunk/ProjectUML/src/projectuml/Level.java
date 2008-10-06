@@ -150,7 +150,11 @@ public class Level implements Serializable {
             
             // Does it hit the player?
             if (!player.isDestroyed() && player.inShape(shot.getPosition())) {
-                shot.touch(player);
+                if (shot.isActive()) {
+                    shot.touch(player);
+                    shot.deactivate();
+                    shot.hide();
+                }
             }
         }
         
