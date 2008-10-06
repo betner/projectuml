@@ -74,6 +74,7 @@ public class PlayerShip extends Ship {
         }else{
             // Handle ship movement
             super.update(level); 
+           
         }
        
     }

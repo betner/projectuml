@@ -21,6 +21,8 @@ public class EnemyFactory implements Iterable<String> {
         creators = new Hashtable<String, EnemyCreator>();
         creators.put("Default enemy (w/ crazy gunner)", new DefaultEnemy());
         creators.put("Default enemy (w/ multishot)", new DefaultEnemyMultiShot());
+        creators.put("Enemy with missilelauncher", new EnemyMissileLauncher());
+        creators.put("Default boss", new DefaultBoss());
     }
 
     /**
@@ -63,6 +65,7 @@ public class EnemyFactory implements Iterable<String> {
      * Factory for creating an enemy of default type
      */
     private class DefaultEnemy extends EnemyCreator {
+
         public EnemyShip createEnemy() {
             ArrayList<Point> weaponMounts = new ArrayList<Point>();
             weaponMounts.add(new Point(1, 20));
@@ -74,12 +77,13 @@ public class EnemyFactory implements Iterable<String> {
             return enemy;
         }
     }
-    
+
     /**
      * Factory for creating an enemy of default type, but
      * with a different weapon
      */
     private class DefaultEnemyMultiShot extends EnemyCreator {
+
         public EnemyShip createEnemy() {
             // We use the other factory's enemy, but
             // exchange the weapon
@@ -88,4 +92,38 @@ public class EnemyFactory implements Iterable<String> {
             return ship;
         }
     }
+
+    private class EnemyMissileLauncher extends EnemyCreator {
+
+        public EnemyShip createEnemy() {
+            ArrayList<Point> weaponMounts = new ArrayList<Point>();
+            weaponMounts.add(new Point(1, 20));
+            Gunner gunner = new CrazyGunner(500, 2000);
+            EnemyShip enemy = new EnemyShip(1, weaponMounts, gunner, Path.create(), "enemyship2.png");
+            enemy.addWeapon(new MissileLauncher(false));
+            enemy.activate();
+            enemy.show();
+            return enemy;
+        }
+    }
+
+    private class DefaultBoss extends EnemyCreator {
+
+        public EnemyShip createEnemy() {
+            ArrayList<Point> weaponMounts = new ArrayList<Point>();
+            weaponMounts.add(new Point(1, 20));
+            weaponMounts.add(new Point(1, 40));
+            Gunner gunner = new CrazyGunner(500, 2000);
+            EnemyShip enemy = new EnemyShip(1, weaponMounts, gunner, Path.create(), "boss1.png");
+            enemy.addWeapon(new LaserCannon(false));
+            enemy.addWeapon(new MultiWeapon());
+            enemy.increaseHealth(10000);
+            enemy.activate();
+            enemy.show();
+            return enemy;
+        }
+    }
 }
+
+
+    

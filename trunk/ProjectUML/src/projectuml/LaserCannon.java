@@ -19,6 +19,7 @@ public class LaserCannon extends Weapon{
      */
     public LaserCannon(){
      this(new Point(), true);     
+          
     }
     
     public LaserCannon(boolean isPlayer){
