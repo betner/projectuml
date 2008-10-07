@@ -115,13 +115,13 @@ public class EnemyShip extends Ship {
 
             // Ship is destroyed. Chances are that it will leave
             // a powerup behind.
-            // This should be solved a little more dynamic if time permits.
             } else if (getDestructAnimation().isDone()) {
-                // TODO: should powerupfactory be a static class?
-                PowerUpFactory powerups = new PowerUpFactory();
-                PowerUp powerup = powerups.createRandom();
-                powerup.setPosition(getPosition());
-                level.addPickable(powerup);
+                if (Randomizer.getRandomNumber(0, 10) < 6) {
+                    PowerUpFactory powerups = new PowerUpFactory();
+                    PowerUp powerup = powerups.createRandom();
+                    powerup.setPosition(getPosition());
+                    level.addPickable(powerup);
+                }
                 deactivate();
             }
 

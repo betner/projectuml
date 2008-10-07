@@ -399,7 +399,6 @@ public class Level implements Serializable {
         enemyshots.clear();
         playershots.clear();
         offset = 0;
-        background = null;
     }
 
     /**
@@ -503,10 +502,8 @@ public class Level implements Serializable {
         // our constructor doesn't get called
         initTransientObjects();
 
-        // TODO: should we reset the offset here? Every new level
-        //       we start should start at offset zero, but if we forget
-        //       to zero it out in the leveleditor it will be at that
-        //       last offset.
+        // Restart level at offset 0, otherwise we'll start
+        // where the level editor last stood
         offset = 0;
 
         // We always start in normal mode (as in NOT level editor mode)

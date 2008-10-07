@@ -27,7 +27,7 @@ public final class LevelEditor extends GameState {
 
         DO_NOTHING,
         NEW, LOAD, SAVE,
-        DELETE, CLEAR_ALL,
+        DELETE,
         TOGGLE_HELP, TOGGLE_UPDATE,
         EXIT,
         PLACE_ENEMY,
@@ -71,8 +71,8 @@ public final class LevelEditor extends GameState {
             level.setEditorMode(true);
         }
 
-        // FIX: how do we get the playership
-        //      do we need it?
+        // Fake a playership since we're not using it here,
+        // but the level object demands it
         playership = new PlayerShip(new Player());
 
         // Associate keybindings to specific
@@ -94,7 +94,6 @@ public final class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_L, EditorCommandID.LOAD);
         keys.put(KeyEvent.VK_S, EditorCommandID.SAVE);
         keys.put(KeyEvent.VK_DELETE, EditorCommandID.DELETE);
-        keys.put(KeyEvent.VK_F9, EditorCommandID.CLEAR_ALL);
         keys.put(KeyEvent.VK_F12, EditorCommandID.EXIT);
         keys.put(KeyEvent.VK_H, EditorCommandID.TOGGLE_HELP);
         keys.put(KeyEvent.VK_ADD, EditorCommandID.INCREASE_OFFSET);
@@ -257,8 +256,10 @@ public final class LevelEditor extends GameState {
             level.draw(g2D);
         } else {
             g2D.setColor(Color.red);
+            g2D.fillRect(0, 320-smallfont.getSize(), 640, smallfont.getSize()*2);
             g2D.setFont(smallfont);
-            g2D.drawString("***  No active level, please create a new  ***", 170, 220);
+            g2D.setColor(Color.white);
+            g2D.drawString("***  No active level, please create a new  ***", 170, 320);
         }
 
         // Display help (if active)
@@ -293,14 +294,6 @@ public final class LevelEditor extends GameState {
                     removeMe();
                     break;
 
-                case CLEAR_ALL:
-                    // TODO: ask "Really clear everything?"
-                    if (level != null) {
-                        level.removeAll();
-                        level.setScenery(null);
-                    }
-                    break;
-
                 case NEW:
                     // If there's unsaved changes, ask the user
                     // if he wants to abort
@@ -314,7 +307,10 @@ public final class LevelEditor extends GameState {
                     // everything on the current one
                     if (level != null) {
                         level.removeAll();
-                        level.setScenery(null);
+                        
+                        if (!ask("New level", "Keep current scenery?")) {
+                            level.setScenery(null);
+                        }
                     } else {
                         level = new Level();
                         level.setEditorMode(showhelp);

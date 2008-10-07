@@ -63,8 +63,6 @@ public class MissileLauncher extends Weapon {
                 shot.setDx(DX);
                 level.addPlayerShot(shot);
             } else {
-                // TODO:
-                // Make sure the image gets flipped 90 deg
                 shot.setDx(DX * -1);
                 level.addEnemyShot(shot);
             }

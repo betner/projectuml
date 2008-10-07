@@ -1,10 +1,9 @@
 package projectuml;
 
-import java.io.FilenameFilter;
+import java.io.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 
 /**
  * GameRunning
@@ -110,7 +109,8 @@ public class GameRunning extends GameState {
                 // If there are no more levels, we've completed
                 // the game!
                 if (currentlevel == null) {
-                    // TODO: switch to victory screen!
+                    getGameStateManager().change(new VictoryScreen());
+                    return;
                 }
             }
         }
@@ -273,6 +273,7 @@ public class GameRunning extends GameState {
         levelnames.clear();
         File dir = new File(".");
         for (String filename : dir.list(new JustLevels())) {
+            // Push it first, since we're jusing a stack
             levelnames.add(0, filename);
             System.out.println("Found level: " + filename);
         }
@@ -300,7 +301,9 @@ public class GameRunning extends GameState {
         if (levelnames.empty()) {
             currentlevel = null;
         } else {
-            currentlevel = levelloader.load(levelnames.pop());
+            String filename = levelnames.pop();
+            System.out.println("Loading level " + filename + "...");
+            currentlevel = levelloader.load(filename);
         }
         gainedFocus();
     }

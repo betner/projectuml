@@ -244,9 +244,14 @@ public class PathEditor extends GameState {
     }
 
     /**
-     * Reponds to editor keys.
+     * Repond to editor keys.
      */
     public void keyEvent(KeyEvent event, boolean down) {
+        // How fast we should move the entire
+        // path
+        final int MOVE_SPEED = 5;
+        
+        // Is it a command key?
         if (down && keys.containsKey(event.getKeyCode())) {
             EditorCommandID cmd = keys.get(event.getKeyCode());
             switch (cmd) {
@@ -265,9 +270,6 @@ public class PathEditor extends GameState {
                     break;
 
                 case NEW:
-                    if (path != null) {
-                        // TODO: ask for saving first?
-                    }
                     path = new Path(false);
                     break;
 
@@ -282,9 +284,6 @@ public class PathEditor extends GameState {
                 }
 
                 case LOAD: {
-                    if (path != null) {
-                        // TODO: ask for saving first?
-                    }
                     File file = browse("Load path");
                     if (file != null) {
                         path = pathloader.load(file.getAbsolutePath());
@@ -294,37 +293,36 @@ public class PathEditor extends GameState {
 
                 case CLEAR_ALL:
                     if (path != null) {
-                        // TODO: ask for "are you sure, dude?"
                         path.removeAll();
                     }
                     break;
 
                 case MOVE_PATH_UP:
                     if (path != null) {
-                        path.translate(0, -2);
+                        path.translate(0, -MOVE_SPEED);
                     }
                     break;
 
                 case MOVE_PATH_DOWN:
                     if (path != null) {
-                        path.translate(0, 2);
+                        path.translate(0, MOVE_SPEED);
                     }
                     break;
 
                 case MOVE_PATH_RIGHT:
                     if (path != null) {
-                        path.translate(2, 0);
+                        path.translate(MOVE_SPEED, 0);
                     }
                     break;
 
                 case MOVE_PATH_LEFT:
                     if (path != null) {
-                        path.translate(-2, 0);
+                        path.translate(-MOVE_SPEED, 0);
                     }
                     break;
 
                 default:
-                    System.err.println("***  " + cmd.toString() + ", unknown editorcommand!  ***");
+                    System.err.println("***  " + cmd.toString() + ", not implemented!  ***");
                     break;
             }
         }
