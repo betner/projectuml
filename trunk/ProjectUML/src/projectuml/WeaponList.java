@@ -66,10 +66,6 @@ public class WeaponList implements Serializable, Iterable<Weapon> {
      * where weapons are located. 
      */
     public void addWeaponMount(Point mount) {
-        System.out.println("WeaponList: addWeaponMount: " + mount);
-        System.out.println("WeaponList currentMount = " + currentMount);
-        System.out.println("WeaponList numberOfWeapons = " + numberOfWeapons);
-
         // Only add mount if there is place for it
         if (currentMount < numberOfWeapons) {
             weaponMount.add(mount);

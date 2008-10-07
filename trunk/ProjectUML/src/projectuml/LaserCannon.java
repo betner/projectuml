@@ -70,7 +70,7 @@ public class LaserCannon extends Weapon {
             shot.setDx(DX * -1); // Reverse direction
             level.addEnemyShot(shot);
         }
-        level.playSound("lasershot");
+        level.playSound("shot1");
     }
 
     public void playSound() {
