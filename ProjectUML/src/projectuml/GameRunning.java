@@ -296,11 +296,13 @@ public class GameRunning extends GameState {
      * load, it will return null.
      */
     private void loadNextLevel() {
+        lostFocus();
         if (levelnames.empty()) {
             currentlevel = null;
         } else {
             currentlevel = levelloader.load(levelnames.pop());
         }
+        gainedFocus();
     }
 
     /**
