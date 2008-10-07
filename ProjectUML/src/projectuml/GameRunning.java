@@ -143,6 +143,11 @@ public class GameRunning extends GameState {
      * @param event
      */
     public void keyEvent(KeyEvent event, boolean down) {
+        // We may not have a valid playership yet
+        if (playership == null) {
+            return;
+        }
+        
         // Is it a game command?
         if (keys.containsKey(event.getKeyCode())) {
             GameCommandID cmd = keys.get(event.getKeyCode());

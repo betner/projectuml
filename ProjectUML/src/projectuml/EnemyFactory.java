@@ -1,7 +1,7 @@
 package projectuml;
 
 import java.util.*;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * EnemyFactory
@@ -11,58 +11,17 @@ import java.awt.Point;
  * @see EnemyShip
  * @author Steve Eriksson, Jens Thuresson
  */
-public class EnemyFactory implements Iterable<String> {
-
-    private Hashtable<String, EnemyCreator> creators;
+public class EnemyFactory extends GeneralFactory<EnemyShip> {
 
     /**
      * Create the factory and initiate hashtable that holds the 
      * possible enemy types it can make.
      */
     public EnemyFactory() {
-        creators = new Hashtable<String, EnemyCreator>();
-        creators.put("Default enemy (w/ crazy gunner)", new DefaultEnemy());
-        creators.put("Default enemy (w/ multishot)", new DefaultEnemyMultiShot());
-        creators.put("Enemy with missilelauncher", new EnemyMissileLauncher());
-        creators.put("Default boss", new DefaultBoss());
-    }
-
-    /**
-     * Creates an enemy of the specified type.
-     * 
-     * @param type Textual representation of the enemy type
-     * @return EnemyShip or null if it couldn't be found
-     */
-    public EnemyShip create(String type) {
-        if (creators.containsKey(type)) {
-            return creators.get(type).createEnemy();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Provides an iterator for iterating amongst
-     * the creator types.
-     * 
-     * @return Iterator of String
-     */
-    public Iterator<String> iterator() {
-        return creators.keySet().iterator();
-    }
-
-    /**
-     * Inner abstract class that represents a factory
-     * for creating enemies of a certain type.
-     */
-    abstract private class EnemyCreator {
-
-        /**
-         * Creates enemy of this factory's type.
-         * 
-         * @param path Path the enemy follows
-         */
-        abstract public EnemyShip createEnemy();
+        add("Default enemy (w/ crazy gunner)", new DefaultEnemy());
+        add("Default enemy (w/ multishot)", new DefaultEnemyMultiShot());
+        add("Enemy with missilelauncher", new EnemyMissileLauncher());
+        add("Default boss", new DefaultBoss());
     }
 
     /**
@@ -70,9 +29,9 @@ public class EnemyFactory implements Iterable<String> {
      * 
      * @return EnemyShip
      */
-    private class DefaultEnemy extends EnemyCreator {
+    private class DefaultEnemy extends GeneralFactoryCreator<EnemyShip> {
 
-        public EnemyShip createEnemy() {
+        public EnemyShip create() {
             ArrayList<Point> weaponMounts = new ArrayList<Point>();
             weaponMounts.add(new Point(1, 20));
             Gunner gunner = new CrazyGunner(500, 2000);
@@ -90,12 +49,12 @@ public class EnemyFactory implements Iterable<String> {
      * 
      * @return EnemyShip
      */
-    private class DefaultEnemyMultiShot extends EnemyCreator {
+    private class DefaultEnemyMultiShot extends GeneralFactoryCreator<EnemyShip> {
 
-        public EnemyShip createEnemy() {
+        public EnemyShip create() {
             // We use the other factory's enemy, but
             // exchange the weapon
-            EnemyShip ship = new DefaultEnemy().createEnemy();
+            EnemyShip ship = new DefaultEnemy().create();
             ship.addWeapon(new MultiWeapon());
             return ship;
         }
@@ -107,9 +66,9 @@ public class EnemyFactory implements Iterable<String> {
      * 
      * @return EnemyShip
      */
-    private class EnemyMissileLauncher extends EnemyCreator {
+    private class EnemyMissileLauncher extends GeneralFactoryCreator<EnemyShip> {
 
-        public EnemyShip createEnemy() {
+        public EnemyShip create() {
             ArrayList<Point> weaponMounts = new ArrayList<Point>();
             weaponMounts.add(new Point(1, 20));
             Gunner gunner = new CrazyGunner(500, 2000);
@@ -126,9 +85,9 @@ public class EnemyFactory implements Iterable<String> {
      * 
      * @return EnemyShip
      */
-    private class DefaultBoss extends EnemyCreator {
+    private class DefaultBoss extends GeneralFactoryCreator<EnemyShip> {
 
-        public EnemyShip createEnemy() {
+        public EnemyShip create() {
             ArrayList<Point> weaponMounts = new ArrayList<Point>();
             weaponMounts.add(new Point(1, 20));
             weaponMounts.add(new Point(1, 40));

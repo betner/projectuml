@@ -10,34 +10,35 @@ import java.awt.Point;
  * @see PowerUp
  * @author Steve Eriksson, Jens Thuresson
  */
-public class PowerUpFactory {
+public class PowerUpFactory extends GeneralFactory<PowerUp> {
 
     /** Creates a new instance of PowerUpFactory */
     public PowerUpFactory() {
+        add("Health", new HealthCreator());
+        add("Missile launcher", new MissileLauncherCreator());
     }
 
     /**
-     * Create a health powerup.
-     * 
-     * @param position
-     * @param health
-     * @return PowerUp
+     * Creates a health powerup.
      */
-    public static PowerUp createHealthPowerUp(Point position, int health) {
-        PowerUp powerUp = new PowerUp(position, "heart.png");
-        powerUp.setTouchBehaviour(new HealShip(100));
-        return powerUp;
+    private class HealthCreator extends GeneralFactoryCreator<PowerUp> {
+
+        public PowerUp create() {
+            PowerUp powerUp = new PowerUp("heart.png");
+            powerUp.setTouchBehaviour(new HealShip(100));
+            return powerUp;
+        }
     }
 
     /**
-     * Create a weapon powerup, a missile launcher.
-     * 
-     * @param position
-     * @return PowerUp
+     * Creates a weapon power-up (a missile launcher)
      */
-    public static PowerUp createMissileLauncherPowerUp(Point position) {
-        PowerUp powerUp = new PowerUp(position, "missilepowerup.png");
-        powerUp.setTouchBehaviour(new GiveWeapon(new MissileLauncher(true)));
-        return powerUp;
+    private class MissileLauncherCreator extends GeneralFactoryCreator<PowerUp> {
+
+        public PowerUp create() {
+            PowerUp powerUp = new PowerUp("missilepowerup.png");
+            powerUp.setTouchBehaviour(new GiveWeapon(new MissileLauncher(true)));
+            return powerUp;
+        }
     }
 }

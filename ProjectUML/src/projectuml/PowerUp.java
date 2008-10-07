@@ -15,6 +15,15 @@ public class PowerUp extends Sprite {
     private int offset; // Needed?
 
     /**
+     * Creates a new instance of PowerUp
+     * 
+     * @param imageFile Path to image
+     */
+    public PowerUp(String imageFile) {
+        this(new Point(0, 0), imageFile);
+    }
+    
+    /**
      * Creates a new instance of PowerUp 
      * 
      * @param position
