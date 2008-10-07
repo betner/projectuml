@@ -46,9 +46,6 @@ public class Path implements Serializable {
             return pathlist.get(current);
         } else {
             return null;
-        // TODO: still return null, but we must change in
-        // EnemyShip
-        //return new Point(0, 0);
         }
     }
 
@@ -116,12 +113,12 @@ public class Path implements Serializable {
 
     /**
      * Helper function to create a path that cycles
-     * around 0, 0.
+     * around 320, 240 (that is, middle of the screen)
      * 
      * @return Path
      */
     public static Path create() {
-        return Path.create(0, 0);
+        return Path.create(320, 240);
     }
 
     /**
