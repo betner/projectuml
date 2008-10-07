@@ -30,7 +30,12 @@ public class MissileLauncher extends Weapon {
     public MissileLauncher(Point position, boolean isPlayer) {
         setPosition(position);
         setPlayer(isPlayer);
-        setShotImageFile("missileshot.png");
+        if(isPlayer){
+            setShotImageFile("missileshot.png");
+        }else{
+            setShotImageFile("missileshot_enemy.png");
+        }
+
         timestamp = new Timestamp();
     }
 
