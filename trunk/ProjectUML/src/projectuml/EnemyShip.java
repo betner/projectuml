@@ -99,6 +99,7 @@ public class EnemyShip extends Ship {
                     setDestroyed(); 
                     // Make sure animation isn't shown
                     getDestructAnimation().setDone(); 
+                    // Disable ship
                     deactivate();
                     hide();
                     return;
