@@ -95,6 +95,10 @@ public class EnemyShip extends Ship {
 
                 // If ship is at the end of the path it should disappear
                 if (nextPosition == null) {
+                    // Mark it as destroyed
+                    setDestroyed(); 
+                    // Make sure animation isn't shown
+                    getDestructAnimation().setDone(); 
                     deactivate();
                     hide();
                     return;
