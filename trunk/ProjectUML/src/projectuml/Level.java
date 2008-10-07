@@ -22,11 +22,14 @@ public class Level implements Serializable {
     private int offset;
     private boolean editormode;
     private int health;
-    private int maxhealth;    // These are transient, meaning that they
+    private int maxhealth;
+    
+    // These are transient, meaning that they
     // aren't going to get serialized
     transient private SoundPlayer soundplayer;
     transient private Font font;
     transient private Font healthfont;
+    transient private Timestamp timestamp;
 
     /** 
      * Creates a new instance of Level 
@@ -461,7 +464,15 @@ public class Level implements Serializable {
                 }
             }
         }
-        return waiting == 0;
+        
+        // No more waiting objects, but have
+        // we delayed the level enough?
+        if (waiting == 0 && timestamp != null) {
+            return timestamp.havePassed(5000);
+        } else {
+            timestamp = new Timestamp();
+            return false;
+        }
     }
 
     /**
@@ -471,6 +482,7 @@ public class Level implements Serializable {
         font = new Font("Courier New", Font.PLAIN, 10);
         healthfont = new Font("Arial", Font.PLAIN, 12);
         soundplayer = new SoundPlayer(".");
+        timestamp = null;
     }
 
     /**

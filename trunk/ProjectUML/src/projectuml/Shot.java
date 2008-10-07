@@ -1,7 +1,6 @@
 package projectuml;
 
-import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.awt.*;
 
 /**
  * Shot

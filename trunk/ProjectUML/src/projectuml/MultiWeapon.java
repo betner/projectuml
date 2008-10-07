@@ -28,5 +28,6 @@ public class MultiWeapon extends Weapon {
         level.addEnemyShot(new Shot(1, -5, 5, new Point(sprite.getPosition()), getShotImageFile()));
         level.addEnemyShot(new Shot(1, -5, -5, new Point(sprite.getPosition()), getShotImageFile()));
         level.addEnemyShot(new Shot(1, -5, 0, new Point(sprite.getPosition()), getShotImageFile()));
+        level.playSound("lasershot");
     }
 }

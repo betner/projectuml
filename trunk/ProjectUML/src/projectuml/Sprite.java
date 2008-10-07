@@ -1,6 +1,7 @@
 package projectuml;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -363,36 +364,11 @@ public class Sprite implements Serializable {
     }
 
     /**
-     * Custom serializing because of BuffferedImage not being
-     * Serializable
-     * @param out
-     **/
-//    public void writeExternal(ObjectOutput out) throws IOException {
-//        out.writeObject(position);
-//        out.writeBoolean(visible);
-//        out.writeBoolean(active);
-//        out.writeInt(imageFile.length());
-//        out.writeBytes(imageFile);
-//    }
-    /**
-     * Custom serializing because of BuffferedImage not being
-     * Serializable
-     * @param out
-     **/
-//    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-//        position.setLocation((Point)in.readObject());
-//        visible = in.readBoolean();
-//        active = in.readBoolean();
-//
-//        // Reload the image
-//        int size = in.readInt();
-//        byte[] buffer = new byte[size];
-//        in.readFully(buffer);
-//        loadImageFrom(new String(buffer));
-//    }
-//    private void writeObject(ObjectOutputStream out) throws IOException {
-//        out.defaultWriteObject();
-//    }
+     * Provides custom serialization by restoring the image
+     * @param in Stream to read from
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
+     */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         if (imageFile != null) {
