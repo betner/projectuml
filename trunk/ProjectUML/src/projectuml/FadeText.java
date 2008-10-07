@@ -52,6 +52,15 @@ public class FadeText {
     public void setPosition(int x, int y) {
         position.setLocation(x, y);
     }
+    
+    /**
+     * Sets the postition of our text
+     * 
+     * @param position Position
+     */
+    public void setPosition(Point position) {
+        this.position.setLocation(position);
+    }
 
     /**
      * Retrieves the position.
@@ -137,7 +146,25 @@ public class FadeText {
         if (alpha > 0) {
             g2D.setFont(font);
             g2D.setColor(new Color(finalcolor.getRed(), finalcolor.getGreen(), finalcolor.getBlue(), alpha));
-            g2D.drawString(text, (int) position.getX(), (int) position.getY());
+            g2D.drawString(getText(), (int) position.getX(), (int) position.getY());
         }
+    }
+
+    /**
+     * Retrieves text message
+     * 
+     * @return Text message
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Sets text message
+     * 
+     * @param text Text message
+     */
+    public void setText(String text) {
+        this.text = text;
     }
 }
