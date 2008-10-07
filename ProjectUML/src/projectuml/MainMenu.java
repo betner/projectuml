@@ -24,7 +24,7 @@ public class MainMenu extends GameState {
      * Initiates the main menu.
      */
     public MainMenu() {
-        background = new StarField(500);
+        background = new StarField(200);
 
         // Main logo
         logo = new FadeText("PROJECT U.M.L.", Color.white);
