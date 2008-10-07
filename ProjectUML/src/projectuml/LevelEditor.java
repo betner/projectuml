@@ -98,7 +98,9 @@ public final class LevelEditor extends GameState {
         keys.put(KeyEvent.VK_F12, EditorCommandID.EXIT);
         keys.put(KeyEvent.VK_H, EditorCommandID.TOGGLE_HELP);
         keys.put(KeyEvent.VK_ADD, EditorCommandID.INCREASE_OFFSET);
+        keys.put(KeyEvent.VK_Q, EditorCommandID.INCREASE_OFFSET);
         keys.put(KeyEvent.VK_SUBTRACT, EditorCommandID.DECREASE_OFFSET);
+        keys.put(KeyEvent.VK_W, EditorCommandID.DECREASE_OFFSET);
         keys.put(KeyEvent.VK_SPACE, EditorCommandID.PLACE_ENEMY);
         keys.put(KeyEvent.VK_F1, EditorCommandID.CHOOSE_SCENERY);
         keys.put(KeyEvent.VK_U, EditorCommandID.TOGGLE_UPDATE);

@@ -1,8 +1,8 @@
 package projectuml;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FilenameFilter;
+//import java.io.File;
+//import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /**
@@ -107,6 +107,13 @@ public class AnimatedSprite extends Sprite {
         return done;
     }
 
+    /**
+     * Set animation done.
+     */
+    public void setDone(){
+        done = true;
+    }
+    
     /**
      * Reset animation
      */
