@@ -23,15 +23,34 @@ public class EnemyFactory extends GeneralFactory<EnemyShip> {
         add("Enemy with missilelauncher", new EnemyMissileLauncher());
         add("Default boss", new DefaultBoss());
         add("Passive enemy (doesn't shoot)", new PassiveEnemy());
+        add("Passive enemy (round ring)", new PassiveEnemyRoundRing());
     }
-    
+
+    /**
+     * Factory for creating a type of enemy that doesn't shoot back, in
+     * this case a round ring
+     * 
+     * @return EnemyShip
+     */
+    private class PassiveEnemyRoundRing extends GeneralFactoryCreator<EnemyShip> {
+
+        public EnemyShip create() {
+            ArrayList<Point> weaponMounts = new ArrayList<Point>();
+            PacifistGunner gunner = new PacifistGunner();
+            EnemyShip enemy = new EnemyShip(1, weaponMounts, gunner, Path.create(), "enemyship4.png");
+            enemy.activate();
+            enemy.show();
+            return enemy;
+        }
+    }
+
     /**
      * Factory for creating a type of enemy that doesn't shoot back
      * 
      * @return EnemyShip
      */
     private class PassiveEnemy extends GeneralFactoryCreator<EnemyShip> {
-        
+
         public EnemyShip create() {
             ArrayList<Point> weaponMounts = new ArrayList<Point>();
             PacifistGunner gunner = new PacifistGunner();

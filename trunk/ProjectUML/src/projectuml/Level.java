@@ -382,7 +382,13 @@ public class Level implements Serializable {
      * @return EnemyShip at the position, or null
      */
     public EnemyShip getShipAt(Point point) {
-        for (EnemyShip ship : enemies) {
+//        for (EnemyShip ship : enemies) {
+//            if (offset >= ship.getOffset() && ship.inShape(point)) {
+//                return ship;
+//            }
+//        }
+        for (int i=enemies.size()-1; i >= 0; --i) {
+            EnemyShip ship = enemies.elementAt(i);
             if (offset >= ship.getOffset() && ship.inShape(point)) {
                 return ship;
             }
