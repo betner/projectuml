@@ -79,6 +79,7 @@ public class AnimatedSprite extends Sprite {
      */
     public void update(Level level) {
         if (isActive()) {
+           
             // Current picture should be changed if the time
             // set in speed has passed since last update
             if (time.havePassed(speed)) {
@@ -96,6 +97,7 @@ public class AnimatedSprite extends Sprite {
         }
     }
 
+    
     /**
      * Returns true if the animation is done.
      *

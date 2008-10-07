@@ -24,8 +24,8 @@ public class SimpleLineFollower extends Navigator {
 
     int maxMovement;
     Point destination;
-    Point currentPosition;
-    Point nextPosition;
+    //Point currentPosition;
+    //Point nextPosition;
     private double angle;
     private double hypotenuse;
     private double diffX;
@@ -39,11 +39,10 @@ public class SimpleLineFollower extends Navigator {
      * @param start point
      */
     SimpleLineFollower(Point start) {
-        nextPosition = new Point();
         destination = new Point();
         destination.setLocation(start); // start value
-        currentPosition = new Point();
-        currentPosition.setLocation(start);
+        //currentPosition = new Point();
+        //currentPosition.setLocation(start);
     }
 
     /**
@@ -73,7 +72,7 @@ public class SimpleLineFollower extends Navigator {
      * 
      * @return nextPosition point
      */
-    public Point getNextPosition() {
+    public Point getNextPosition(Point currentPosition) {
         double distance = currentPosition.distance(destination);//getPosition().distance(nextPosition);
 
         // If the distance between current position and the next is less than 
@@ -82,9 +81,7 @@ public class SimpleLineFollower extends Navigator {
         // even speed and it nullifies any rounding errors which may cause
         // the ship to never reach next point exactly on the pixel.
         if (distance <= maxMovement) {
-            nextPosition.setLocation(destination);
-            currentPosition.setLocation(destination);
-            return nextPosition;
+            return destination;
         }
         // Diff between current and next coordinates
         // diffX -> negative = destination is to the left
@@ -126,8 +123,10 @@ public class SimpleLineFollower extends Navigator {
             dy = (int) tempDy;
         }
 
+        Point nextPosition = new Point(currentPosition);
         nextPosition.translate(dx, dy);
-        currentPosition.setLocation(nextPosition);
+        //currentPosition.setLocation(nextPosition);
         return nextPosition;
     }
+    
 }

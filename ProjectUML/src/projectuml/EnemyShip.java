@@ -1,6 +1,7 @@
 package projectuml;
 
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -105,7 +106,7 @@ public class EnemyShip extends Ship {
 
             // Update new position if ship isn't destroyed
             if (!isDestroyed()) {
-                setPosition(navigator.getNextPosition());
+                setPosition(navigator.getNextPosition(getPosition()));
 
             // Ship is destroyed. Chances are that it will leave
             // a powerup behind.
@@ -178,5 +179,12 @@ public class EnemyShip extends Ship {
      */
     public void setGunner(Gunner gunner) {
         this.gunner = gunner;
+    }
+    
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        nextPosition = path.next();
+        navigator = new SimpleLineFollower(nextPosition);
+        navigator.setMaxMovement(SPEED);
     }
 }

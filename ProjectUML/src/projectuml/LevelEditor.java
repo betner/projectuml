@@ -481,7 +481,9 @@ public final class LevelEditor extends GameState {
                     // Edits a path on a enemy
                     EnemyShip ship = level.getShipAt(event.getPoint());
                     if (ship != null) {
-                        getGameStateManager().push(new PathEditor(ship.getPath()));
+                        Path path = ship.getPath();
+                        getGameStateManager().push(new PathEditor(path));
+                        ship.setPath(path);
                     }
                     break;
                 }

@@ -99,6 +99,7 @@ public class GameRunning extends GameState {
         // destruction animation finished
         if (player.getLives() <= 0 && playership.getDestructAnimation().isDone()) {
             getGameStateManager().change(new GameOver());
+            return;
         }
 
         // Level completed?

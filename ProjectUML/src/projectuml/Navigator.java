@@ -20,7 +20,7 @@ abstract public class Navigator implements Serializable {
      */
     abstract void newDestination(Point p);
 
-    abstract Point getNextPosition();
+    abstract Point getNextPosition(Point position);
 
     abstract void setMaxMovement(int m);
 }
