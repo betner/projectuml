@@ -102,7 +102,6 @@ public class SoundPlayer implements LineListener {
         // Always assume failure
         boolean success = false;
 
-        System.out.println("Trying to load " + filename);
         try {
             // Don't store twice
             if (!clips.containsKey(keyname)) {
@@ -149,7 +148,7 @@ public class SoundPlayer implements LineListener {
                 clip.setFramePosition(0);
                 clip.start();
             } catch (Exception ex) {
-                System.out.println("Sound " + name + " not found!");
+                System.err.println("Sound " + name + " not found!");
             }
         }
     }
@@ -171,7 +170,7 @@ public class SoundPlayer implements LineListener {
                 clip.setFramePosition(0);
                 clip.loop(count);
             } catch (Exception ex) {
-                System.out.println("Sound " + name + " not found!");
+                System.err.println("Sound " + name + " not found!");
             }
         }
     }
@@ -195,7 +194,7 @@ public class SoundPlayer implements LineListener {
             Clip clip = clips.get(name);
             clip.stop();
         } catch (Exception ex) {
-            System.out.println("Sound " + name + " not found!");
+            System.err.println("Sound " + name + " not found!");
         }
     }
 
@@ -209,7 +208,7 @@ public class SoundPlayer implements LineListener {
             Clip clip = clips.get(name);
             clip.start();
         } catch (Exception ex) {
-            System.out.println("Sound " + name + " not found!");
+            System.err.println("Sound " + name + " not found!");
         }
     }
 

@@ -150,6 +150,8 @@ public class Level implements Serializable {
                             shot.touch(enemy);
                             shot.deactivate();
                             shot.hide();
+                            
+                            
                         }
                         break;
                     }

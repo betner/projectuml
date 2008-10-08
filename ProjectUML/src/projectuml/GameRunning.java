@@ -275,7 +275,6 @@ public class GameRunning extends GameState {
         for (String filename : dir.list(new JustLevels())) {
             // Push it first, since we're jusing a stack
             levelnames.add(0, filename);
-            System.out.println("Found level: " + filename);
         }
         if (levelnames.isEmpty()) {
             System.err.println("Not a single level was found!");

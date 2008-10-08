@@ -35,14 +35,14 @@ public abstract class Ship extends Sprite {
         destroyed = false;
         weaponList = new WeaponList();
         // Create destructionAnimation animation
-        destructionAnimation = new AnimatedSprite(500, false);
+        destructionAnimation = AnimationFactory.createExplosion();//new AnimatedSprite(500, false);
         // Should be solved more dynamically
-        destructionAnimation.addImage(loadImage("explosion1.png"));
-        destructionAnimation.addImage(loadImage("explosion2.png"));
-        destructionAnimation.addImage(loadImage("explosion3.png"));
-        destructionAnimation.addImage(loadImage("explosion4.png"));
-        destructionAnimation.addImage(loadImage("explosion5.png"));
-        destructionAnimation.addImage(loadImage("explosion6.png"));
+//        destructionAnimation.addImage(loadImage("explosion1.png"));
+//        destructionAnimation.addImage(loadImage("explosion2.png"));
+//        destructionAnimation.addImage(loadImage("explosion3.png"));
+//        destructionAnimation.addImage(loadImage("explosion4.png"));
+//        destructionAnimation.addImage(loadImage("explosion5.png"));
+//        destructionAnimation.addImage(loadImage("explosion6.png"));
     }
 
     /**
@@ -234,7 +234,7 @@ public abstract class Ship extends Sprite {
         try {
             getWeaponList().addWeapon(weapon);
         } catch (Exception e) {
-            System.out.println("Weapon mount not set for weapon: " + e);
+            System.err.println("Weapon mount not set for weapon: " + e);
         }
     }
 

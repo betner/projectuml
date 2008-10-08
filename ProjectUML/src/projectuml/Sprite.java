@@ -91,7 +91,6 @@ public class Sprite implements Serializable {
             return biCopy;
 
         } catch (IOException e) {
-            System.out.println("Image: " + file + " not found!\n" + e);
             return null;
         }
 
