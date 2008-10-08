@@ -1,8 +1,6 @@
 package projectuml;
 
 import java.awt.image.BufferedImage;
-//import java.io.File;
-//import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +24,9 @@ public class AnimatedSprite extends Sprite {
     private Boolean repeat; // Should animation repeat
     private Boolean done;   // Set to true when we don't repeat and we're done
     transient private ArrayList<BufferedImage> imageList;  // Images to animate
-
+    transient private boolean soundstarted;
+    transient private String soundname;
+    
     /**
      * Create animated sprite and set default runtime
      */
@@ -58,6 +58,26 @@ public class AnimatedSprite extends Sprite {
         time = new Timestamp();
         speed = 0;
         imageList = new ArrayList<BufferedImage>();
+        soundstarted = false;
+        soundname = "";
+    }
+    
+    /**
+     * Sets the sound name of this animation
+     * 
+     * @param name Sound name
+     */
+    public void setSoundName(String name) {
+        soundname = name;
+    }
+    
+    /**
+     * Retrieves the sound name
+     * 
+     * @return Sound name
+     */
+    public String getSoundName() {
+        return soundname;
     }
 
     /**
@@ -79,6 +99,10 @@ public class AnimatedSprite extends Sprite {
      */
     public void update(Level level) {
         if (isActive()) {
+            if (!soundstarted) {
+                level.playSound(soundname);
+                soundstarted = true;
+            }
            
             // Current picture should be changed if the time
             // set in speed has passed since last update
@@ -120,6 +144,7 @@ public class AnimatedSprite extends Sprite {
     public void reset() {
         sequence = 0; // First image in sequence
         done = false;
+        soundstarted = false;
         activate();
         show();
     }

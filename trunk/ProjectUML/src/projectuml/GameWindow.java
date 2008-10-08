@@ -75,9 +75,6 @@ public class GameWindow extends JFrame implements WindowFocusListener {
                 // Used on Linux-systems to get better
                 // performance, appearently?
                 Toolkit.getDefaultToolkit().sync();
-
-            //frametime = System.currentTimeMillis() - frametime;
-            //System.out.println("Frametime: " + frametime);
             }
         }
     }
@@ -189,6 +186,9 @@ public class GameWindow extends JFrame implements WindowFocusListener {
 
         dumpVideoInfo(config.getDevice().getDisplayMode());
 
+        /*
+         * Uncomment to enable fullscreen *
+         */
         // Switch to full screen
 //        if (device.isFullScreenSupported()) {
 //            System.out.println("Going for fullscreen...");

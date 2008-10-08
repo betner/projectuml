@@ -46,6 +46,7 @@ public class AnimationFactory {
                 i += 1;
             }
         }
+        sprite.setSoundName("explosion_long");
         return sprite;
     }
 }
