@@ -90,5 +90,6 @@ public class GameOver extends GameState {
      * Our state has lost focus.
      */
     public void lostFocus() {
+        sound.stop("gameover");
     }
 }
