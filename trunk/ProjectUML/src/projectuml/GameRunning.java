@@ -22,8 +22,8 @@ public class GameRunning extends GameState {
     private PlayerShip playership;
     private Font font;
 
+    // Game commands
     private enum GameCommandID {
-
         GO_UP, GO_DOWN, GO_LEFT, GO_RIGHT,
         FIRE_WEAPON,
         PAUSE,
@@ -69,6 +69,7 @@ public class GameRunning extends GameState {
         keys.put(KeyEvent.VK_UP, GameCommandID.GO_UP);
         keys.put(KeyEvent.VK_DOWN, GameCommandID.GO_DOWN);
         keys.put(KeyEvent.VK_P, GameCommandID.PAUSE);
+        keys.put(KeyEvent.VK_PAUSE, GameCommandID.PAUSE);
         keys.put(KeyEvent.VK_PAUSE, GameCommandID.PAUSE);
         keys.put(KeyEvent.VK_F12, GameCommandID.START_LEVEL_EDITOR);
         keys.put(KeyEvent.VK_SPACE, GameCommandID.FIRE_WEAPON);
@@ -198,7 +199,7 @@ public class GameRunning extends GameState {
                     break;
 
                 case PAUSE:
-                    if (down) {
+                    if (!down) {
                         getGameStateManager().push(new Pause());
                     }
                     break;
@@ -210,7 +211,9 @@ public class GameRunning extends GameState {
                     break;
 
                 case EXIT:
-                    getGameStateManager().change(new MainMenu());
+                    if (!down) {
+                        getGameStateManager().change(new MainMenu());
+                    }
                     break;
 
                 default:

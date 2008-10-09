@@ -60,10 +60,11 @@ public class MainMenu extends GameState {
     /**
      * Respond to keyevents.
      * 
-     * @param event
+     * @param event Key event
+     * @param down Is key down?
      */
     public void keyEvent(KeyEvent event, boolean down) {
-        if (down) {
+        if (!down) {
             switch (event.getKeyCode()) {
                 case KeyEvent.VK_P:
                 case KeyEvent.VK_PAUSE:
@@ -89,7 +90,7 @@ public class MainMenu extends GameState {
     /**
      * Updates the main menu.
      * 
-     * @param player
+     * @param player Active player
      */
     public void update(Player player) {
         background.update();
